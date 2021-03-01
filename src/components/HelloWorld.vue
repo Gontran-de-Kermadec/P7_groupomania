@@ -1,6 +1,16 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <form>
+      <label for="name">Nom:</label>
+      <input type="text" name="name" id="name" v-model="name" required/>
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" v-model="email"/>
+      <label for="password">Mot de passe:</label>
+      <input type="password" name="password" id="password" v-model="password"/>
+      <button type="submit" @click="postThing">S'incrire</button>
+    </form>
+    <p>{{ name }}, {{ email }},  {{ password }}</p>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -21,22 +31,39 @@
       <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
       <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
     </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
   </div>
 </template>
 
 <script>
+const axios = require('axios');
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      name: '',
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    postThing() {
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/signup/',
+        data: {
+            name: this.name,
+            email: this.email,
+            password: this.password
+        }
+      })
+      .then((response) => {
+          console.log(response);
+      })
+      .catch((error) => console.log(error));
+    }
   }
 }
 </script>
