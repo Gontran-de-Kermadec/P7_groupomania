@@ -23,7 +23,6 @@ export default {
     },
     methods: {
         postLogin() {
-            //e.preventDefault;
             axios({
                 method: 'post',
                 url: 'http://localhost:3000/login/',

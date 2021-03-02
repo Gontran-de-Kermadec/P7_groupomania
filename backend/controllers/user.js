@@ -60,14 +60,22 @@ exports.signup = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
-    let email = req.body.email;
-    dbConnect.query(`SELECT email FROM users WHERE email='${req.body.email}'`, function(err, result) {
+    //let email = req.body.email;
+    let email = sanitize(req.body.email);
+    let password = sanitize(req.body.password);
+    dbConnect.query(`SELECT * FROM users WHERE email=?`,email, function(err, result) {
         if(err) throw err;
         if(result) {
             console.log(result);
-            console.log('user trouvé');
-            res.status(200).json({ email: result[0].email})
-            res.status(200).json({ result })
+            bcrypt.compare(password, result[0].password)
+            .then(valid => {
+                if(!valid) {
+                    return res.status(401).json({ error: 'Mot de passe incorrect !'})
+                }
+                console.log('user trouvé');
+                res.status(200).json({ result })
+            })
+            .catch(error => res.status(500).json({ error }));
         }
     })
     // User.findOne({ email: req.body.email}) 
