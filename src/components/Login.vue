@@ -1,12 +1,12 @@
 <template>
   <div>
-      <p>Veuillez vous connecter</p>
+      <h1>Veuillez vous connecter</h1>
       <form @submit.prevent = postLogin()>
-      <label for="email">Email</label><br>
-      <input type="email" name="email" id="email" v-model="email" required/><br>
-      <label for="password">Mot de passe</label><br>
-      <input type="password" name="password" id="password" v-model="password" required/><br>
-      <button type="submit">Se connecter</button>
+        <label for="email">Email</label><br>
+        <input type="email" name="email" id="email" v-model="email" required/><br>
+        <label for="password">Mot de passe</label><br>
+        <input type="password" name="password" id="password" v-model="password" required/><br>
+        <button type="submit" class="btn">Se connecter</button>
     </form>
   </div>
 </template>
@@ -40,10 +40,11 @@ export default {
                 //     }
                 // })
                 .then((resp) => {
-                    console.log(resp)
+                    console.log(resp.data)
                     console.log(resp.status);
                     if(resp.status === 200) {
-                    this.$router.push('/home')
+                        localStorage.setItem('token', JSON.stringify(resp.data))
+                        this.$router.push('/home')
                 }
                 })
                 .catch((error) => console.log(error));
@@ -56,6 +57,33 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped lang='scss'>
+    // * {
+    //     padding: 0;
+    //     margin: 0;
+    //     box-sizing: border-box;
+    // }
+    h1 {
+        margin-bottom: 30px;
+    }
+    input {
+        font-size: large;
+    }
+    .btn {
+        background: #FD2D01;
+        border: none;
+        font-size: large;
+        cursor: pointer;
+    }
+    input, .btn {
+        width: 300px;
+        height: 50px;
+        margin-bottom: 20px;
+        @media (min-width: 550px) {
+            width: 500px;
+        }
+        @media (min-width: 1024px) {
+            width: 700px;
+        }
+    }
 </style>

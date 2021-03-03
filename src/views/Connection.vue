@@ -1,13 +1,14 @@
 <template>
   <div class="home">
     <Header />
-    <div id="nav">
-      <!-- <router-link to="/">Login</router-link>  -->
+    <Login />
+    <div class="signupBtn">
+      <p>Si vous n'avez pas encore de compte</p>
       <router-link to="/signup">S'inscrire</router-link>
     </div>
-    <!-- <router-view/> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Login />
+    <!-- <div>
+      <img src="../assets/logos/icon.svg" alt="Logo entreprise" class="bgImg">
+  </div> -->
   </div>
 </template>
 
@@ -26,3 +27,28 @@ export default {
   }
 }
 </script>
+
+<style scoped lang='scss'>
+  // * {
+  //   padding: 0;
+  //   margin: 0;
+  //   box-sizing: border-box;
+  //   }
+  .signupBtn {
+    margin-top: 50px;
+    a {
+      color: #000;
+    }
+    p {
+      margin-bottom: 10px;
+    }
+  }
+  // .bgImg {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   z-index: -100;
+  //   width: 100px;
+  //   height: auto;
+  // }
+</style>

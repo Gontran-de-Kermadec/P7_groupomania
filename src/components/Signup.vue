@@ -1,18 +1,21 @@
 <template>
   <div class="hello">
       <Header />
-      <p>Si vous avez déjà un compte</p>
-      <router-link to="/">Login</router-link>
+      <h1>Veuillez vous inscrire</h1>
       <form @submit.prevent = postThing()>
-        <label for="name">Nom:</label><br>
+        <label for="name">Nom</label><br>
         <input type="text" name="name" id="name" v-model="name" required/><br>
-        <label for="email">Email:</label><br>
+        <label for="email">Email</label><br>
         <input type="email" name="email" id="email" v-model="email" required/><br>
-        <label for="password">Mot de passe:</label><br>
+        <label for="password">Mot de passe</label><br>
         <input type="password" name="password" id="password" v-model="password" required/><br>
-        <button type="submit">S'incrire</button>
+        <button type="submit" class="btn">S'incrire</button>
       </form>
       <p>{{ name }}, {{ email }},  {{ password }}</p>
+      <div class="loginBtn">
+        <p>Si vous avez déjà un compte</p>
+        <router-link to="/">Login</router-link>
+      </div>
   </div>
 </template>
 
@@ -63,19 +66,41 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style scoped lang='scss'>
+    // * {
+    //     padding: 0;
+    //     margin: 0;
+    //     box-sizing: border-box;
+    // }
+    h1 {
+        margin-bottom: 30px;
+    }
+    input {
+        font-size: large;
+    }
+    .btn {
+        background: #FD2D01;
+        border: none;
+        font-size: large;
+        cursor: pointer;
+    }
+    input, .btn {
+        width: 300px;
+        height: 50px;
+        margin-bottom: 20px;
+        @media (min-width: 550px) {
+            width: 500px;
+        }
+        @media (min-width: 1024px) {
+            width: 700px;
+        }
+    }
+    .loginBtn {
+      a {
+        color: #000;
+      }
+      p {
+        margin-bottom: 10px;
+      } 
+    }
 </style>
