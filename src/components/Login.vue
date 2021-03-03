@@ -23,23 +23,34 @@ export default {
     },
     methods: {
         postLogin() {
-            axios({
-                method: 'post',
-                url: 'http://localhost:3000/login/',
-                data: {
-                    email: this.email,
-                    password: this.password
+            let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
+            if(regexEmail.test(this.email)) {
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:3000/login/',
+                    data: {
+                        email: this.email,
+                        password: this.password
+                    }
+                })
+                // axios.post('http://localhost:3000/login/', {
+                //     data: {
+                //         email: this.email,
+                //         password: this.password
+                //     }
+                // })
+                .then((resp) => {
+                    console.log(resp)
+                    console.log(resp.status);
+                    if(resp.status === 200) {
+                    this.$router.push('/home')
                 }
-            })
-            // axios.post('http://localhost:3000/login/', {
-            //     data: {
-            //         email: this.email,
-            //         password: this.password
-            //     }
-            // })
-            .then((resp) => { console.log(resp)})
-            .catch((error) => console.log(error));
-            this.$router.push('/home')
+                })
+                .catch((error) => console.log(error));
+            } else {
+                console.log('probleme mot de passe ou mail');
+            }
+
         }
     }
 }

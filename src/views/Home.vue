@@ -2,7 +2,7 @@
   <div class="about">
     <Header />
     <h1>Bonjour toi !</h1>
-    <button>Déconnexion</button>
+    <button @click="disconnect">Déconnexion</button>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     disconnect() {
-      
+      this.$router.push('/')
     }
   }
 }

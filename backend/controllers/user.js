@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const dbConnect = require('../connect');
 const sanitize = require('sanitize-html');
 //const configConnect = require('../connect')
@@ -61,21 +62,34 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     //let email = req.body.email;
+    let RANDOM_TOKEN_SECRET = 'zGTNYHbegATm0k$wYprfQqmZifuDfLIv4m_CAMj3eBN6o6Zd7g9u'
     let email = sanitize(req.body.email);
     let password = sanitize(req.body.password);
     dbConnect.query(`SELECT * FROM users WHERE email=?`,email, function(err, result) {
-        if(err) throw err;
-        if(result) {
+        if(err) {
+            //throw err;
+            console.log(err);
+        }
+        if(result.length !== 0) {
             console.log(result);
             bcrypt.compare(password, result[0].password)
             .then(valid => {
-                if(!valid) {
+                if(!valid) { 
                     return res.status(401).json({ error: 'Mot de passe incorrect !'})
                 }
                 console.log('user trouvé');
-                res.status(200).json({ result })
+                res.status(200).json({ 
+                    userId: result[0].id,
+                    token: jwt.sign(
+                        {userId: result[0].id,}, 
+                        RANDOM_TOKEN_SECRET,
+                        { expiresIn: '2h'}
+                    )
+                })
             })
             .catch(error => res.status(500).json({ error }));
+        } else {
+            console.log('email incorrect');
         }
     })
     // User.findOne({ email: req.body.email}) 
