@@ -43,7 +43,7 @@ export default {
                     console.log(resp.data)
                     console.log(resp.status);
                     if(resp.status === 200) {
-                        localStorage.setItem('token', JSON.stringify(resp.data))
+                        localStorage.setItem('userInfo', JSON.stringify(resp.data))
                         this.$router.push('/home')
                 }
                 })

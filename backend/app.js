@@ -4,6 +4,7 @@ const mysql = require('mysql');
 
 const app = express();
 const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
 
 // const db = mysql.createConnection({
 //     host: "localhost",
@@ -28,18 +29,7 @@ app.use(bodyParser.json())
 
 
 app.use('/', userRoutes);
-// app.post('/signup', (req,res) => {
-//     console.log(req.body.name);
-//     let name = req.body.name;
-//     let mail = req.body.email;
-//     let pass = req.body.password;
-//     let data = [name, mail, pass]
-//     res.end('Voilà la réponse du serveur !');
-//     db.query("INSERT INTO users SET name=?, email=?, password=?", data, function(err, result) {
-//           if(err) throw err;
-//           console.log(result);
-//         })
-// })
+app.use('/', postRoutes);
 
 
 module.exports = app;

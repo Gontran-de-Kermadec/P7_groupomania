@@ -88,6 +88,7 @@ exports.login = (req, res, next) => {
             .catch(error => res.status(500).json({ error }));
         } else {
             console.log('email incorrect');
+            res.status(404).json({message: 'utiisateur inconnu !'})
         }
     })
     //     bcrypt.compare(req.body.password, user.password)
@@ -95,4 +96,24 @@ exports.login = (req, res, next) => {
     //         if(!valid) {
     //          return res.status(401).json({ error: 'Mot de passe incorrect !'})
     //         }
+}
+
+exports.deleteUser = (req, res, next) => {
+    console.log('ID:', req.params.id);
+    dbConnect.query('DELETE FROM users WHERE id=?', req.params.id, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.status(200).json({message:'compte supprimé'})
+    })
+
+    // Sauce.findOne({ _id: req.params.id })
+    // .then(sauce => {
+    //   const filename = sauce.imageUrl.split('/images/')[1]; //cree un tableau dans lequel on recupere le nom du fichier à l'index 1
+    //   fs.unlink(`images/${filename}`, () => {
+    //     Sauce.deleteOne({ _id: req.params.id })
+    //       .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
+    //       .catch(error => res.status(400).json({ error }));
+    //   });
+    // })
+    // .catch(error => res.status(500).json({ error }));
 }

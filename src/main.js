@@ -5,6 +5,11 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+if(localStorage.getItem('userInfo') !== undefined) {
+  Vue.prototype.$userInfo = JSON.parse(localStorage.getItem('userInfo'));
+}
+
+
 new Vue({
   router,
   store,

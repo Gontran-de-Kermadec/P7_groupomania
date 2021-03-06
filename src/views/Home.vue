@@ -5,27 +5,30 @@
     <button @click="disconnect">Déconnexion</button><br>
     <router-link to="/profil">Profil</router-link>
     <Post />
+    <GetAllPosts />
   </div>
 </template>
 
 <script>
 import Header from '../components/Header.vue'
 import Post from '../components/Post.vue'
-let getId = JSON.parse(localStorage.getItem('token'));
+import GetAllPosts from '../components/GetAllPosts.vue'
+let getId = JSON.parse(localStorage.getItem('userInfo'));
 console.log(getId.name);
 export default {
   name: 'Home',
   components: {
     Header,
-    Post
+    Post,
+    GetAllPosts
   },
   methods: {
     disconnect() {
-      localStorage.removeItem('token');
+      localStorage.removeItem('userInfo');
       this.$router.push('/')
     },
     getStorage() {
-      let getId = JSON.parse(localStorage.getItem('token'));
+      let getId = JSON.parse(localStorage.getItem('userInfo'));
       return getId.name
     }
   }
