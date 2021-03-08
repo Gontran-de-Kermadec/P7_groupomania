@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Connection from '../views/Connection.vue'
 import Signup from '../components/Signup.vue'
 import Profil from '../components/Profil.vue'
+import Post from '../components/Post.vue'
 //import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -30,6 +31,11 @@ const routes = [
     path: '/profil',
     name: 'Profil',
     component: Profil
+  },
+  {
+    path: '/post/:id',
+    name: 'Post',
+    component: Post
   }
 ]
 

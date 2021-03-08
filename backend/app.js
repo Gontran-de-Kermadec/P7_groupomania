@@ -5,6 +5,7 @@ const mysql = require('mysql');
 const app = express();
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
+const commentRoutes = require('./routes/comment');
 
 // const db = mysql.createConnection({
 //     host: "localhost",
@@ -30,6 +31,7 @@ app.use(bodyParser.json())
 
 app.use('/', userRoutes);
 app.use('/', postRoutes);
+app.use('/', commentRoutes);
 
 
 module.exports = app;

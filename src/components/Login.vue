@@ -43,8 +43,9 @@ export default {
                     console.log(resp.data)
                     console.log(resp.status);
                     if(resp.status === 200) {
-                        localStorage.setItem('userInfo', JSON.stringify(resp.data))
-                        this.$router.push('/home')
+                        localStorage.setItem('userInfo', JSON.stringify(resp.data));
+                        window.location = "http://localhost:8080/home"
+                        //this.$router.push('/home')
                 }
                 })
                 .catch((error) => console.log(error));

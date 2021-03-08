@@ -1,6 +1,9 @@
 <template>
   <div>
       <img src="../assets/logos/icon-above-font.svg" alt="Logo entreprise">
+      <div v-if="loggedIn" class="home">
+          <router-link to="/home">Page d'accueil</router-link>
+      </div>
       <div v-if="loggedIn" class="logout">
           <button>Deconnexion</button>
       </div>
@@ -44,6 +47,12 @@ export default {
     .logout {
         position: absolute;
         right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .home {
+        position: absolute;
+        left: 0;
         top: 50%;
         transform: translateY(-50%);
     }

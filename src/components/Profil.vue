@@ -1,18 +1,27 @@
 <template>
   <div class="profil">
     <Header />
-    <router-link to="/home">Page d'accueil</router-link>
     <div class="data_container">
       <div class="data_account">
         <p>{{ name }}</p>
         <button @click="deleteUser">Supprimer compte</button>
+        <!-- <div v-for="postid in findUserIdPost" :key="postid.id">
+          <p>{{ postid.postDate }}</p>
+          <p>{{ postid.postContent }}</p>
+          <button>Supprimer post</button>
+        </div> -->
       </div>
       <div class="data_post">
-        <p>Votre page profil est en cours de construction</p>
-        <div v-for="post in posts" :key="post.id">
+        <p>Vos publications</p>
+        <div v-for="post in posts" :key="post.id" class="onePost">
+          <router-link :to="{name: 'Post', params: {id: post.id}}">
           <p>{{ post.postDate }}</p>
           <p>{{ post.postContent }}</p>
-      </div>
+          <p>{{ post.id }}</p>
+          <button @click="deletePost">Supprimer post</button>
+          </router-link>
+          <!-- <router-link :to="{name: 'Post', params: {id: post.id}}">Voir ce post</router-link> -->
+        </div>
       </div>
     </div>
   </div>
@@ -20,10 +29,9 @@
 
 <script>
 import Header from './Header'
+//import Post from './Post'
+import { mapGetters } from 'vuex'
 const axios = require('axios');
-//let getId = JSON.parse(localStorage.getItem('token'));
-//let getUserId = JSON.parse(localStorage.token);
-//console.log(getUserId);
 export default {
     name: 'Profil',
     components: {
@@ -35,23 +43,46 @@ export default {
         posts: []
       }
     },
+    computed: {
+        ...mapGetters(['findUserIdPost'])
+    },
     methods: {
+      deletePost() {
+        for (const {id: n} of this.posts) {
+        console.log(n);
+        axios.delete(`http://localhost:3000/post/${n}`, {
+          headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+          })
+          .then((resp) => {
+            console.log(resp)
+          })
+          .catch((error) => console.log(error));
+      }
+        //localStorage.getItem('postInfo');
+        //let postInfo = JSON.parse(localStorage.getItem('postInfo'));
+        //console.log(postInfo[0].id);
+        //for(let i = 0; i<postInfo.length; i++) {
+          //console.log(postInfo[i].id);
+          //axios.delete(`http://localhost:3000/${post.id}`, {
+          // headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+          // })
+          // .then((resp) => {
+          //   console.log(resp)
+          // })
+          // .catch((error) => console.log(error));
+        //})
+      },
       deleteUser() {
         //alert('etes-vous sur de vouloir supprimer votre compte ?')
-        axios.delete(`http://localhost:3000/${this.$userInfo.userId}`,
-          // {
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //     'Authorization': `Bearer ${this.$token}`
-          //   }
-          // }
-      )
-      .then((resp) => {
-        console.log(resp)
-      })
-      .catch((error) => console.log(error));
-      localStorage.removeItem('token');
-      this.$router.push('/');
+        axios.delete(`http://localhost:3000/${this.$userInfo.userId}`, {
+          headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+        })
+        .then((resp) => {
+          console.log(resp)
+        })
+        .catch((error) => console.log(error));
+        localStorage.removeItem('token');
+        this.$router.push('/');
       // .then(localStorage.removeItem('user'))
       // .then(location.href = "/");
         //console.log(localStorage.token);
@@ -76,14 +107,15 @@ export default {
       getMyPosts() {
         axios.get(`http://localhost:3000/${this.$userInfo.userId}`, { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
             .then((res) => {
-                console.log(res.data[0].postContent);
+                console.log(res.data[0]);
                 this.posts = res.data;
+                localStorage.setItem('postInfo', JSON.stringify(res.data))
             })
             .catch((error) => console.log(error));
       }
     },
-    beforeMount() {
-      this.getMyPosts()
+    mounted() {
+      this.getMyPosts();
     }
 }
 </script>
@@ -96,6 +128,10 @@ export default {
       p {
         text-transform: capitalize;
       }
+    }
+    .onePost {
+      border: solid;
+      margin: 5px;
     }
   }
   .alert_container{

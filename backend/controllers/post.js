@@ -1,7 +1,7 @@
 const dbConnect = require('../connect');
 const sanitize = require('sanitize-html');
 
-
+//Créer une publication
 exports.post = (req, res, next) => {
     let postId = parseInt(sanitize(req.body.getId));
     let postName = sanitize(req.body.postName);
@@ -35,6 +35,17 @@ exports.getAllPosts = (req, res, next) => {
 //Obtenir les posts d'un seul utilisateur
 exports.getMyPosts = (req, res, next) => {
     dbConnect.query(`SELECT * FROM post WHERE userId=? ORDER BY postDate DESC`, req.params.id, function(err, result) {
+        if(err) throw err;
+        if(result) {
+            console.log(result);
+            res.status(200).json(result);
+            //res.end('Voilà la réponse du serveur !');
+        }
+    });
+}
+//Obtenir un seul post
+exports.getOnePost = (req, res, next) => {
+    dbConnect.query(`SELECT * FROM post WHERE id=?`, req.params.id, function(err, result) {
         if(err) throw err;
         if(result) {
             console.log(result);
