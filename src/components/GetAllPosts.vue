@@ -6,11 +6,11 @@
             <p>{{ post.postContent }}</p>
             </router-link>
       </div>
-      <p @click="getAllPost()">voir tous les posts</p>
+      <!-- <p @click="getAllPost()">voir tous les posts</p>
       <div v-for="post in posts" :key="post.id">
           <p><span>{{ post.userId }} </span>{{ post.postDate }}</p>
           <p>{{ post.postContent }}</p>
-      </div>
+      </div> -->
   </div>
 </template>
 

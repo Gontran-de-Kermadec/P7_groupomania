@@ -6,6 +6,7 @@
           <p>{{ post.name }}</p>
           <p><span>{{ post.userId }} </span>{{ post.postDate }}</p>
           <p>{{ post.postContent }}</p>
+          <a :href="post.postUrl">{{post.postUrl}}</a><br>
           <button v-if="userId === post.userId">Modifier</button>
           <button @click="deletePost">Supprimer</button>
       </div>

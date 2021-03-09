@@ -1,11 +1,18 @@
 <template>
   <div class="about">
     <Header />
-    <h1>Bonjour {{getStorage()}} !</h1>
-    <button @click="disconnect">Déconnexion</button><br>
-    <router-link to="/profil">Profil</router-link>
-    <SendPost />
-    <GetAllPosts />
+    <div class="home_container">
+      <div>
+       
+        <!-- <button @click="disconnect">Déconnexion</button><br> -->
+        <!-- <router-link to="/profil">Profil</router-link> -->
+      </div>
+      <div>
+         <h1>Bonjour {{getStorage()}} !</h1>
+        <SendPost />
+        <GetAllPosts />
+      </div>
+    </div> 
   </div>
 </template>
 
@@ -22,12 +29,17 @@ export default {
     SendPost,
     GetAllPosts
   },
+  data() {
+    return {
+      isModalOn: false
+    }
+  },
   methods: {
-    disconnect() {
-      localStorage.removeItem('userInfo');
-      window.location = "http://localhost:8080/"
-      //this.$router.push('/')
-    },
+    // disconnect() {
+    //   localStorage.removeItem('userInfo');
+    //   window.location = "http://localhost:8080/"
+    //   //this.$router.push('/')
+    // },
     getStorage() {
       let getId = JSON.parse(localStorage.getItem('userInfo'));
       return getId.name
@@ -37,5 +49,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .home_container {
+    display: flex;
+  }
 </style>

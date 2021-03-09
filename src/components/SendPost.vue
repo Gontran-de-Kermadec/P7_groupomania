@@ -1,10 +1,26 @@
 <template>
   <div>
-    <form action="" method="post" @submit.prevent = postData()>
-      <textarea type="text" name="post" id="post" placeholder="Postez une histoire" v-model="post"></textarea>
+    <!-- <form action="" method="post" @submit.prevent = postData()>
+      <textarea type="text" name="post" id="post" placeholder="Postez une histoire" v-model="post"></textarea><br>
+      <input type="url" name="postUrl" id="postUrl" v-model="postUrl" placeholder="Si URL"><br>
       <button type="submit">Publier</button>
-    </form>
-      <p>{{post}}</p>
+    </form> -->
+    <button @click="toggleModal">Créer une publication</button>
+    <p>{{post}}</p>
+    <p>{{postUrl}}</p>
+    <div class="modal_container" v-if="isModalOn">
+      <div class="overlay" @click="toggleModal"></div>
+      <div class="modal_card">
+        <span @click="toggleModal">X</span>
+        <p>Publiez quelque chose</p>
+        <form action="" method="post" @submit.prevent = postData()>
+          <textarea type="text" name="post" id="post" placeholder="Postez une histoire" v-model="post"></textarea><br>
+          <!-- <label for="postUrl">URL:</label> -->
+          <input type="url" name="postUrl" id="postUrl" v-model="postUrl" placeholder="Placez les liens ici"><br>
+          <button type="submit">Publier</button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -15,9 +31,12 @@ const axios = require('axios');
 //let getId = getToken.userId;
 export default {
     name: 'SendPost',
+    //props: ['isModalOn'],
     data() {
       return {
-        post: ''
+        post: '',
+        postUrl: '',
+        isModalOn: false
       }
     },
     methods: {
@@ -34,7 +53,8 @@ export default {
           data: {
               getId: this.$userInfo.userId,
               postName: this.$userInfo.name,
-              postContent: this.post
+              postContent: this.post,
+              postUrl: this.postUrl
           },
           headers: {
               'Authorization': `Bearer ${this.$userInfo.token}`
@@ -42,7 +62,7 @@ export default {
         })
         .then((resp) => {
           console.log(resp)
-          //this.$router.push('/home')
+          document.location.reload();
           //console.log(resp.status);
           // if(resp.status === 200) {
           //   localStorage.setItem('token', JSON.stringify(resp.data))
@@ -50,11 +70,56 @@ export default {
           // }
         })
         .catch((error) => console.log(error));
+      },
+      toggleModal() {
+        this.isModalOn = !this.isModalOn
       }
     }
 }
 </script>
 
-<style>
-
+<style scoped lang='scss'>
+  .modal_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay {
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  .modal_card {
+    position: fixed;
+    background: #fff;
+    width: 500px;
+    //height: 400px;
+    height: auto;
+    padding: 10px;
+    span {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      //border: solid ;
+      background: #FD2D01;
+      padding: 5px;
+    }
+    textarea, input {
+      width: 300px;
+    }
+    textarea {
+      height: 100px;
+    }
+    input {
+      height: 40px;
+    }
+  }
 </style>

@@ -4,6 +4,12 @@
         <p>{{postId}}</p>
         <textarea type="text" name="comment" id="comment" v-model="post"></textarea>
         <button @click="sendComment">Commenter</button>
+        <div v-for="comment in comments" :key="comment.id">
+            <!-- <router-link :to="{name: 'Post', params: {id: post.id}}"> -->
+            <p><span>{{ comment.userId }} </span>{{ comment.name }}</p>
+            <p>{{ comment.comment }}</p>
+            <!-- </router-link> -->
+      </div>
     </div>
 </template>
 
@@ -17,6 +23,7 @@ export default {
     data() {
       return {
         post: '',
+        comments: '',
         id: this.postId
       }
     },
@@ -41,17 +48,21 @@ export default {
               'Authorization': `Bearer ${this.$userInfo.token}`
           }
         })
-        .then((resp) => {
-          console.log(resp)
-          //this.$router.push('/home')
-          //console.log(resp.status);
-          // if(resp.status === 200) {
-          //   localStorage.setItem('token', JSON.stringify(resp.data))
-          //   this.$router.push('/home')
-          // }
-        })
+        .then((resp) => {console.log(resp)})
         .catch((error) => console.log(error));
+      },
+      getComment() {
+        axios.get(`http://localhost:3000/comment/${this.postId}`, { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
+          .then((res) => {
+              console.log(res.data);
+              this.comments = res.data;
+              //localStorage.setItem('postInfo', JSON.stringify(res.data))
+          })
+          .catch((error) => console.log(error));
       }
+    },
+    mounted() {
+      this.getComment();
     }
 }
 </script>

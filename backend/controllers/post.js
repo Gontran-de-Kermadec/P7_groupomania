@@ -5,18 +5,30 @@ const sanitize = require('sanitize-html');
 exports.post = (req, res, next) => {
     let postId = parseInt(sanitize(req.body.getId));
     let postName = sanitize(req.body.postName);
+    let postUrl = sanitize(req.body.postUrl);
     console.log(postId);
     let content = sanitize(req.body.postContent);
-    let data = [postId, content]
+    let data = [postId, content, postUrl]
     console.log(data);
-    dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${postId}, "${postName}", "${content}")`, function(err, result) {
-        if(err) throw err;
-        if(result) {
-            //console.log(result);
-            res.status(201).json({message: 'post ajouté'});
-            //res.end('Voilà la réponse du serveur !');
-        }
-    });
+    if(postUrl === '') {
+        dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${postId}, "${postName}", "${content}")`, function(err, result) {
+            if(err) throw err;
+            if(result) {
+                //console.log(result);
+                res.status(201).json({message: 'post ajouté'});
+                //res.end('Voilà la réponse du serveur !');
+            }
+        });
+    } else {
+        dbConnect.query(`INSERT INTO post (userId, name, postContent, postUrl) VALUES (${postId}, "${postName}", "${content}", "${postUrl}")`, function(err, result) {
+            if(err) throw err;
+            if(result) {
+                //console.log(result);
+                res.status(201).json({message: 'post ajouté'});
+                //res.end('Voilà la réponse du serveur !');
+            }
+        });
+    }
 };
 
 //obtenir tous les posts du plus récent au plus vieux.
