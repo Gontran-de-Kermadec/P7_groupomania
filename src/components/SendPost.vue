@@ -1,11 +1,6 @@
 <template>
   <div>
-    <!-- <form action="" method="post" @submit.prevent = postData()>
-      <textarea type="text" name="post" id="post" placeholder="Postez une histoire" v-model="post"></textarea><br>
-      <input type="url" name="postUrl" id="postUrl" v-model="postUrl" placeholder="Si URL"><br>
-      <button type="submit">Publier</button>
-    </form> -->
-    <button @click="toggleModal">Créer une publication</button>
+    <button @click="toggleModal" class="create_btn">Créer une publication</button>
     <p>{{post}}</p>
     <p>{{postUrl}}</p>
     <div class="modal_container" v-if="isModalOn">
@@ -15,7 +10,6 @@
         <p>Publiez quelque chose</p>
         <form action="" method="post" @submit.prevent = postData()>
           <textarea type="text" name="post" id="post" placeholder="Postez une histoire" v-model="post"></textarea><br>
-          <!-- <label for="postUrl">URL:</label> -->
           <input type="url" name="postUrl" id="postUrl" v-model="postUrl" placeholder="Placez les liens ici"><br>
           <button type="submit">Publier</button>
         </form>
@@ -79,6 +73,16 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+  .create_btn {
+    width: 90vw;
+    background-color: #FD2D01;
+    font-size: 1.4rem;
+    border: solid 1px;
+    padding: 10px;
+    @media (min-width: 768px) {
+      width: 50vw;
+    }
+  }
   .modal_container {
     position: fixed;
     top: 0;

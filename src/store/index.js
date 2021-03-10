@@ -25,7 +25,12 @@ export default new Vuex.Store({
         console.log(n);
       }
       return teston
-    }
+    },
+    // dateFormat(date) {
+    //   const event = new Date(date);
+    //   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    //   return event.toLocaleDateString('fr-FR', options);
+    // }
   },
   mutations: {
     CHANGE_LOG(state) {
@@ -34,12 +39,12 @@ export default new Vuex.Store({
       } else {
         state.loggedIn = false;
       }
-      console.log(state.loggedIn);
+      //console.log(state.loggedIn);
     },
     GET_ALL_POSTS(state, data) {
-      //console.log(userInfo.token);
-      state.allPosts = data
-      console.log(state.allPosts);
+      state.allPosts = data;
+      // console.log(state.allPosts);
+      //console.log(date);
       // axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       // .then((res) => {
       //     console.log(res.data[0].postContent);
@@ -53,13 +58,16 @@ export default new Vuex.Store({
     getAllPosts(context) {
       axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       .then((res) => {
-          //console.log(res.data[0].postContent);
-          //state.allPosts = res.data;
-          context.commit('GET_ALL_POSTS', res.data)
-          //console.log(state.allPosts);
+        //console.log(res.data[0]);
+        //state.allPosts = res.data;
+        context.commit('GET_ALL_POSTS', res.data)
+        //console.log(state.allPosts);
       })
       .catch((error) => console.log(error));
-    }
+    },
+    // checkLogged(context) {
+    //   context.commit('CHANGE_LOG')
+    // }
   },
   modules: {
   }

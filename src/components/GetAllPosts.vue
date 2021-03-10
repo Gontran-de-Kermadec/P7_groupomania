@@ -29,19 +29,19 @@ export default {
         ...mapState(['allPosts'])
     },
     methods: {
-        getAllPost() {
-            console.log(this.$userInfo);
-            axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
-            .then((res) => {
-                console.log(res.data[0].postContent);
-                this.posts = res.data;
-            })
-            .catch((error) => console.log(error));
-        },
+        // getAllPost() {
+        //     console.log(this.$userInfo);
+        //     axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
+        //     .then((res) => {
+        //         console.log(res.data[0].postContent);
+        //         this.posts = res.data;
+        //     })
+        //     .catch((error) => console.log(error));
+        // },
         getAllPosts(){
             //this.$store.commit('GET_ALL_POSTS');
             this.$store.dispatch('getAllPosts');
-            console.log(this.$route);
+            //console.log();
         }
     },
     mounted() {

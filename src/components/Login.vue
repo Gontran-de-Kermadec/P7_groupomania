@@ -22,6 +22,15 @@ export default {
         }
     },
     methods: {
+        isLogged() {
+            if(localStorage.getItem('userInfo') !== null) {
+                //window.location = "http://localhost:8080/home"
+                this.$router.push('/home')
+            } 
+            //else {
+            //     state.loggedIn = false;
+            // }
+        },
         postLogin() {
             let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
             if(regexEmail.test(this.email)) {
@@ -52,18 +61,15 @@ export default {
             } else {
                 console.log('probleme mot de passe ou mail');
             }
-
         }
+    },
+    mounted() {
+      this.isLogged();
     }
 }
 </script>
 
 <style scoped lang='scss'>
-    // * {
-    //     padding: 0;
-    //     margin: 0;
-    //     box-sizing: border-box;
-    // }
     h1 {
         margin-bottom: 30px;
     }

@@ -54,24 +54,33 @@ export default {
     .logout {
         position: absolute;
         right: 0;
-        top: 0;
+        top: 5px;
         color: #FD2D01;
+        font-weight: bolder;
         @media (min-width: 768px) {
-            top: 50%;
+            top: 40%;
             transform: translateY(-50%);
+            right: 15px;
         }
     }
     .home {
         position: absolute;
         left: 0;
-        top: 10px;
+        top: 15px;
         transform: translateY(-50%);
         @media (min-width: 768px) {
-            top: 50%;
+            left: 50px;
+            top: 40%;
             transform: translateY(-50%);
         }
         a {
             color: #FD2D01;
+            font-size: 1.3rem;
+            margin: 5px;
+            @media (min-width: 768px) {
+                font-size: 2rem;
+                margin: 20px;
+            }
         }
         // i {
         //     color: #FD2D01;
