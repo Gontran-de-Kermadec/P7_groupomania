@@ -18,7 +18,7 @@
           <p>{{ post.postDate }}</p>
           <p>{{ post.postContent }}</p>
           <p>{{ post.id }}</p>
-          <button @click="deletePost">Supprimer post</button>
+          <!-- <button @click="deletePost">Supprimer post</button> -->
           </router-link>
           <!-- <router-link :to="{name: 'Post', params: {id: post.id}}">Voir ce post</router-link> -->
         </div>
@@ -122,16 +122,22 @@ export default {
 
 <style scoped lang='scss'>
   .data_container {
-    display: flex;
-    justify-content: center;
+    @media (min-width: 768px) {
+      display: flex;
+      justify-content: center; 
+    }
     .data_account {
       p {
         text-transform: capitalize;
+      }
+      @media (min-width: 768px) {
+        border-right: solid #FD2D01;
       }
     }
     .onePost {
       border: solid;
       margin: 5px;
+      word-break: break-all;
     }
   }
   .alert_container{
