@@ -13,6 +13,10 @@
             <div class="post_body">
               <p class="postContent">{{ post.postContent }}</p>
             </div>
+            <div class="post_like">
+              <i class="far fa-thumbs-up"></i><span>0</span>
+              <i class="far fa-thumbs-down"></i><span>0</span>
+            </div>
             </router-link>
         </div>
       </div>
@@ -102,12 +106,25 @@ export default {
       margin: 10px;
       padding: 5px;
       box-shadow: 1px 0px 10px 4px lightgray;
+      @media (min-width: 768px) {
+        width: 60vw;
+      }
       .post_header {
         border-bottom: solid 2px #FFD7D7;
         .post_name {
           text-transform: capitalize;
           color: #FD2D01;
           font-weight: bolder;
+        }
+      }
+      .post_body {
+        padding: 20px 0;
+      }
+      .post_like {
+        text-align: right;
+         .fa-thumbs-up, .fa-thumbs-down {
+          color: #FD2D01;
+          margin: 0 1px 0 10px;
         }
       }
       .postContent {

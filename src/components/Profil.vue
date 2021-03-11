@@ -12,15 +12,22 @@
         </div> -->
       </div>
       <div class="data_post">
-        <p>Vos publications</p>
-        <div v-for="post in posts" :key="post.id" class="onePost">
-          <router-link :to="{name: 'Post', params: {id: post.id}}">
-          <p>{{ post.postDate }}</p>
-          <p>{{ post.postContent }}</p>
-          <p>{{ post.id }}</p>
+        <div class="container">
+          <SendPost />
+          <p class="title">Vos publications</p>
+          <div v-for="post in posts" :key="post.id" class="onePost">
+            <router-link :to="{name: 'Post', params: {id: post.id}}">
+              <div class="post_header">
+                <p>Publié le {{ post.postDate }}</p>
+              </div>
+              <div class="post_body">
+                <p class="postContent">{{ post.postContent }}</p>
+              </div>
+              <!-- <p>{{ post.id }}</p> -->
           <!-- <button @click="deletePost">Supprimer post</button> -->
-          </router-link>
+            </router-link>
           <!-- <router-link :to="{name: 'Post', params: {id: post.id}}">Voir ce post</router-link> -->
+          </div>
         </div>
       </div>
     </div>
@@ -29,13 +36,16 @@
 
 <script>
 import Header from './Header'
+//import SendPost from './SendPost'
 //import Post from './Post'
 import { mapGetters } from 'vuex'
+import SendPost from './SendPost.vue';
 const axios = require('axios');
 export default {
     name: 'Profil',
     components: {
-      Header
+      Header,
+      SendPost
     },
     data() {
       return {
@@ -122,28 +132,71 @@ export default {
 
 <style scoped lang='scss'>
   .data_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
     @media (min-width: 768px) {
-      display: flex;
-      justify-content: center; 
+      flex-direction: row;
+      justify-content: left;
     }
-    .data_account {
-      p {
+  }
+  .data_account {
+    @media (max-width: 768px) {
+      margin: 0 0 30px 0;
+    }
+    @media (min-width: 768px) {
+      border-right: solid #FD2D01;
+      width: 20%;
+      //flex-shrink: 2;
+    }
+    p {
+      text-transform: capitalize;
+    }
+  }
+  .data_post {
+    display: flex;
+    justify-content: center;
+    @media (min-width: 768px) {
+      //border-right: solid #FD2D01;
+      width: 80%;
+      //flex-shrink: 2;
+    }
+    .title {
+      font-size: 2rem;
+      margin: 15px 0;
+    }
+  }
+  // .onePost {
+  //   border: solid;
+  //   margin: 5px;
+  // }
+  .onePost {
+    width: 90vw;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+    box-shadow: 1px 0px 10px 4px lightgray;
+    word-break: break-all;
+    @media (min-width: 768px) {
+      width: 50vw;
+    }
+    .post_header {
+      border-bottom: solid 2px #FFD7D7;
+      .post_name {
         text-transform: capitalize;
-      }
-      @media (min-width: 768px) {
-        border-right: solid #FD2D01;
+        color: #FD2D01;
+        font-weight: bolder;
       }
     }
-    .onePost {
-      border: solid;
-      margin: 5px;
-      word-break: break-all;
+    .postContent {
+      font-size: 1.2rem;
+      word-break: break-word;
     }
   }
-  .alert_container{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-  }
+  // .alert_container{
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 50%;
+  // }
 </style>
 

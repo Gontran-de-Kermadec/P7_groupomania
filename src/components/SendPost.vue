@@ -80,7 +80,7 @@ export default {
     border: solid 1px;
     padding: 10px;
     @media (min-width: 768px) {
-      width: 50vw;
+      width: 40vw;
     }
   }
   .modal_container {

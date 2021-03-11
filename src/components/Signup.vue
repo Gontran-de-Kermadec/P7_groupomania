@@ -11,7 +11,7 @@
         <input type="password" name="password" id="password" v-model="password" required/><br>
         <button type="submit" class="btn">S'incrire</button>
       </form>
-      <p>{{ name }}, {{ email }},  {{ password }}</p>
+      <!-- <p>{{ name }}, {{ email }},  {{ password }}</p> -->
       <div class="loginBtn">
         <p>Si vous avez déjà un compte</p>
         <router-link to="/">Login</router-link>
