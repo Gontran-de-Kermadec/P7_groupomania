@@ -10,9 +10,19 @@
         <div class="post_body">
           <p class="postContent">{{ post.postContent }}</p>
           <a :href="post.postUrl">{{post.postUrl}}</a><br>
-          <button v-if="userId === post.userId">Modifier</button>
-          <button @click="deletePost">Supprimer</button>
+          <button v-if="userId === post.userId || admin === 1">Modifier</button>
+          <!-- <button v-if="admin === 0">Changer</button> -->
+          <!-- <button @click="deletePost" v-if="userId === post.userId || admin === 1">Supprimer</button> -->
+          <button v-if="userId === post.userId || admin === 1" class="btn" @click="toggleModal">Supprimer</button>
         </div>
+      </div>
+    </div>
+    <div class="modal_container" v-if="isModalOn">
+      <div class="overlay" @click="toggleModal"></div>
+      <div class="modal_card">
+        <p>Confirmer la suppression ?</p>
+        <button @click="deletePost">Oui</button>
+        <button @click="toggleModal">Non</button>
       </div>
     </div>
     <Comment :post-id='id' />
@@ -39,8 +49,10 @@ export default {
       return {
         name: this.$userInfo.name,
         userId: this.$userInfo.userId,
+        admin: this.$userInfo.admin,
         posts: [],
-        id: parseInt(this.$route.params.id)
+        id: parseInt(this.$route.params.id),
+        isModalOn: false
       }
     },
     // computed: {
@@ -66,7 +78,8 @@ export default {
           headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
           })
           .then((resp) => {
-            console.log(resp)
+            console.log(resp);
+            this.$router.push('/home')
           })
           .catch((error) => console.log(error));
       },
@@ -90,6 +103,9 @@ export default {
         } else {
           return `il y a ${hoursDiff}h`
         }
+      },
+      toggleModal() {
+        this.isModalOn = !this.isModalOn
       }
     },
     mounted() {
@@ -121,5 +137,50 @@ export default {
     font-size: 1.2rem;
     word-break: break-word;
   }
-} 
+}
+.modal_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay {
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  .modal_card {
+    position: fixed;
+    background: #fff;
+    width: 500px;
+    //height: 200px;
+    height: auto;
+    padding: 10px;
+    animation: fadein 0.5s forwards;
+    transform: translateY(-50%);
+    span {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: #FD2D01;
+      padding: 5px;
+    }
+  }
+  @keyframes fadein {
+    0% {
+      opacity: 0;
+      top: 45%;
+    }
+    100% {
+      opacity: 1;
+      top: 50%;
+    }
+  }
 </style>

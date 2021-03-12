@@ -37,7 +37,7 @@ exports.getAllPosts = (req, res, next) => {
     dbConnect.query(`SELECT * FROM post ORDER BY postDate DESC`, function(err, result) {
         if(err) throw err;
         if(result) {
-            console.log(result);
+            //console.log(result);
             res.status(200).json(result);
             //res.end('Voilà la réponse du serveur !');
         }

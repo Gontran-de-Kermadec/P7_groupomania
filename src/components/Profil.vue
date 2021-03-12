@@ -18,10 +18,14 @@
           <div v-for="post in posts" :key="post.id" class="onePost">
             <router-link :to="{name: 'Post', params: {id: post.id}}">
               <div class="post_header">
-                <p>Publié le {{ post.postDate }}</p>
+                <p>Publié {{ timePast(post.postDate) }},le {{ dateFormat(post.postDate) }}</p>
               </div>
               <div class="post_body">
                 <p class="postContent">{{ post.postContent }}</p>
+              </div>
+              <div class="post_like">
+                <i class="far fa-thumbs-up"></i><span>0</span>
+                <i class="far fa-thumbs-down"></i><span>0</span>
               </div>
               <!-- <p>{{ post.id }}</p> -->
           <!-- <button @click="deletePost">Supprimer post</button> -->
@@ -122,7 +126,34 @@ export default {
                 localStorage.setItem('postInfo', JSON.stringify(res.data))
             })
             .catch((error) => console.log(error));
+      },
+      dateFormat(date) {
+      const event = new Date(date);
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+      return event.toLocaleDateString('fr-FR', options);
+    },
+    timePast(date) {
+      const pastDate = new Date(date);
+      //let pastDateForm = Date.parse(pastDate.toLocaleDateString('fr-FR'));
+      const currentDate = new Date();
+      //let currentDateForm = Date.parse(currentDate.toLocaleDateString('fr-FR'));
+      let diff = currentDate - pastDate;
+      let daysDiff = diff / (1000 * 3600 * 24);
+      let hoursDiff = diff / (1000 * 3600);
+      let floorHours = Math.floor(hoursDiff);
+      let floorDays = Math.floor(daysDiff);
+      // console.log(daysDiff);
+      // console.log(hoursDiff);
+      // //console.log(pastDateForm);
+      // //console.log(currentDateForm);
+      // console.log(currentDateForm - pastDateForm);
+      // console.log(currentDate - pastDate);
+      if(hoursDiff > 24) {
+        return `il y a ${floorDays}j`
+      } else {
+        return `il y a ${floorHours}h`;
       }
+    }
     },
     mounted() {
       this.getMyPosts();
@@ -151,6 +182,15 @@ export default {
     }
     p {
       text-transform: capitalize;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    button {
+      all: unset;
+      border: solid 1px;
+      background-color: #FD2D01;
+      padding: 10px;
+      cursor: pointer;
     }
   }
   .data_post {
@@ -188,9 +228,19 @@ export default {
         font-weight: bolder;
       }
     }
+    .post_body {
+        padding: 20px 0;
+    }
     .postContent {
       font-size: 1.2rem;
       word-break: break-word;
+    }
+    .post_like {
+      text-align: right;
+      .fa-thumbs-up, .fa-thumbs-down {
+        color: #FD2D01;
+        margin: 0 1px 0 10px;
+      }
     }
   }
   // .alert_container{

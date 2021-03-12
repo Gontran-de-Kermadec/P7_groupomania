@@ -78,6 +78,7 @@ exports.login = (req, res, next) => {
                 res.status(200).json({ 
                     userId: result[0].id,
                     name: result[0].name,
+                    admin: result[0].admin,
                     token: jwt.sign(
                         {userId: result[0].id}, 
                         RANDOM_TOKEN_SECRET,
@@ -87,6 +88,7 @@ exports.login = (req, res, next) => {
             })
             .catch(error => res.status(500).json({ error }));
         } else {
+            //console.log(result);
             console.log('email incorrect');
             res.status(404).json({message: 'utiisateur inconnu !'})
         }

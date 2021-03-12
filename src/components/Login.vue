@@ -6,6 +6,7 @@
         <input type="email" name="email" id="email" v-model="email" required/><br>
         <label for="password">Mot de passe</label><br>
         <input type="password" name="password" id="password" v-model="password" required/><br>
+        <p class="unknown">{{ incorrect }}</p>
         <button type="submit" class="btn">Se connecter</button>
     </form>
   </div>
@@ -18,7 +19,8 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            incorrect: ''
         }
     },
     methods: {
@@ -55,9 +57,15 @@ export default {
                         localStorage.setItem('userInfo', JSON.stringify(resp.data));
                         window.location = "http://localhost:8080/home"
                         //this.$router.push('/home')
-                }
+                    } else if (resp.status === 404) {
+                        alert('email ou mot de passe incorrect')
+                    }
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => {
+                    console.log(error);
+                    //alert('email incorrect');
+                    this.incorrect = 'Email inconnu ou mot de passe incorrect';
+                });
             } else {
                 console.log('probleme mot de passe ou mail');
             }
@@ -75,6 +83,10 @@ export default {
     }
     input {
         font-size: large;
+    }
+    .unknown {
+        color: #FD2D01;
+        margin-bottom: 10px;
     }
     .btn {
         background: #FD2D01;
