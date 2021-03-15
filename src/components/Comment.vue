@@ -2,17 +2,19 @@
   <div>
       <button @click="toggleModal" class="create_btn">Laisser un commentaire</button>
       <!-- <p>{{postId}}</p> -->
+    <transition name="flipinX">
       <div class="modal_container" v-if="isModalOn">
-        <div class="overlay" @click="toggleModal"></div>
-        <div class="modal_card">
-          <span @click="toggleModal">X</span>
-          <p>Votre commentaire</p>
-          <form action="" method="post" @submit.prevent = sendComment()>
-            <textarea type="text" name="post" id="post" placeholder="Commentez..." v-model="post"></textarea><br>
-            <button type="submit">Commenter</button>
-          </form>
-        </div>
+        <!-- <div class="overlay" @click="toggleModal"></div> -->
+          <div class="modal_card">
+            <span @click="toggleModal">X</span>
+            <p>Votre commentaire</p>
+            <form action="" method="post" @submit.prevent = sendComment()>
+              <textarea type="text" name="post" id="post" placeholder="Commentez..." v-model="post"></textarea><br>
+              <button type="submit">Commenter</button>
+            </form>
+          </div>
       </div>
+    </transition>  
       <!-- <textarea type="text" name="comment" id="comment" v-model="post"></textarea>
       <button @click="sendComment">Commenter</button> -->
     <!-- <div class="comment_container">
@@ -138,6 +140,12 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+  .flipinX-enter-active {
+    animation: flipin .5s;
+  }
+  .flipinX-leave-active {
+    animation: flipout .5s;
+  }
  .modal_container {
     position: fixed;
     top: 0;
@@ -161,26 +169,44 @@ export default {
     position: fixed;
     background: #fff;
     width: 500px;
+    border: solid;
     //height: 400px;
     height: auto;
-    padding: 10px;
-  //   span {
-  //     position: absolute;
-  //     right: 5px;
-  //     top: 5px;
-  //     //border: solid ;
-  //     background: #FD2D01;
-  //     padding: 5px;
-  //   }
-  //   textarea, input {
-  //     width: 300px;
-  //   }
-  //   textarea {
-  //     height: 100px;
-  //   }
-  //   input {
-  //     height: 40px;
-  //   }
+    padding: 20px 0;
+    @media (max-width: 768px) {
+      width: 100vw;
+      border: solid 1px;
+    }
+    span {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      border-radius: 5px;
+      background: #FD2D01;
+      padding: 7px;
+      cursor: pointer;
+    }
+    p {
+      font-weight: bolder;
+      font-size: 1.5rem;
+    }
+    textarea {
+      all: unset;
+      //border: solid;
+      text-align: left;
+      word-break: break-all;
+      margin: 20px 0;
+      border-bottom: solid 2px #FFD7D7;
+      border-top: solid 2px #FFD7D7;
+      width: 100%;
+      height: 100px;
+    }
+    button {
+      all: unset;
+      background: #FD2D01;
+      padding: 10px 15px;
+      font-size: 1.3rem;
+    }
   }
   .create_btn {
     width: 90vw;
@@ -254,5 +280,36 @@ export default {
       margin-top: 5px;
     }
   }
-  
+  @keyframes flipin {
+    0% {
+      transform: perspective(400px) rotateX(90deg); 
+      opacity: 0;
+    }
+    // 40% {
+    //   transform: perspective(400px) rotateX(-10deg);
+    // }
+    // 70% {
+    //   transform: perspective(400px) rotateX(10deg);
+    // }
+    100% {
+      transform: perspective(400px) rotateX(0deg);
+      opacity: 1;
+    }
+  }
+   @keyframes flipout {
+    0% {
+      transform: perspective(400px) rotateX(0deg); 
+      opacity: 1;
+    }
+    // 40% {
+    //   transform: perspective(400px) rotateX(-10deg);
+    // }
+    // 70% {
+    //   transform: perspective(400px) rotateX(10deg);
+    // }
+    100% {
+      transform: perspective(400px) rotateX(90deg);
+      opacity: 0;
+    }
+  }
 </style>

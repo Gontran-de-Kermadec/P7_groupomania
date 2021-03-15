@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<style>
+<style lang='scss'>
 * {
   padding: 0;
   margin: 0;
@@ -18,6 +18,7 @@ a {
   text-decoration: none;
   color: #000;
 }
+$title-color: #FD2D01; 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

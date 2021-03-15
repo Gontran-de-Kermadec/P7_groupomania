@@ -15,6 +15,10 @@
           <!-- <button @click="deletePost" v-if="userId === post.userId || admin === 1">Supprimer</button> -->
           <button v-if="userId === post.userId || admin === 1" class="btn" @click="toggleModal">Supprimer</button>
         </div>
+        <div class="post_like">
+              <span><i class="far fa-thumbs-up"></i><span>0</span></span>
+              <i class="far fa-thumbs-down"></i><span>0</span>
+            </div>
       </div>
     </div>
     <div class="modal_container" v-if="isModalOn">
@@ -83,6 +87,21 @@ export default {
           })
           .catch((error) => console.log(error));
       },
+      // likePost() {
+      //   // alert('clique');
+      //   // console.log('quoi');
+      //   axios.post(`http://localhost:3000/post/${this.id}/like`, 
+      //   {
+      //     data: {userLiked: this.userId}
+      //   }, 
+      //   {
+      //     headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+      //   })
+      //   .then((resp) => {
+      //     console.log(resp);
+      //   })
+      //   .catch((error) => console.log(error));
+      // },
       dateFormat(date) {
       const event = new Date(date);
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -165,12 +184,19 @@ export default {
     padding: 10px;
     animation: fadein 0.5s forwards;
     transform: translateY(-50%);
-    span {
-      position: absolute;
-      right: 5px;
-      top: 5px;
-      background: #FD2D01;
-      padding: 5px;
+    // span {
+    //   position: absolute;
+    //   right: 5px;
+    //   top: 5px;
+    //   background: #FD2D01;
+    //   padding: 5px;
+    // }
+  }
+  .post_like {
+    text-align: right;
+    .fa-thumbs-up, .fa-thumbs-down {
+      color: #FD2D01;
+      margin: 0 1px 0 10px;
     }
   }
   @keyframes fadein {
