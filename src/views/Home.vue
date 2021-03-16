@@ -14,7 +14,7 @@
               <p class="postContent">{{ post.postContent }}</p>
             </div>
             <div class="post_like">
-              <i class="far fa-thumbs-up"></i><span>0</span>
+              <i class="far fa-thumbs-up"></i><span>{{post.likes}}</span>
               <i class="far fa-thumbs-down"></i><span>0</span>
             </div>
             </router-link>
@@ -62,20 +62,20 @@ export default {
     },
     timePast(date) {
       const pastDate = new Date(date);
-      let pastDateForm = Date.parse(pastDate.toLocaleDateString('fr-FR'));
+      //let pastDateForm = Date.parse(pastDate.toLocaleDateString('fr-FR'));
       const currentDate = new Date();
-      let currentDateForm = Date.parse(currentDate.toLocaleDateString('fr-FR'));
+      //let currentDateForm = Date.parse(currentDate.toLocaleDateString('fr-FR'));
       let diff = currentDate - pastDate;
       let daysDiff = diff / (1000 * 3600 * 24);
       let hoursDiff = diff / (1000 * 3600);
       let floorHours = Math.floor(hoursDiff);
       let floorDays = Math.floor(daysDiff);
-      console.log(daysDiff);
-      console.log(hoursDiff);
+      // console.log(daysDiff);
+      // console.log(hoursDiff);
       //console.log(pastDateForm);
       //console.log(currentDateForm);
-      console.log(currentDateForm - pastDateForm);
-      console.log(currentDate - pastDate);
+      // console.log(currentDateForm - pastDateForm);
+      // console.log(currentDate - pastDate);
       if(hoursDiff > 24) {
         return `il y a ${floorDays}j`
       } else {

@@ -16,7 +16,7 @@
           <button v-if="userId === post.userId || admin === 1" class="btn" @click="toggleModal">Supprimer</button>
         </div>
         <div class="post_like">
-              <span><i class="far fa-thumbs-up"></i><span>0</span></span>
+              <span @click="likePost"><i class="far fa-thumbs-up"></i><span>{{post.likes}}</span></span>
               <i class="far fa-thumbs-down"></i><span>0</span>
             </div>
       </div>
@@ -36,13 +36,13 @@
 <script>
 import Header from './Header.vue'
 import Comment from './Comment.vue'
-//import { mapGetters } from 'vuex';
+import { mapState } from 'vuex'
 const axios = require('axios');
 // let postId = $route.params.id;
 //console.log($route.params.id);
 //let userInfo = JSON.parse(localStorage.getItem('userInfo'));
 //console.log(getToken.token);
-//let getId = getToken.userId;
+//let getId = getToken.userId
 export default {
     name: 'Post',
     components: {
@@ -56,17 +56,17 @@ export default {
         admin: this.$userInfo.admin,
         posts: [],
         id: parseInt(this.$route.params.id),
-        isModalOn: false
+        isModalOn: false,
+        //liked: false
       }
     },
-    // computed: {
-    //   ...mapGetters(['dateFormat'])
-    // },
+    computed: {
+        ...mapState(['liked'])
+    },
     methods: {
       getMyPost() {
-      // let uri = window.location.search.substring(1);
-      // let params = new URLSearchParams(uri);
-      // console.log(params.get(":id"));
+        let stringy = JSON.stringify({like:this.liked, user:this.userId});
+        console.log(stringy);
       axios.get(`http://localhost:3000/post/${this.id}`, { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
           .then((res) => {
               console.log(res.data);
@@ -87,12 +87,22 @@ export default {
           })
           .catch((error) => console.log(error));
       },
+      // checkLike() {
+      //   this.$store.commit('CHECK_LIKE');
+      // },
       // likePost() {
-      //   // alert('clique');
-      //   // console.log('quoi');
+      //   if(this.liked) {
+      //     localStorage.removeItem('like');
+      //   } else {
+      //     let stringy = JSON.stringify({like:!this.liked, user:this.userId})
+      //     //localStorage.setItem('like', JSON.stringify(stringy))
+      //     localStorage.setItem('like', stringy)
+      //   }
       //   axios.post(`http://localhost:3000/post/${this.id}/like`, 
       //   {
-      //     data: {userLiked: this.userId}
+      //     userLiked: this.userId,
+      //     like: !this.liked
+      //     //data: {userLiked: this.userId}
       //   }, 
       //   {
       //     headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
@@ -101,7 +111,26 @@ export default {
       //     console.log(resp);
       //   })
       //   .catch((error) => console.log(error));
+      //   //let thumbsup = document.querySelector('.fa-thumbs-up');
+      //   // if(localStorage.getItem('like') !== null) {
+      //   //   this.liked = false;
+      //   //   localStorage.removeItem('like');
+      //   //   thumbsup.classList.remove('active')
+      //   // } else {
+      //   //   this.liked = true;
+      //   //   localStorage.setItem('like', 'true');
+      //   //   thumbsup.classList.add('active')
+      //   // }
+      //   console.log(this.liked);
       // },
+      // isLiked() {
+      //   let thumbsup = document.querySelector('.fa-thumbs-up');
+      //   if(localStorage.getItem('like') !== null) {
+      //     thumbsup.classList.add('active')
+      //   } else {
+      //     thumbsup.classList.remove('active')
+      //   }
+      //},
       dateFormat(date) {
       const event = new Date(date);
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -125,10 +154,16 @@ export default {
       },
       toggleModal() {
         this.isModalOn = !this.isModalOn
+      },
+      clickedValue() {
+        console.log(this.clicked);
+        this.clicked = 1;
+        return this.clicked
       }
     },
     mounted() {
       this.getMyPost();
+      //this.checkLike();
     }
 }
 </script>
@@ -197,6 +232,9 @@ export default {
     .fa-thumbs-up, .fa-thumbs-down {
       color: #FD2D01;
       margin: 0 1px 0 10px;
+    }
+    .active {
+      background: blue;
     }
   }
   @keyframes fadein {

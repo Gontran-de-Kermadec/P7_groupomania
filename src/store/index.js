@@ -12,7 +12,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loggedIn: false,
-    allPosts: []
+    allPosts: [],
+    //liked: false
   },
   getters: {
     findUserIdPost(state) {
@@ -26,11 +27,6 @@ export default new Vuex.Store({
       }
       return teston
     },
-    // dateFormat(date) {
-    //   const event = new Date(date);
-    //   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-    //   return event.toLocaleDateString('fr-FR', options);
-    // }
   },
   mutations: {
     CHANGE_LOG(state) {
@@ -41,6 +37,35 @@ export default new Vuex.Store({
       }
       //console.log(state.loggedIn);
     },
+    // CHECK_LIKE(state) {
+    //   console.log(state.liked);
+    //   let userLiked = (JSON.parse(localStorage.getItem('like')));
+    //   if(localStorage.getItem('like') === null) {
+    //     state.liked = false;
+    //     //localStorage.setItem('like', JSON.stringify(this.liked)); 
+    //   } else if(userLiked.user !== userInfo.userId) {
+    //     state.liked = false;
+    //   } else {
+    //     state.liked = true;
+    //   }
+    //   // console.log(state.liked);
+    //   // state.liked = !state.liked;
+      
+    //   // console.log(item.user);
+    //   // console.log(JSON.parse(localStorage.getItem('like')));
+    //   // console.log(state.liked);
+    //   // }
+    //   //let thumbsup = document.querySelector('.fa-thumbs-up');
+    //   // if(localStorage.getItem('like') !== null) {
+    //   //   console.log(state.liked); 
+    //   //   state.liked = false;
+    //   //   localStorage.removeItem('like');     
+    //   // } else {
+    //   //   console.log(state.liked);
+    //   //   state.liked = true;
+    //   //   localStorage.setItem('like', 'true'); 
+    //   // }
+    // },
     GET_ALL_POSTS(state, data) {
       state.allPosts = data;
       // console.log(state.allPosts);

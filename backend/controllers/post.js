@@ -119,3 +119,18 @@ exports.deleteOnePost = (req, res, next) => {
 //         }
 //     })
 // }
+exports.likePost = (req, res, next) => {
+    console.log(req.body.like);
+    if(req.body.like === true) {
+        dbConnect.query(`UPDATE post SET likes=likes + 1 WHERE id=${req.params.id}`, (err, result) => {
+            if(err) throw err;
+            console.log(result);
+        })
+    } else if (req.body.like === false) {
+        dbConnect.query(`UPDATE post SET likes=likes - 1 WHERE id=${req.params.id}`, (err, result) => {
+            if(err) throw err;
+            console.log(result);
+        })
+    }
+
+}

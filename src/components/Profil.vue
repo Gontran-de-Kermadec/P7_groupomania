@@ -24,7 +24,7 @@
                 <p class="postContent">{{ post.postContent }}</p>
               </div>
               <div class="post_like">
-                <i class="far fa-thumbs-up"></i><span>0</span>
+                <i class="far fa-thumbs-up"></i><span>{{post.likes}}</span>
                 <i class="far fa-thumbs-down"></i><span>0</span>
               </div>
               <!-- <p>{{ post.id }}</p> -->
