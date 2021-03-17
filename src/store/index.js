@@ -13,7 +13,7 @@ export default new Vuex.Store({
   state: {
     loggedIn: false,
     allPosts: [],
-    //liked: false
+    liked: 'false'
   },
   getters: {
     findUserIdPost(state) {

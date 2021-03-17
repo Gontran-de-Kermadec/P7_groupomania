@@ -4,6 +4,7 @@ import Connection from '../views/Connection.vue'
 import Signup from '../components/Signup.vue'
 import Profil from '../components/Profil.vue'
 import Post from '../components/Post.vue'
+import Vote from '../components/Vote.vue'
 //import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -36,6 +37,11 @@ const routes = [
     path: '/post/:id',
     name: 'Post',
     component: Post
+  },
+  {
+    path: '/vote',
+    name: 'Vote',
+    component: Vote
   }
 ]
 

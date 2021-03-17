@@ -16,9 +16,9 @@
           <button v-if="userId === post.userId || admin === 1" class="btn" @click="toggleModal">Supprimer</button>
         </div>
         <div class="post_like">
-              <span @click="likePost"><i class="far fa-thumbs-up"></i><span>{{post.likes}}</span></span>
-              <i class="far fa-thumbs-down"></i><span>0</span>
-            </div>
+          <span @click="likePost()" id="liked" :class="isliked"><i class="far fa-thumbs-up"></i><span>{{post.likes}}</span></span>
+          <i class="far fa-thumbs-down"></i><span>0</span>
+        </div>
       </div>
     </div>
     <div class="modal_container" v-if="isModalOn">
@@ -57,7 +57,8 @@ export default {
         posts: [],
         id: parseInt(this.$route.params.id),
         isModalOn: false,
-        //liked: false
+        isliked: 'false',
+        //nbr: 2
       }
     },
     computed: {
@@ -87,50 +88,100 @@ export default {
           })
           .catch((error) => console.log(error));
       },
-      // checkLike() {
-      //   this.$store.commit('CHECK_LIKE');
+      // modifyLikeValue(value) {
+      //   console.log(value + 'voila');
+      //   this.nbr = value + 1;
+      //   //return value ++;
+      //   // let liked = document.querySelector('#liked');
+      //   // if(liked.classList.contains('false')) {
+      //   //   console.log(value + 1);
+      //   //  return value + 1;
+      //   // } else if (liked.classList.contains('true')) {
+      //   //   console.log(value - 1);
+      //   //  return value - 1;
+      //   //}
       // },
-      // likePost() {
-      //   if(this.liked) {
-      //     localStorage.removeItem('like');
-      //   } else {
-      //     let stringy = JSON.stringify({like:!this.liked, user:this.userId})
-      //     //localStorage.setItem('like', JSON.stringify(stringy))
-      //     localStorage.setItem('like', stringy)
-      //   }
-      //   axios.post(`http://localhost:3000/post/${this.id}/like`, 
-      //   {
-      //     userLiked: this.userId,
-      //     like: !this.liked
-      //     //data: {userLiked: this.userId}
-      //   }, 
-      //   {
-      //     headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
-      //   })
-      //   .then((resp) => {
-      //     console.log(resp);
-      //   })
-      //   .catch((error) => console.log(error));
-      //   //let thumbsup = document.querySelector('.fa-thumbs-up');
-      //   // if(localStorage.getItem('like') !== null) {
-      //   //   this.liked = false;
-      //   //   localStorage.removeItem('like');
-      //   //   thumbsup.classList.remove('active')
-      //   // } else {
-      //   //   this.liked = true;
-      //   //   localStorage.setItem('like', 'true');
-      //   //   thumbsup.classList.add('active')
-      //   // }
-      //   console.log(this.liked);
-      // },
-      // isLiked() {
-      //   let thumbsup = document.querySelector('.fa-thumbs-up');
-      //   if(localStorage.getItem('like') !== null) {
-      //     thumbsup.classList.add('active')
-      //   } else {
-      //     thumbsup.classList.remove('active')
-      //   }
-      //},
+      likePost() {
+        let liked = document.querySelector('#liked');
+        console.log(liked.classList.contains('liked'));
+        if(liked.classList.contains('false')) {
+          this.isliked = 'true';
+          axios.post(`http://localhost:3000/post/${this.id}/like`, 
+          {
+            userLiked: this.userId,
+            like: this.isliked
+          }, 
+          {
+            headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+          })
+          .then((resp) => {
+            console.log(resp);
+            //console.log(resp.data[0].votes);
+            // if(resp.data[0].votes === 1) {
+            //   console.log('un like');
+            //   this.isliked = 'true'
+            // } else {
+            //   this.isliked = 'false'
+            // }
+          })
+          .catch((error) => console.log(error));
+        } else if(liked.classList.contains('true')) {
+          this.isliked = 'false';
+          axios.post(`http://localhost:3000/post/${this.id}/like`, 
+          {
+            userLiked: this.userId,
+            like: this.isliked
+          }, 
+          {
+            headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+          })
+          .then((resp) => {
+            console.log(resp);
+            //console.log(resp.votes);
+          })
+          .catch((error) => console.log(error));
+        }
+        //   thumbsup.classList.add('active')
+        // } else {
+        //   thumbsup.classList.remove('active')
+        // }
+        // axios.post(`http://localhost:3000/post/${this.id}/like`, 
+        // {
+        //   userLiked: this.userId,
+        //   like: !this.liked
+        //   //data: {userLiked: this.userId}
+        // }, 
+        // {
+        //   headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+        // })
+        // .then((resp) => {
+        //   console.log(resp);
+        // })
+        // .catch((error) => console.log(error));
+      },
+      getVote() {
+        axios.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`,
+        { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
+        .then((res) => {
+            console.log(res.data);
+            //console.log(res.data[0].votes);
+            if(res.data.length === 0) {
+              //console.log('result vide');
+              this.isliked = 'false';
+            }
+            else if(res.data[0].votes === 1) {
+              this.isliked = 'true';
+            } 
+            //this.posts = res.data;
+            //localStorage.setItem('postInfo', JSON.stringify(res.data))
+        })
+        .catch((error) => console.log(error));
+        // if(localStorage.getItem('like') !== null) {
+        //   thumbsup.classList.add('active')
+        // } else {
+        //   thumbsup.classList.remove('active')
+        // }
+      },
       dateFormat(date) {
       const event = new Date(date);
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -163,7 +214,7 @@ export default {
     },
     mounted() {
       this.getMyPost();
-      //this.checkLike();
+      this.getVote();
     }
 }
 </script>
@@ -233,7 +284,7 @@ export default {
       color: #FD2D01;
       margin: 0 1px 0 10px;
     }
-    .active {
+    .true {
       background: blue;
     }
   }
