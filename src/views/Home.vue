@@ -15,7 +15,7 @@
             </div>
             <div class="post_like">
               <i class="far fa-thumbs-up"></i><span>{{post.likes}}</span>
-              <i class="far fa-thumbs-down"></i><span>0</span>
+              <i class="far fa-thumbs-down"></i><span>{{post.dislikes}}</span>
             </div>
             </router-link>
         </div>
@@ -27,6 +27,7 @@
 <script>
 import Header from '../components/Header.vue'
 import SendPost from '../components/SendPost.vue'
+//import Vote from '../components/Vote.vue'
 //import GetAllPosts from '../components/GetAllPosts.vue'
 import { mapState } from 'vuex'
 //let getId = JSON.parse(localStorage.getItem('userInfo'));
@@ -35,6 +36,7 @@ export default {
   components: {
     Header,
     SendPost,
+    //Vote
     // GetAllPosts
   },
   data() {

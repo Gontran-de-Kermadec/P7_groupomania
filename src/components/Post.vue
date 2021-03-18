@@ -10,14 +10,15 @@
         <div class="post_body">
           <p class="postContent">{{ post.postContent }}</p>
           <a :href="post.postUrl">{{post.postUrl}}</a><br>
-          <button v-if="userId === post.userId || admin === 1">Modifier</button>
-          <!-- <button v-if="admin === 0">Changer</button> -->
+          <button class="cta" v-if="userId === post.userId || admin === 1">
+            <span>Modifier</span>
+          </button>
+          <button class="cta btn" v-if="userId === post.userId || admin === 1" @click="toggleModal">
+            <span>Supprimer</span>
+          </button>
+          <!-- <button v-if="userId === post.userId || admin === 1">Modifier</button> -->
           <!-- <button @click="deletePost" v-if="userId === post.userId || admin === 1">Supprimer</button> -->
-          <button v-if="userId === post.userId || admin === 1" class="btn" @click="toggleModal">Supprimer</button>
-        </div>
-        <div class="post_like">
-          <span @click="likePost()"><i class="far fa-thumbs-up"></i><span>{{post.likes}}</span></span>
-          <i class="far fa-thumbs-down"></i><span>0</span>
+          <!-- <button v-if="userId === post.userId || admin === 1" class="btn" @click="toggleModal">Supprimer</button> -->
         </div>
         <Vote :postId='id' />
       </div>
@@ -91,100 +92,6 @@ export default {
           })
           .catch((error) => console.log(error));
       },
-      // modifyLikeValue(value) {
-      //   console.log(value + 'voila');
-      //   this.nbr = value + 1;
-      //   //return value ++;
-      //   // let liked = document.querySelector('#liked');
-      //   // if(liked.classList.contains('false')) {
-      //   //   console.log(value + 1);
-      //   //  return value + 1;
-      //   // } else if (liked.classList.contains('true')) {
-      //   //   console.log(value - 1);
-      //   //  return value - 1;
-      //   //}
-      // },
-      // likePost() {
-      //   let liked = document.querySelector('#liked');
-      //   console.log(liked.classList.contains('liked'));
-      //   if(liked.classList.contains('false')) {
-      //     this.isliked = 'true';
-      //     axios.post(`http://localhost:3000/post/${this.id}/like`, 
-      //     {
-      //       userLiked: this.userId,
-      //       like: this.isliked
-      //     }, 
-      //     {
-      //       headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
-      //     })
-      //     .then((resp) => {
-      //       console.log(resp);
-      //       //console.log(resp.data[0].votes);
-      //       // if(resp.data[0].votes === 1) {
-      //       //   console.log('un like');
-      //       //   this.isliked = 'true'
-      //       // } else {
-      //       //   this.isliked = 'false'
-      //       // }
-      //     })
-      //     .catch((error) => console.log(error));
-      //   } else if(liked.classList.contains('true')) {
-      //     this.isliked = 'false';
-      //     axios.post(`http://localhost:3000/post/${this.id}/like`, 
-      //     {
-      //       userLiked: this.userId,
-      //       like: this.isliked
-      //     }, 
-      //     {
-      //       headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
-      //     })
-      //     .then((resp) => {
-      //       console.log(resp);
-      //       //console.log(resp.votes);
-      //     })
-      //     .catch((error) => console.log(error));
-      //   }
-      //   //   thumbsup.classList.add('active')
-      //   // } else {
-      //   //   thumbsup.classList.remove('active')
-      //   // }
-      //   // axios.post(`http://localhost:3000/post/${this.id}/like`, 
-      //   // {
-      //   //   userLiked: this.userId,
-      //   //   like: !this.liked
-      //   //   //data: {userLiked: this.userId}
-      //   // }, 
-      //   // {
-      //   //   headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
-      //   // })
-      //   // .then((resp) => {
-      //   //   console.log(resp);
-      //   // })
-      //   // .catch((error) => console.log(error));
-      // },
-      // getVote() {
-      //   axios.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`,
-      //   { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
-      //   .then((res) => {
-      //       console.log(res.data);
-      //       //console.log(res.data[0].votes);
-      //       if(res.data.length === 0) {
-      //         //console.log('result vide');
-      //         this.isliked = 'false';
-      //       }
-      //       else if(res.data[0].votes === 1) {
-      //         this.isliked = 'true';
-      //       } 
-      //       //this.posts = res.data;
-      //       //localStorage.setItem('postInfo', JSON.stringify(res.data))
-      //   })
-      //   .catch((error) => console.log(error));
-      //   // if(localStorage.getItem('like') !== null) {
-      //   //   thumbsup.classList.add('active')
-      //   // } else {
-      //   //   thumbsup.classList.remove('active')
-      //   // }
-      // },
       dateFormat(date) {
       const event = new Date(date);
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -209,20 +116,16 @@ export default {
       toggleModal() {
         this.isModalOn = !this.isModalOn
       },
-      // clickedValue() {
-      //   console.log(this.clicked);
-      //   this.clicked = 1;
-      //   return this.clicked
-      // }
     },
     mounted() {
       this.getMyPost();
-      //this.getVote();
     }
 }
 </script>
 
 <style scoped lang='scss'>
+$color: #111;
+$primary: #FD2D01;
 .flex_container {
   display: flex;
   justify-content: center;
@@ -273,23 +176,6 @@ export default {
     padding: 10px;
     animation: fadein 0.5s forwards;
     transform: translateY(-50%);
-    // span {
-    //   position: absolute;
-    //   right: 5px;
-    //   top: 5px;
-    //   background: #FD2D01;
-    //   padding: 5px;
-    // }
-  }
-  .post_like {
-    text-align: right;
-    .fa-thumbs-up, .fa-thumbs-down {
-      color: #FD2D01;
-      margin: 0 1px 0 10px;
-    }
-    .true {
-      background: blue;
-    }
   }
   @keyframes fadein {
     0% {
@@ -299,6 +185,42 @@ export default {
     100% {
       opacity: 1;
       top: 50%;
+    }
+  }
+  //test animation
+  .cta {
+    all: unset;
+    position: relative;
+    margin: 0 5px;
+    padding: 19px 22px;
+    transition: all .2s ease;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 0;
+      display: block;
+      border-radius: 28px;
+      background: rgba($primary,.5);
+      width: 40px;
+      height: 40px;
+      transition: all .3s ease;
+    }
+    span {
+      position: relative;
+      font-size: 16px;
+      font-weight: 900;
+      vertical-align: middle;
+    }
+    &:hover {
+      &:before {
+        width: 100%;
+        background: rgba($primary,1);
+        border: solid 1px;
+      }
+    }
+    &:active {
+      transform: scale(.96)
     }
   }
 </style>
