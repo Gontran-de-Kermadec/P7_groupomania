@@ -16,9 +16,10 @@
           <button v-if="userId === post.userId || admin === 1" class="btn" @click="toggleModal">Supprimer</button>
         </div>
         <div class="post_like">
-          <span @click="likePost()" id="liked" :class="isliked"><i class="far fa-thumbs-up"></i><span>{{post.likes}}</span></span>
+          <span @click="likePost()"><i class="far fa-thumbs-up"></i><span>{{post.likes}}</span></span>
           <i class="far fa-thumbs-down"></i><span>0</span>
         </div>
+        <Vote :postId='id' />
       </div>
     </div>
     <div class="modal_container" v-if="isModalOn">
@@ -36,6 +37,7 @@
 <script>
 import Header from './Header.vue'
 import Comment from './Comment.vue'
+import Vote from './Vote.vue'
 import { mapState } from 'vuex'
 const axios = require('axios');
 // let postId = $route.params.id;
@@ -47,7 +49,8 @@ export default {
     name: 'Post',
     components: {
       Header,
-      Comment
+      Comment,
+      Vote
     },
     data() {
       return {
@@ -101,87 +104,87 @@ export default {
       //   //  return value - 1;
       //   //}
       // },
-      likePost() {
-        let liked = document.querySelector('#liked');
-        console.log(liked.classList.contains('liked'));
-        if(liked.classList.contains('false')) {
-          this.isliked = 'true';
-          axios.post(`http://localhost:3000/post/${this.id}/like`, 
-          {
-            userLiked: this.userId,
-            like: this.isliked
-          }, 
-          {
-            headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
-          })
-          .then((resp) => {
-            console.log(resp);
-            //console.log(resp.data[0].votes);
-            // if(resp.data[0].votes === 1) {
-            //   console.log('un like');
-            //   this.isliked = 'true'
-            // } else {
-            //   this.isliked = 'false'
-            // }
-          })
-          .catch((error) => console.log(error));
-        } else if(liked.classList.contains('true')) {
-          this.isliked = 'false';
-          axios.post(`http://localhost:3000/post/${this.id}/like`, 
-          {
-            userLiked: this.userId,
-            like: this.isliked
-          }, 
-          {
-            headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
-          })
-          .then((resp) => {
-            console.log(resp);
-            //console.log(resp.votes);
-          })
-          .catch((error) => console.log(error));
-        }
-        //   thumbsup.classList.add('active')
-        // } else {
-        //   thumbsup.classList.remove('active')
-        // }
-        // axios.post(`http://localhost:3000/post/${this.id}/like`, 
-        // {
-        //   userLiked: this.userId,
-        //   like: !this.liked
-        //   //data: {userLiked: this.userId}
-        // }, 
-        // {
-        //   headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
-        // })
-        // .then((resp) => {
-        //   console.log(resp);
-        // })
-        // .catch((error) => console.log(error));
-      },
-      getVote() {
-        axios.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`,
-        { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
-        .then((res) => {
-            console.log(res.data);
-            //console.log(res.data[0].votes);
-            if(res.data.length === 0) {
-              //console.log('result vide');
-              this.isliked = 'false';
-            }
-            else if(res.data[0].votes === 1) {
-              this.isliked = 'true';
-            } 
-            //this.posts = res.data;
-            //localStorage.setItem('postInfo', JSON.stringify(res.data))
-        })
-        .catch((error) => console.log(error));
-        // if(localStorage.getItem('like') !== null) {
-        //   thumbsup.classList.add('active')
-        // } else {
-        //   thumbsup.classList.remove('active')
-        // }
-      },
+      // likePost() {
+      //   let liked = document.querySelector('#liked');
+      //   console.log(liked.classList.contains('liked'));
+      //   if(liked.classList.contains('false')) {
+      //     this.isliked = 'true';
+      //     axios.post(`http://localhost:3000/post/${this.id}/like`, 
+      //     {
+      //       userLiked: this.userId,
+      //       like: this.isliked
+      //     }, 
+      //     {
+      //       headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+      //     })
+      //     .then((resp) => {
+      //       console.log(resp);
+      //       //console.log(resp.data[0].votes);
+      //       // if(resp.data[0].votes === 1) {
+      //       //   console.log('un like');
+      //       //   this.isliked = 'true'
+      //       // } else {
+      //       //   this.isliked = 'false'
+      //       // }
+      //     })
+      //     .catch((error) => console.log(error));
+      //   } else if(liked.classList.contains('true')) {
+      //     this.isliked = 'false';
+      //     axios.post(`http://localhost:3000/post/${this.id}/like`, 
+      //     {
+      //       userLiked: this.userId,
+      //       like: this.isliked
+      //     }, 
+      //     {
+      //       headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+      //     })
+      //     .then((resp) => {
+      //       console.log(resp);
+      //       //console.log(resp.votes);
+      //     })
+      //     .catch((error) => console.log(error));
+      //   }
+      //   //   thumbsup.classList.add('active')
+      //   // } else {
+      //   //   thumbsup.classList.remove('active')
+      //   // }
+      //   // axios.post(`http://localhost:3000/post/${this.id}/like`, 
+      //   // {
+      //   //   userLiked: this.userId,
+      //   //   like: !this.liked
+      //   //   //data: {userLiked: this.userId}
+      //   // }, 
+      //   // {
+      //   //   headers: {'Authorization': `Bearer ${this.$userInfo.token}`}
+      //   // })
+      //   // .then((resp) => {
+      //   //   console.log(resp);
+      //   // })
+      //   // .catch((error) => console.log(error));
+      // },
+      // getVote() {
+      //   axios.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`,
+      //   { headers: {'Authorization': `Bearer ${this.$userInfo.token}`}})
+      //   .then((res) => {
+      //       console.log(res.data);
+      //       //console.log(res.data[0].votes);
+      //       if(res.data.length === 0) {
+      //         //console.log('result vide');
+      //         this.isliked = 'false';
+      //       }
+      //       else if(res.data[0].votes === 1) {
+      //         this.isliked = 'true';
+      //       } 
+      //       //this.posts = res.data;
+      //       //localStorage.setItem('postInfo', JSON.stringify(res.data))
+      //   })
+      //   .catch((error) => console.log(error));
+      //   // if(localStorage.getItem('like') !== null) {
+      //   //   thumbsup.classList.add('active')
+      //   // } else {
+      //   //   thumbsup.classList.remove('active')
+      //   // }
+      // },
       dateFormat(date) {
       const event = new Date(date);
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -206,15 +209,15 @@ export default {
       toggleModal() {
         this.isModalOn = !this.isModalOn
       },
-      clickedValue() {
-        console.log(this.clicked);
-        this.clicked = 1;
-        return this.clicked
-      }
+      // clickedValue() {
+      //   console.log(this.clicked);
+      //   this.clicked = 1;
+      //   return this.clicked
+      // }
     },
     mounted() {
       this.getMyPost();
-      this.getVote();
+      //this.getVote();
     }
 }
 </script>

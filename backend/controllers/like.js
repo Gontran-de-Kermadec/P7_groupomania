@@ -56,3 +56,16 @@ exports.getVote = (req, res, next) => {
         }
     });
 }
+//middleware qui récupère la quantité de like d'un post 
+exports.getVoteQty = (req,res,next) => {
+    dbConnect.query(`SELECT likes FROM post WHERE id=?`, req.params.id, (err, result) => {
+        if(err) throw err;
+        if(result) {
+            console.log(result[0].likes);
+            res.status(200).json(result[0].likes);
+        }
+    })
+}
+
+
+// 

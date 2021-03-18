@@ -5,6 +5,7 @@ const auth = require('../middlewares/auth');
 
 
 router.post('/post/:id/like', auth, likeCtrl.likePost);
+router.get('/post/:id/like', auth, likeCtrl.getVoteQty);
 router.get('/post/:id/like/:userId', auth, likeCtrl.getVote);
 
 
