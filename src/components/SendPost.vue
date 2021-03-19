@@ -1,20 +1,22 @@
 <template>
   <div>
     <button @click="toggleModal" class="create_btn">Créer une publication</button>
-    <p>{{post}}</p>
-    <p>{{postUrl}}</p>
-    <div class="modal_container" v-if="isModalOn">
-      <div class="overlay" @click="toggleModal"></div>
-      <div class="modal_card">
-        <span @click="toggleModal">X</span>
-        <p>Publiez quelque chose</p>
-        <form action="" method="post" @submit.prevent = postData()>
-          <textarea type="text" name="post" id="post" placeholder="Postez une histoire" v-model="post"></textarea><br>
-          <input type="url" name="postUrl" id="postUrl" v-model="postUrl" placeholder="Placez les liens ici"><br>
-          <button type="submit">Publier</button>
-        </form>
-      </div>
-    </div>
+    <!-- <p>{{post}}</p>
+    <p>{{postUrl}}</p> -->
+    <transition name="flipinX">
+      <div class="modal_container" v-if="isModalOn">
+        <!-- <div class="overlay" @click="toggleModal"></div> -->
+        <div class="modal_card">
+          <span @click="toggleModal">X</span>
+          <p>Publiez quelque chose</p>
+          <form action="" method="post" @submit.prevent = postData()>
+            <textarea type="text" name="post" id="post" placeholder="Ecrivez ici...." v-model="post" required></textarea><br>
+            <input type="url" name="postUrl" id="postUrl" v-model="postUrl" placeholder="Placez les liens ici"><br>
+            <button type="submit">Publier</button>
+          </form>
+        </div>
+      </div> 
+    </transition>
   </div>
 </template>
 
@@ -105,9 +107,19 @@ export default {
     position: fixed;
     background: #fff;
     width: 500px;
+    border: solid;
+    border-radius: 5px;
     //height: 400px;
     height: auto;
     padding: 10px;
+    @media (max-width: 768px) {
+      width: 100vw;
+      border: solid 1px;
+    }
+    p {
+      font-weight: bolder;
+      font-size: 1.5rem;
+    }
     span {
       position: absolute;
       right: 5px;
@@ -117,13 +129,52 @@ export default {
       padding: 5px;
     }
     textarea, input {
-      width: 300px;
-    }
-    textarea {
+      all: unset;
+      //border: solid;
+      text-align: left;
+      word-break: break-all;
+      margin: 20px 0;
+      border: solid 2px #FFD7D7;
+      //border-top: solid 2px #FFD7D7;
+      width: 100%;
       height: 100px;
     }
     input {
       height: 40px;
+    }
+    button {
+      all: unset;
+      background: #FD2D01;
+      padding: 10px 15px;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+  }
+  //animation modal
+  .flipinX-enter-active {
+    animation: flipin .5s;
+  }
+  .flipinX-leave-active {
+    animation: flipout .5s;
+  }
+  @keyframes flipin {
+    0% {
+      transform: perspective(400px) rotateX(90deg); 
+      opacity: 0;
+    }
+    100% {
+      transform: perspective(400px) rotateX(0deg);
+      opacity: 1;
+    }
+  }
+   @keyframes flipout {
+    0% {
+      transform: perspective(400px) rotateX(0deg); 
+      opacity: 1;
+    }
+    100% {
+      transform: perspective(400px) rotateX(90deg);
+      opacity: 0;
     }
   }
 </style>
