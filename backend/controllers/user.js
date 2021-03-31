@@ -5,8 +5,6 @@ const dbConnect = require('../connect');
 const sanitize = require('sanitize-html');
 //const configConnect = require('../connect')
 
-//const connection = mysql.createConnection(dbConnect);
-
 exports.signup = (req, res, next) => {
     //let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
     // if (!regexEmail.test(req.body.email)) {
@@ -93,29 +91,16 @@ exports.login = (req, res, next) => {
             res.status(404).json({message: 'utiisateur inconnu !'})
         }
     })
-    //     bcrypt.compare(req.body.password, user.password)
-    //     .then(valid => {
-    //         if(!valid) {
-    //          return res.status(401).json({ error: 'Mot de passe incorrect !'})
-    //         }
 }
 
+//middleware qui supprime un compte mais avant annule les likes de l'utilisateur
 exports.deleteUser = (req, res, next) => {
     console.log('ID:', req.params.id);
+    dbConnect.query(`UPDATE post INNER JOIN opinion ON post.id = opinion.opinion_postId SET likes = likes - 1 WHERE opinion_userId=${req.params.id} AND opinion.votes = 1 AND opinion_postId = post.id`)
+    dbConnect.query(`UPDATE post INNER JOIN opinion ON post.id = opinion.opinion_postId SET dislikes = dislikes - 1 WHERE opinion_userId=${req.params.id} AND opinion.votes = -1 AND opinion_postId = post.id`)
     dbConnect.query('DELETE FROM users WHERE id=?', req.params.id, (err, result) => {
         if(err) throw err;
         console.log(result);
         res.status(200).json({message:'compte supprimé'})
     })
-
-    // Sauce.findOne({ _id: req.params.id })
-    // .then(sauce => {
-    //   const filename = sauce.imageUrl.split('/images/')[1]; //cree un tableau dans lequel on recupere le nom du fichier à l'index 1
-    //   fs.unlink(`images/${filename}`, () => {
-    //     Sauce.deleteOne({ _id: req.params.id })
-    //       .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
-    //       .catch(error => res.status(400).json({ error }));
-    //   });
-    // })
-    // .catch(error => res.status(500).json({ error }));
 }
