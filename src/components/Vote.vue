@@ -7,6 +7,7 @@
 					id="liked"
 					:class="islike"
 					:disabled="disabLike"
+					aria-label="like"
 				>
 					<i class="far fa-thumbs-up"></i>
 				</button>
@@ -18,6 +19,7 @@
 					id="disliked"
 					:class="isdislike"
 					:disabled="disabDislike"
+					aria-label="dislike"
 				>
 					<i class="far fa-thumbs-down"></i></button
 				><span>{{ dislikeCounter }}</span></span
@@ -60,6 +62,7 @@
 					})
 					.catch((error) => console.log(error));
 			},
+			//fonction qui contient les infos du chemin pour l'envoi d'un vote
 			sendVoteDb(value, data) {
 				axios
 					.post(
@@ -219,6 +222,8 @@
 		.fa-thumbs-down {
 			color: #fd2d01;
 			margin: 0 1px 0 10px;
+			cursor: pointer;
+			transition: 0.5s;
 		}
 		.animation {
 			animation: scaler 0.5s;
@@ -230,14 +235,9 @@
 	}
 	@keyframes scaler {
 		0% {
-			//transform: scale(1);
 			transform: rotate(0);
 		}
-		// 50% {
-		//     transform: scale(2);
-		// }
 		100% {
-			//transform: scale(1);
 			transform: rotate(360deg);
 		}
 	}
