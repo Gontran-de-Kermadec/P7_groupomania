@@ -30,7 +30,6 @@
 
 <script>
 	const axios = require("axios");
-	//let liked = document.querySelector('#liked');
 	export default {
 		name: "Vote",
 		props: {
@@ -58,7 +57,6 @@
 						console.log(res.data.likes);
 						this.likeCounter = res.data.likes;
 						this.dislikeCounter = res.data.dislikes;
-						//console.log(state.allPosts);
 					})
 					.catch((error) => console.log(error));
 			},
@@ -82,56 +80,17 @@
 			},
 			likePost() {
 				let liked = document.querySelector("#liked");
-				//let disliked = document.querySelector('#disliked');
 				document.querySelector(".fa-thumbs-up").classList.add("animation");
 				if (liked.classList.contains("false")) {
 					this.islike = "true";
 					this.likeCounter = this.likeCounter + 1;
 					this.disabDislike = true;
 					this.sendVoteDb("like", this.islike);
-					// axios
-					// 	.post(
-					// 		`http://localhost:3000/post/${this.id}/like`,
-					// 		{
-					// 			userLiked: this.userId,
-					// 			like: this.islike,
-					// 		},
-					// 		{
-					// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					// 		}
-					// 	)
-					// 	.then((resp) => {
-					// 		console.log(resp);
-					// 		//console.log(resp.data[0].votes);
-					// 		// if(resp.data[0].votes === 1) {
-					// 		//   console.log('un like');
-					// 		//   this.isliked = 'true'
-					// 		// } else {
-					// 		//   this.isliked = 'false'
-					// 		// }
-					// 	})
-					// 	.catch((error) => console.log(error));
 				} else if (liked.classList.contains("true")) {
 					this.islike = "false";
 					this.likeCounter = this.likeCounter - 1;
 					this.disabDislike = false;
 					this.sendVoteDb("like", this.islike);
-					// axios
-					// 	.post(
-					// 		`http://localhost:3000/post/${this.id}/like`,
-					// 		{
-					// 			userId: this.userId,
-					// 			like_dislike: this.islike,
-					// 		},
-					// 		{
-					// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					// 		}
-					// 	)
-					// 	.then((resp) => {
-					// 		console.log(resp);
-					// 		//console.log(resp.votes);
-					// 	})
-					// 	.catch((error) => console.log(error));
 				}
 			},
 			dislikePost() {
@@ -143,41 +102,11 @@
 					this.dislikeCounter = this.dislikeCounter + 1;
 					this.disabLike = true;
 					this.sendVoteDb("dislike", this.isdislike);
-					// axios
-					// 	.post(
-					// 		`http://localhost:3000/post/${this.id}/dislike`,
-					// 		{
-					// 			userId: this.userId,
-					// 			dislike: this.isdislike,
-					// 		},
-					// 		{
-					// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					// 		}
-					// 	)
-					// 	.then((resp) => {
-					// 		console.log(resp);
-					// 	})
-					// 	.catch((error) => console.log(error));
 				} else if (disliked.classList.contains("true")) {
 					this.isdislike = "false";
 					this.dislikeCounter = this.dislikeCounter - 1;
 					this.disabLike = false;
 					this.sendVoteDb("dislike", this.isdislike);
-					// axios
-					// 	.post(
-					// 		`http://localhost:3000/post/${this.id}/dislike`,
-					// 		{
-					// 			userId: this.userId,
-					// 			dislike: this.isdislike,
-					// 		},
-					// 		{
-					// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					// 		}
-					// 	)
-					// 	.then((resp) => {
-					// 		console.log(resp);
-					// 	})
-					// 	.catch((error) => console.log(error));
 				}
 			},
 			//fonction pour maintenir classe au rafraichissement
@@ -188,7 +117,6 @@
 					})
 					.then((res) => {
 						console.log(res.data);
-						//console.log(res.data[0].votes);
 						if (res.data.length === 0) {
 							this.islike = "false";
 							this.isdislike = "false";

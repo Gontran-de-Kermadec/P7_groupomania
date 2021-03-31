@@ -3,10 +3,13 @@
 		<Header />
 		<div class="home_container">
 			<div>
-				<h1>
-					Bonjour <span class="title_name">{{ getStorage() }}</span> !
-				</h1>
-				<SendPost class="sendPost" />
+				<div class="flex">
+					<p id="username">
+						Bonjour <span class="title_name">{{ getStorage() }}</span> !
+					</p>
+					<SendPost class="sendPost" />
+				</div>
+				<SearchBar class="searchBar" />
 				<div v-for="post in allPosts" :key="post.id" class="eachPost">
 					<router-link :to="{ name: 'Post', params: { id: post.id } }">
 						<div class="post_header">
@@ -31,8 +34,10 @@
 </template>
 
 <script>
+	//import Fuse from "fuse.js";
 	import Header from "../components/Header.vue";
 	import SendPost from "../components/SendPost.vue";
+	import SearchBar from "../components/SearchBar.vue";
 	//import Vote from '../components/Vote.vue'
 	//import GetAllPosts from '../components/GetAllPosts.vue'
 	import { mapState } from "vuex";
@@ -41,6 +46,7 @@
 		components: {
 			Header,
 			SendPost,
+			SearchBar,
 			//Vote
 			// GetAllPosts
 		},
@@ -58,7 +64,6 @@
 				return getId.name;
 			},
 			getAllPosts() {
-				//this.$store.commit('GET_ALL_POSTS');
 				this.$store.dispatch("getAllPosts");
 				console.log(this.$route);
 			},
@@ -83,12 +88,6 @@
 				let hoursDiff = diff / (1000 * 3600);
 				let floorHours = Math.floor(hoursDiff);
 				let floorDays = Math.floor(daysDiff);
-				// console.log(daysDiff);
-				// console.log(hoursDiff);
-				//console.log(pastDateForm);
-				//console.log(currentDateForm);
-				// console.log(currentDateForm - pastDateForm);
-				// console.log(currentDate - pastDate);
 				if (hoursDiff > 24) {
 					return `il y a ${floorDays}j`;
 				} else {
@@ -98,7 +97,6 @@
 		},
 		mounted() {
 			this.getAllPosts();
-			//this.timePast
 		},
 	};
 </script>
@@ -107,11 +105,29 @@
 	.home_container {
 		display: flex;
 		justify-content: center;
+		.flex {
+			@media (min-width: 1024px) {
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+			}
+		}
 		.title_name {
 			text-transform: capitalize;
 		}
+		#username {
+			padding: 15px 0 5px 0;
+			font-size: 1.2rem;
+			font-weight: bolder;
+			@media (min-width: 1024px) {
+				font-size: 1.5rem;
+				width: 200px;
+			}
+		}
 		.sendPost {
 			margin: 30px 0;
+			@media (min-width: 1024px) {
+			}
 		}
 		.eachPost {
 			width: 90vw;
@@ -119,6 +135,7 @@
 			margin: 10px;
 			padding: 5px;
 			box-shadow: 1px 0px 10px 4px lightgray;
+			transition: 0.5s;
 			@media (min-width: 768px) {
 				width: 60vw;
 			}
@@ -144,6 +161,9 @@
 			.postContent {
 				font-size: 1.2rem;
 				word-break: break-word;
+			}
+			&:hover {
+				transform: scale(1.1);
 			}
 		}
 	}

@@ -1,108 +1,121 @@
 <template>
-  <div>
-      <h1>Veuillez vous connecter</h1>
-      <form @submit.prevent = postLogin()>
-        <label for="email">Email</label><br>
-        <input type="email" name="email" id="email" v-model="email" required/><br>
-        <label for="password">Mot de passe</label><br>
-        <input type="password" name="password" id="password" v-model="password" required/><br>
-        <p class="unknown">{{ incorrect }}</p>
-        <button type="submit" class="btn">Se connecter</button>
-    </form>
-  </div>
+	<div>
+		<h1>Veuillez vous connecter</h1>
+		<form @submit.prevent="postLogin()">
+			<label for="email">Email</label><br />
+			<input
+				type="email"
+				name="email"
+				id="email"
+				v-model="email"
+				required
+			/><br />
+			<label for="password">Mot de passe</label><br />
+			<input
+				type="password"
+				name="password"
+				id="password"
+				v-model="password"
+				required
+			/><br />
+			<p class="unknown">{{ incorrect }}</p>
+			<button type="submit" class="btn">Se connecter</button>
+		</form>
+	</div>
 </template>
 
 <script>
-const axios = require('axios');
-export default {
-    name: 'Login',
-    data() {
-        return {
-            email: '',
-            password: '',
-            incorrect: ''
-        }
-    },
-    methods: {
-        isLogged() {
-            if(localStorage.getItem('userInfo') !== null) {
-                //window.location = "http://localhost:8080/home"
-                this.$router.push('/home')
-            } 
-            //else {
-            //     state.loggedIn = false;
-            // }
-        },
-        postLogin() {
-            let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
-            if(regexEmail.test(this.email)) {
-                axios({
-                    method: 'post',
-                    url: 'http://localhost:3000/login/',
-                    data: {
-                        email: this.email,
-                        password: this.password
-                    }
-                })
-                // axios.post('http://localhost:3000/login/', {
-                //     data: {
-                //         email: this.email,
-                //         password: this.password
-                //     }
-                // })
-                .then((resp) => {
-                    console.log(resp.data)
-                    console.log(resp.status);
-                    if(resp.status === 200) {
-                        localStorage.setItem('userInfo', JSON.stringify(resp.data));
-                        window.location = "http://localhost:8080/home"
-                        //this.$router.push('/home')
-                    } else if (resp.status === 404) {
-                        alert('email ou mot de passe incorrect')
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    //alert('email incorrect');
-                    this.incorrect = 'Email inconnu ou mot de passe incorrect';
-                });
-            } else {
-                console.log('probleme mot de passe ou mail');
-            }
-        }
-    },
-    mounted() {
-      this.isLogged();
-    }
-}
+	const axios = require("axios");
+	export default {
+		name: "Login",
+		data() {
+			return {
+				email: "",
+				password: "",
+				incorrect: "",
+			};
+		},
+		methods: {
+			isLogged() {
+				if (localStorage.getItem("userInfo") !== null) {
+					//window.location = "http://localhost:8080/home"
+					this.$router.push("/home");
+				}
+				//else {
+				//     state.loggedIn = false;
+				// }
+			},
+			postLogin() {
+				let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
+				if (regexEmail.test(this.email)) {
+					axios({
+						method: "post",
+						url: "http://localhost:3000/login/",
+						data: {
+							email: this.email,
+							password: this.password,
+						},
+					})
+						// axios.post('http://localhost:3000/login/', {
+						//     data: {
+						//         email: this.email,
+						//         password: this.password
+						//     }
+						// })
+						.then((resp) => {
+							console.log(resp.data);
+							console.log(resp.status);
+							if (resp.status === 200) {
+								localStorage.setItem("userInfo", JSON.stringify(resp.data));
+								window.location = "http://localhost:8080/home";
+								//this.$router.push('/home')
+							} else if (resp.status === 404) {
+								alert("email ou mot de passe incorrect");
+							}
+						})
+						.catch((error) => {
+							console.log(error);
+							//alert('email incorrect');
+							this.incorrect = "Email inconnu ou mot de passe incorrect";
+						});
+				} else {
+					console.log("probleme mot de passe ou mail");
+				}
+			},
+		},
+		mounted() {
+			this.isLogged();
+		},
+	};
 </script>
 
-<style scoped lang='scss'>
-    h1 {
-        margin-bottom: 30px;
-    }
-    input {
-        font-size: large;
-    }
-    .unknown {
-        color: #FD2D01;
-        margin-bottom: 10px;
-    }
-    .btn {
-        background: #FD2D01;
-        border: none;
-        font-size: large;
-        cursor: pointer;
-    }
-    input, .btn {
-        width: 300px;
-        height: 50px;
-        margin-bottom: 20px;
-        @media (min-width: 550px) {
-            width: 500px;
-        }
-        @media (min-width: 1024px) {
-            width: 700px;
-        }
-    }
+<style scoped lang="scss">
+	h1 {
+		margin-bottom: 30px;
+	}
+	input {
+		font-size: large;
+	}
+	.unknown {
+		color: #fd2d01;
+		margin-bottom: 10px;
+	}
+	.btn {
+		background: #fd2d01;
+		border: none;
+		font-size: large;
+		cursor: pointer;
+	}
+	input,
+	.btn {
+		width: 300px;
+		height: 50px;
+		margin-bottom: 20px;
+		@media (min-width: 550px) {
+			width: 500px;
+		}
+		@media (min-width: 1024px) {
+			width: 700px;
+		}
+	}
 </style>
