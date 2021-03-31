@@ -1,11 +1,12 @@
+require('dotenv').config();
 const mysql = require('mysql');
 
 const dbConnect = mysql.createConnection({
-    host: "localhost",
-    user: "groupomania",
-    password: "groupomania",
-    database: "groupomania",
-    port: 3308
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DATABASE,
+    port: process.env.DB_PORT
 });
 
 dbConnect.connect(function(err) {
