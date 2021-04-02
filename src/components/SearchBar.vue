@@ -83,21 +83,26 @@
 				top: 50%;
 				transform: translateY(-50%);
 				font-size: 1rem;
-				left: 21%;
+				left: 26%;
 				width: 20px;
 				@media (max-width: 768px) {
 					left: 2%;
 					width: 20px;
 				}
+				@media (min-width: 768px) and (max-width: 1024px) {
+					left: 12%;
+				}
 			}
 			input {
 				all: unset;
-				width: 60%;
+				width: 50%;
 				height: 40px;
 				border: solid $primary;
-				border-radius: 20px;
 				@media (max-width: 768px) {
 					width: 100%;
+				}
+				@media (min-width: 768px) and (max-width: 1024px) {
+					width: 80%;
 				}
 			}
 		}
@@ -107,9 +112,9 @@
 			top: 70px;
 			transform: translateX(-50%);
 			border: solid $primary;
-			border-radius: 20px;
 			background: #fff;
 			width: 60%;
+			z-index: 100;
 			@media (max-width: 768px) {
 				width: 100%;
 			}
@@ -120,13 +125,6 @@
 			&:hover {
 				background: #ffd7d7;
 			}
-		}
-		.result:first-child {
-			border-radius: 20px 20px 0 0;
-		}
-		.result:nth-last-child(-n + 1) {
-			border-bottom: none;
-			border-radius: 0 0 20px 20px;
 		}
 		#no_result {
 			background: transparent;
