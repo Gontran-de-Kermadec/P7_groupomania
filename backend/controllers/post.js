@@ -6,7 +6,6 @@ exports.post = (req, res, next) => {
     let postId = parseInt(sanitize(req.body.getId));
     let postName = sanitize(req.body.postName);
     let postUrl = sanitize(req.body.postUrl);
-    //console.log(postId);
     let content = sanitize(req.body.postContent);
     let data = [postId, content, postUrl]
     console.log(data);
@@ -14,9 +13,7 @@ exports.post = (req, res, next) => {
         dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${postId}, "${postName}", "${content}")`, function(err, result) {
             if(err) throw err;
             if(result) {
-                //console.log(result);
                 res.status(201).json({message: 'post ajouté'});
-                //res.end('Voilà la réponse du serveur !');
             }
         });
     } else {
@@ -37,7 +34,6 @@ exports.getAllPosts = (req, res, next) => {
         if(result) {
             //console.log(result);
             res.status(200).json(result);
-            //res.end('Voilà la réponse du serveur !');
         }
     });
 }
@@ -49,7 +45,6 @@ exports.getMyPosts = (req, res, next) => {
         if(result) {
             console.log(result);
             res.status(200).json(result);
-            //res.end('Voilà la réponse du serveur !');
         }
     });
 }
@@ -60,11 +55,32 @@ exports.getOnePost = (req, res, next) => {
         if(result) {
             console.log(result);
             res.status(200).json(result);
-            //res.end('Voilà la réponse du serveur !');
         }
     });
 }
 
+//Update un post
+exports.updatePost = (req, res, next) => {
+    let postId = req.params.id;
+    let postUrl = sanitize(req.body.postUrl);
+    let content = sanitize(req.body.postContent);
+    let data = [content, postUrl, postId];
+    let dataMinusUrl = [content, postId]
+    if (postUrl === "") {
+        dbConnect.query('UPDATE post SET postContent=? WHERE id=?', dataMinusUrl, (err, result) => {
+            if(err) throw err;
+            console.log(result);
+            res.status(200).json({message:'publication mise à jour'})
+        })
+    } else {
+        dbConnect.query('UPDATE post SET postContent=?, postUrl=? WHERE id=?', data, (err, result) => {
+            if(err) throw err;
+            console.log(result);
+            res.status(200).json({message:'publication mise à jour'})
+        })
+    }
+   
+}
 
 //Supprimer un post
 exports.deleteOnePost = (req, res, next) => {

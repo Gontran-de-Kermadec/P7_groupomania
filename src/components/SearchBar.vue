@@ -72,6 +72,7 @@
 </script>
 
 <style lang="scss" scoped>
+	$primary: #fd2d01;
 	.relative {
 		position: relative;
 		padding: 20px 0;
@@ -93,7 +94,7 @@
 				all: unset;
 				width: 60%;
 				height: 40px;
-				border: solid #fd2d01;
+				border: solid $primary;
 				border-radius: 20px;
 				@media (max-width: 768px) {
 					width: 100%;
@@ -105,7 +106,7 @@
 			left: 50%;
 			top: 70px;
 			transform: translateX(-50%);
-			border: solid #fd2d01;
+			border: solid $primary;
 			border-radius: 20px;
 			background: #fff;
 			width: 60%;
@@ -114,7 +115,7 @@
 			}
 		}
 		.result {
-			border-bottom: solid 1px #fd2d01;
+			border-bottom: solid 1px $primary;
 			padding: 10px 0;
 			&:hover {
 				background: #ffd7d7;

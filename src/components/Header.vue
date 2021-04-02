@@ -49,6 +49,7 @@
 </script>
 
 <style scoped lang="scss">
+	$primary: #fd2d01;
 	div {
 		position: relative;
 	}
@@ -63,7 +64,7 @@
 		position: absolute;
 		right: 0;
 		top: 5px;
-		color: #fd2d01;
+		color: $primary;
 		font-weight: bolder;
 		@media (min-width: 768px) {
 			top: 40%;
@@ -92,7 +93,7 @@
 			transform: translateY(-50%);
 		}
 		a {
-			color: #fd2d01;
+			color: $primary;
 			font-size: 1.3rem;
 			margin: 5px;
 			@media (min-width: 768px) {

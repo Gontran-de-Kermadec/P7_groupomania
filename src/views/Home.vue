@@ -38,8 +38,6 @@
 	import Header from "../components/Header.vue";
 	import SendPost from "../components/SendPost.vue";
 	import SearchBar from "../components/SearchBar.vue";
-	//import Vote from '../components/Vote.vue'
-	//import GetAllPosts from '../components/GetAllPosts.vue'
 	import { mapState } from "vuex";
 	export default {
 		name: "Home",
@@ -47,8 +45,6 @@
 			Header,
 			SendPost,
 			SearchBar,
-			//Vote
-			// GetAllPosts
 		},
 		data() {
 			return {
@@ -65,7 +61,6 @@
 			},
 			getAllPosts() {
 				this.$store.dispatch("getAllPosts");
-				console.log(this.$route);
 			},
 			dateFormat(date) {
 				const event = new Date(date);

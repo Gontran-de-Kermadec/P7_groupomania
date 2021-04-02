@@ -38,12 +38,8 @@
 		methods: {
 			isLogged() {
 				if (localStorage.getItem("userInfo") !== null) {
-					//window.location = "http://localhost:8080/home"
 					this.$router.push("/home");
 				}
-				//else {
-				//     state.loggedIn = false;
-				// }
 			},
 			postLogin() {
 				let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
@@ -56,12 +52,6 @@
 							password: this.password,
 						},
 					})
-						// axios.post('http://localhost:3000/login/', {
-						//     data: {
-						//         email: this.email,
-						//         password: this.password
-						//     }
-						// })
 						.then((resp) => {
 							console.log(resp.data);
 							console.log(resp.status);
@@ -75,7 +65,6 @@
 						})
 						.catch((error) => {
 							console.log(error);
-							//alert('email incorrect');
 							this.incorrect = "Email inconnu ou mot de passe incorrect";
 						});
 				} else {
@@ -90,6 +79,7 @@
 </script>
 
 <style scoped lang="scss">
+	$primary: #fd2d01;
 	h1 {
 		margin-bottom: 30px;
 	}
@@ -97,11 +87,11 @@
 		font-size: large;
 	}
 	.unknown {
-		color: #fd2d01;
+		color: $primary;
 		margin-bottom: 10px;
 	}
 	.btn {
-		background: #fd2d01;
+		background: $primary;
 		border: none;
 		font-size: large;
 		cursor: pointer;

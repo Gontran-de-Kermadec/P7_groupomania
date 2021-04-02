@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
+//const mysql = require('mysql');
+const helmet = require('helmet');
 
 const app = express();
 const userRoutes = require('./routes/user');
@@ -8,16 +9,7 @@ const postRoutes = require('./routes/post');
 const commentRoutes = require('./routes/comment');
 const likeRoutes = require('./routes/like');
 
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "groupomania",
-//     password: "groupomania",
-//     database: "groupomania"
-// });
-// db.connect(function(err) {
-//     if (err) throw err;
-//     console.log("Connecté à la base de données MySQL!");
-// });
+app.use(helmet());
 
 
 app.use((req, res, next) => {

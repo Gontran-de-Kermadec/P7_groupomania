@@ -141,6 +141,7 @@
 </script>
 
 <style scoped lang="scss">
+	$primary: #fd2d01;
 	.post_like {
 		text-align: right;
 		button {
@@ -148,7 +149,7 @@
 		}
 		.fa-thumbs-up,
 		.fa-thumbs-down {
-			color: #fd2d01;
+			color: $primary;
 			margin: 0 1px 0 10px;
 			cursor: pointer;
 			transition: 0.5s;

@@ -107,9 +107,9 @@
 			timePast(date) {
 				const pastDate = new Date(date);
 				const currentDate = new Date();
-				let diff = currentDate - pastDate;
-				let daysDiff = Math.floor(diff / (1000 * 3600 * 24));
-				let hoursDiff = Math.floor(diff / (1000 * 3600));
+				let calculDays = currentDate - pastDate;
+				let daysDiff = Math.floor(calculDays / (1000 * 3600 * 24));
+				let hoursDiff = Math.floor(calculDays / (1000 * 3600));
 				if (hoursDiff > 24) {
 					return `il y a ${daysDiff}j`;
 				} else {
@@ -124,6 +124,7 @@
 </script>
 
 <style scoped lang="scss">
+	$primary: #fd2d01;
 	.flipinX-enter-active {
 		animation: flipin 0.5s;
 	}
@@ -157,7 +158,7 @@
 			right: 10px;
 			top: 5px;
 			border-radius: 5px;
-			background: #fd2d01;
+			background: $primary;
 			padding: 7px;
 			cursor: pointer;
 		}
@@ -177,7 +178,7 @@
 		}
 		button {
 			all: unset;
-			background: #fd2d01;
+			background: $primary;
 			padding: 10px 15px;
 			font-size: 1.3rem;
 			cursor: pointer;
@@ -185,7 +186,7 @@
 	}
 	.create_btn {
 		width: 90vw;
-		background-color: #fd2d01;
+		background-color: $primary;
 		font-size: 1.4rem;
 		border: solid 1px;
 		padding: 10px;
@@ -202,7 +203,7 @@
 			text-align: left;
 		}
 		.eachComment {
-			border-left: solid #fd2d01;
+			border-left: solid $primary;
 			width: 90vw;
 			padding: 11px 11px 0 11px;
 			.comment_header,
@@ -214,7 +215,7 @@
 			font-size: 0.8rem;
 			.comment_name {
 				text-transform: capitalize;
-				color: #fd2d01;
+				color: $primary;
 			}
 		}
 		.commentContent {
@@ -222,7 +223,7 @@
 		}
 		.fa-thumbs-up,
 		.fa-thumbs-down {
-			color: #fd2d01;
+			color: $primary;
 			margin: 0 1px 0 10px;
 		}
 		.comment_separate {

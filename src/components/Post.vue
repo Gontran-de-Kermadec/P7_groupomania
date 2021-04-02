@@ -14,11 +14,15 @@
 					<p class="postContent">{{ post.postContent }}</p>
 					<a :href="post.postUrl" target="_blank">{{ post.postUrl }}</a
 					><br />
-					<button class="cta" v-if="userId === post.userId || admin === 1">
+					<button
+						class="anim_btn"
+						v-if="userId === post.userId || admin === 1"
+						@click="toggleUpdateModal"
+					>
 						<span>Modifier</span>
 					</button>
 					<button
-						class="cta btn"
+						class="anim_btn btn"
 						v-if="userId === post.userId || admin === 1"
 						@click="toggleModal"
 					>
@@ -28,12 +32,41 @@
 				<Vote :postId="id" />
 			</div>
 		</div>
+		<!-- modal delete post -->
 		<transition name="flipinX">
 			<div class="modal_container" v-if="isModalOn">
-				<div class="modal_card">
+				<div class="modal_delete">
 					<p>Vous confirmer la suppression ?</p>
 					<button @click="deletePost" class="yes">Oui</button>
 					<button @click="toggleModal" class="no">Non</button>
+				</div>
+			</div>
+		</transition>
+		<!--modal modif post-->
+		<transition name="flipinX">
+			<div class="modal_container" v-if="isUpdateModalOn">
+				<div class="modal_update">
+					<span @click="toggleUpdateModal">X</span>
+					<p>Modifiez le commentaire</p>
+					<form action="" method="put" @submit.prevent="sendUpdatePost()">
+						<textarea
+							type="text"
+							name="post"
+							id="post"
+							placeholder="Ecrivez ici...."
+							v-model="updatePost"
+							required
+						></textarea
+						><br />
+						<input
+							type="url"
+							name="postUrl"
+							id="postUrl"
+							v-model="updateUrl"
+							placeholder="Placez les liens ici"
+						/><br />
+						<button type="submit">Modifier</button>
+					</form>
 				</div>
 			</div>
 		</transition>
@@ -47,11 +80,6 @@
 	import Vote from "./Vote.vue";
 	import { mapState } from "vuex";
 	const axios = require("axios");
-	// let postId = $route.params.id;
-	//console.log($route.params.id);
-	//let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-	//console.log(getToken.token);
-	//let getId = getToken.userId
 	export default {
 		name: "Post",
 		components: {
@@ -67,8 +95,10 @@
 				posts: [],
 				id: parseInt(this.$route.params.id),
 				isModalOn: false,
+				isUpdateModalOn: false,
 				isliked: "false",
-				//nbr: 2
+				updatePost: "",
+				updateUrl: "",
 			};
 		},
 		computed: {
@@ -89,8 +119,6 @@
 					.catch((error) => console.log(error));
 			},
 			deletePost() {
-				// for (const {id: n} of this.posts) {
-				// console.log(n);
 				axios
 					.delete(`http://localhost:3000/post/${this.id}`, {
 						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
@@ -98,6 +126,24 @@
 					.then((resp) => {
 						console.log(resp);
 						this.$router.push("/home");
+					})
+					.catch((error) => console.log(error));
+			},
+			sendUpdatePost() {
+				axios
+					.put(
+						`http://localhost:3000/post/${this.id}`,
+						{
+							postContent: this.updatePost,
+							postUrl: this.updateUrl,
+						},
+						{
+							headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+						}
+					)
+					.then((resp) => {
+						console.log(resp);
+						document.location.reload();
 					})
 					.catch((error) => console.log(error));
 			},
@@ -115,12 +161,9 @@
 			timePast(date) {
 				const pastDate = new Date(date);
 				const currentDate = new Date();
-				//let currentDateForm = Date.parse(currentDate.toLocaleDateString('fr-FR'));
-				let diff = currentDate - pastDate;
-				let daysDiff = Math.floor(diff / (1000 * 3600 * 24));
-				let hoursDiff = Math.floor(diff / (1000 * 3600));
-				//let floorHours = Math.floor(hoursDiff);
-				//let floorDays = Math.floor(daysDiff);
+				let calculDays = currentDate - pastDate;
+				let daysDiff = Math.floor(calculDays / (1000 * 3600 * 24));
+				let hoursDiff = Math.floor(calculDays / (1000 * 3600));
 				if (hoursDiff > 24) {
 					return `il y a ${daysDiff}j`;
 				} else {
@@ -130,6 +173,9 @@
 			toggleModal() {
 				this.isModalOn = !this.isModalOn;
 			},
+			toggleUpdateModal() {
+				this.isUpdateModalOn = !this.isUpdateModalOn;
+			},
 		},
 		mounted() {
 			this.getMyPost();
@@ -138,7 +184,6 @@
 </script>
 
 <style scoped lang="scss">
-	$color: #111;
 	$primary: #fd2d01;
 	.flex_container {
 		display: flex;
@@ -154,7 +199,7 @@
 			border-bottom: solid 2px #ffd7d7;
 			.post_name {
 				text-transform: capitalize;
-				color: #fd2d01;
+				color: $primary;
 				font-weight: bolder;
 			}
 		}
@@ -179,34 +224,69 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.modal_card {
+	.modal_update,
+	.modal_delete {
 		position: fixed;
 		background: #fff;
 		width: 500px;
 		height: auto;
-		padding: 20px;
-		transform: translateY(-50%);
-		border: solid 1px;
 		border-radius: 5px;
+		border: solid 1px;
+		@media (max-width: 768px) {
+			width: 90vw;
+		}
 		p {
 			font-size: 1.5rem;
 			margin-bottom: 15px;
+			font-weight: bolder;
 		}
+	}
+	.modal_delete {
+		padding: 20px;
+		transform: translateY(-50%);
 		button {
 			all: unset;
 			cursor: pointer;
 			margin: 0 15px;
 			padding: 10px;
 		}
-		.yes {
+		.yes,
+		.no {
 			border: solid 1px $primary;
 		}
 		.no {
-			border: solid 1px $primary;
 			background-color: $primary;
 		}
-		@media (max-width: 768px) {
-			width: 90vw;
+	}
+	.modal_update {
+		padding: 10px;
+		span {
+			position: absolute;
+			right: 5px;
+			top: 5px;
+			background: $primary;
+			padding: 5px;
+			cursor: pointer;
+		}
+		textarea,
+		input {
+			all: unset;
+			text-align: left;
+			word-break: break-all;
+			margin: 20px 0;
+			border: solid 2px #ffd7d7;
+			width: 100%;
+			height: 100px;
+		}
+		input {
+			height: 40px;
+		}
+		button {
+			all: unset;
+			background: $primary;
+			padding: 10px 15px;
+			font-size: 1.3rem;
+			cursor: pointer;
 		}
 	}
 	.flipinX-enter-active {
@@ -236,7 +316,7 @@
 		}
 	}
 	//test animation
-	.cta {
+	.anim_btn {
 		all: unset;
 		position: relative;
 		margin: 0 5px;

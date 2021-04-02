@@ -36,12 +36,8 @@
 
 <script>
 	const axios = require("axios");
-	//let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-	//console.log(getToken.token);
-	//let getId = getToken.userId;
 	export default {
 		name: "SendPost",
-		//props: ['isModalOn'],
 		data() {
 			return {
 				post: "",
@@ -51,12 +47,6 @@
 		},
 		methods: {
 			postData() {
-				// let postContent = this.post;
-				// axios.post('http://localhost:3000/',
-				// {
-				//   getId,
-				//   postContent
-				// })
 				axios({
 					method: "post",
 					url: "http://localhost:3000/",
@@ -73,11 +63,6 @@
 					.then((resp) => {
 						console.log(resp);
 						document.location.reload();
-						//console.log(resp.status);
-						// if(resp.status === 200) {
-						//   localStorage.setItem('token', JSON.stringify(resp.data))
-						//   this.$router.push('/home')
-						// }
 					})
 					.catch((error) => console.log(error));
 			},
@@ -89,18 +74,13 @@
 </script>
 
 <style scoped lang="scss">
-	// .sendPost_container {
-	// 	//width: 90vw;
-	// 	//width: 90%;
-	// 	// @media (min-width: 768px) {
-	// 	// 	width: 40vw;
-	// 	// }
-	// }
+	$primary: #fd2d01;
 	.create_btn {
-		background-color: #fd2d01;
+		background-color: $primary;
 		font-size: 1.4rem;
 		border: solid 1px;
 		padding: 10px 40px;
+		cursor: pointer;
 	}
 	.modal_container {
 		position: fixed;
@@ -113,19 +93,11 @@
 		align-items: center;
 		justify-content: center;
 	}
-	// .overlay {
-	// 	background: rgba(0, 0, 0, 0.5);
-	// 	position: fixed;
-	// 	top: 0;
-	// 	left: 0;
-	// 	bottom: 0;
-	// 	right: 0;
-	// }
 	.modal_card {
 		position: fixed;
 		background: #fff;
 		width: 500px;
-		border: solid;
+		border: solid 1px;
 		border-radius: 5px;
 		height: auto;
 		padding: 10px;
@@ -141,7 +113,7 @@
 			position: absolute;
 			right: 5px;
 			top: 5px;
-			background: #fd2d01;
+			background: $primary;
 			padding: 5px;
 		}
 		textarea,
@@ -159,7 +131,7 @@
 		}
 		button {
 			all: unset;
-			background: #fd2d01;
+			background: $primary;
 			padding: 10px 15px;
 			font-size: 1.3rem;
 			cursor: pointer;

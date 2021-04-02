@@ -10,20 +10,7 @@ export default new Vuex.Store({
   state: {
     loggedIn: false,
     allPosts: [],
-    liked: 'false'
-  },
-  getters: {
-    findUserIdPost(state) {
-      // for (let i = 0; i < state.allPosts.length; i++) {
-      //   return state.allPosts[i].userId === this.$userInfo.userId
-      // }
-      const teston = state.allPosts.filter(post => post.userId === userInfo.userId)
-      console.log(teston);
-      for (const {id: n} of teston) {
-        console.log(n);
-      }
-      return teston
-    },
+    //liked: 'false'
   },
   mutations: {
     CHANGE_LOG(state) {
@@ -32,7 +19,6 @@ export default new Vuex.Store({
       } else {
         state.loggedIn = false;
       }
-      //console.log(state.loggedIn);
     },
     GET_ALL_POSTS(state, data) {
       state.allPosts = data;
@@ -42,10 +28,7 @@ export default new Vuex.Store({
     getAllPosts(context) {
       axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       .then((res) => {
-        //console.log(res.data[0]);
-        //state.allPosts = res.data;
         context.commit('GET_ALL_POSTS', res.data)
-        //console.log(state.allPosts);
       })
       .catch((error) => console.log(error));
     },

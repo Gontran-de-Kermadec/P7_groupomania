@@ -75,6 +75,7 @@
 </script>
 
 <style scoped lang="scss">
+	$primary: #fd2d01;
 	h1 {
 		margin-bottom: 30px;
 	}
@@ -82,7 +83,7 @@
 		font-size: large;
 	}
 	.btn {
-		background: #fd2d01;
+		background: $primary;
 		border: none;
 		font-size: large;
 		cursor: pointer;

@@ -45,7 +45,6 @@
 
 <script>
 	import Header from "./Header";
-	import { mapGetters } from "vuex";
 	import SendPost from "./SendPost.vue";
 	const axios = require("axios");
 	export default {
@@ -60,9 +59,6 @@
 				posts: [],
 				isModalOn: false,
 			};
-		},
-		computed: {
-			...mapGetters(["findUserIdPost"]),
 		},
 		methods: {
 			deletePost() {
@@ -89,21 +85,6 @@
 					.catch((error) => console.log(error));
 				localStorage.removeItem("userInfo");
 				window.location = "http://localhost:8080/";
-				//this.$router.push("/");
-				// .then(localStorage.removeItem('user'))
-				// .then(location.href = "/");
-				//console.log(localStorage.token);
-				// axios({
-				//   method: 'delete',
-				//   url: `http://localhost:3000/${getId.userId}/`,
-				//   // data: {
-				//   //     id: getId.userId
-				//   // }
-				// })
-				// .then((resp) => {
-				//   console.log(resp);
-				// })
-				// .catch((error) => console.log(error));
 			},
 			getMyPosts() {
 				axios
@@ -130,14 +111,11 @@
 			},
 			timePast(date) {
 				const pastDate = new Date(date);
-				//let pastDateForm = Date.parse(pastDate.toLocaleDateString('fr-FR'));
 				const currentDate = new Date();
-				//let currentDateForm = Date.parse(currentDate.toLocaleDateString('fr-FR'));
-				let diff = currentDate - pastDate;
-				let daysDiff = diff / (1000 * 3600 * 24);
-				let hoursDiff = diff / (1000 * 3600);
-				let floorHours = Math.floor(hoursDiff);
-				let floorDays = Math.floor(daysDiff);
+				let calculDays = currentDate - pastDate;
+				let hoursDiff = calculDays / (1000 * 3600);
+				let floorHours = Math.floor(calculDays / (1000 * 3600));
+				let floorDays = Math.floor(calculDays / (1000 * 3600 * 24));
 				if (hoursDiff > 24) {
 					return `il y a ${floorDays}j`;
 				} else {
@@ -155,7 +133,6 @@
 </script>
 
 <style scoped lang="scss">
-	$color: #111;
 	$primary: #fd2d01;
 	.data_container {
 		display: flex;
@@ -172,7 +149,7 @@
 			margin: 0 0 30px 0;
 		}
 		@media (min-width: 768px) {
-			border-right: solid #fd2d01;
+			border-right: solid $primary;
 			width: 20%;
 		}
 		p {
@@ -183,7 +160,7 @@
 		button {
 			all: unset;
 			border: solid 1px;
-			background-color: #fd2d01;
+			background-color: $primary;
 			padding: 10px;
 			cursor: pointer;
 		}
@@ -211,20 +188,11 @@
 				border: solid 1px;
 			}
 			p {
-				//font-weight: bolder;
 				font-size: 1.5rem;
 				margin-bottom: 15px;
 			}
-			// span {
-			// 	position: absolute;
-			// 	right: 5px;
-			// 	top: 5px;
-			// 	background: #fd2d01;
-			// 	padding: 5px;
-			// }
 			button {
 				all: unset;
-				//background: #fd2d01;
 				margin: 0 15px;
 				padding: 10px 15px;
 				cursor: pointer;
@@ -264,7 +232,7 @@
 			border-bottom: solid 2px #ffd7d7;
 			.post_name {
 				text-transform: capitalize;
-				color: #fd2d01;
+				color: $primary;
 				font-weight: bolder;
 			}
 		}
@@ -279,7 +247,7 @@
 			text-align: right;
 			.fa-thumbs-up,
 			.fa-thumbs-down {
-				color: #fd2d01;
+				color: $primary;
 				margin: 0 1px 0 10px;
 			}
 		}
