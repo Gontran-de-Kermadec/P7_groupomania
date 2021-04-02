@@ -21,6 +21,7 @@
 				v-model="password"
 				required
 			/><br />
+			<p class="invalidInput">{{ invalidInput }}</p>
 			<button type="submit" class="btn">S'incrire</button>
 		</form>
 		<div class="loginBtn">
@@ -44,30 +45,40 @@
 				name: "",
 				email: "",
 				password: "",
+				invalidInput: "",
 			};
 		},
 		methods: {
 			postThing() {
+				let regexName = /^[A-Za-z'\s.-]+$/;
 				let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
-				if (regexEmail.test(this.email)) {
-					axios({
-						method: "post",
-						url: "http://localhost:3000/signup/",
-						data: {
-							name: this.name,
-							email: this.email,
-							password: this.password,
-						},
-					})
-						.then((response) => {
-							console.log(response.status);
-							if (response.status === 201) {
-								this.$router.push("/");
-							}
-						})
-						.catch((error) => console.log(error));
+				let passwordLength = 8;
+				if (this.password.length < passwordLength) {
+					this.invalidInput =
+						"Le mot de passe nécessite au moins 8 caractères !";
 				} else {
-					console.log("probleme mot de passe ou mail");
+					if (regexEmail.test(this.email) && regexName.test(this.name)) {
+						axios({
+							method: "post",
+							url: "http://localhost:3000/signup/",
+							data: {
+								name: this.name,
+								email: this.email,
+								password: this.password,
+							},
+						})
+							.then((response) => {
+								console.log(response);
+								if (response.status === 201) {
+									this.$router.push("/");
+								}
+							})
+							.catch((error) => {
+								this.invalidInput = error.response.data;
+							});
+					} else {
+						console.log("Format champ incorrect");
+					}
 				}
 			},
 		},
@@ -99,6 +110,10 @@
 		@media (min-width: 1024px) {
 			width: 700px;
 		}
+	}
+	.invalidInput {
+		color: $primary;
+		margin-bottom: 10px;
 	}
 	.loginBtn {
 		a {

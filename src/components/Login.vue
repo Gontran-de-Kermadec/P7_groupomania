@@ -58,7 +58,6 @@
 							if (resp.status === 200) {
 								localStorage.setItem("userInfo", JSON.stringify(resp.data));
 								window.location = "http://localhost:8080/home";
-								//this.$router.push('/home')
 							} else if (resp.status === 404) {
 								alert("email ou mot de passe incorrect");
 							}
