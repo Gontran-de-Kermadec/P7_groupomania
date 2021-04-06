@@ -75,6 +75,7 @@
 
 <style scoped lang="scss">
 	$primary: #fd2d01;
+	$secondary: #ffd7d7;
 	.create_btn {
 		background-color: $primary;
 		font-size: 1.4rem;
@@ -95,7 +96,7 @@
 	}
 	.modal_card {
 		position: fixed;
-		background: #fff;
+		background: $secondary;
 		width: 500px;
 		border: solid 1px;
 		border-radius: 5px;
@@ -113,8 +114,10 @@
 			position: absolute;
 			right: 5px;
 			top: 5px;
+			border-radius: 5px;
 			background: $primary;
-			padding: 5px;
+			padding: 7px;
+			cursor: pointer;
 		}
 		textarea,
 		input {
@@ -122,7 +125,8 @@
 			text-align: left;
 			word-break: break-all;
 			margin: 20px 0;
-			border: solid 2px #ffd7d7;
+			border: solid 1px;
+			background: #fff;
 			width: 100%;
 			height: 100px;
 		}

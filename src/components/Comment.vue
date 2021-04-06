@@ -25,7 +25,12 @@
 		<div class="comment_container">
 			<div class="comment_subcontainer">
 				<p>Commentaires</p>
-				<div v-for="comment in comments" :key="comment.id" class="eachComment">
+				<div
+					v-for="comment in comments"
+					:key="comment.id"
+					class="eachComment"
+					:itemid="comment.id"
+				>
 					<div class="comment_header">
 						<p>
 							Commentaire de <span class="comment_name">{{ comment.name }}</span
@@ -33,8 +38,18 @@
 							{{ dateFormat(comment.commentDate) }}
 						</p>
 					</div>
-					<div class="comment_body">
-						<p class="commentContent">{{ comment.comment }}</p>
+					<div class="comment_flex">
+						<div class="comment_body">
+							<p class="commentContent">{{ comment.comment }}</p>
+						</div>
+						<div class="comment_delete">
+							<button
+								v-if="userId === comment.userId || admin === 1"
+								@click="deleteComment"
+							>
+								Supprimer
+							</button>
+						</div>
 					</div>
 					<div class="comment_separate"></div>
 				</div>
@@ -56,6 +71,8 @@
 				comments: [],
 				id: this.postId,
 				isModalOn: false,
+				userId: this.$userInfo.userId,
+				admin: this.$userInfo.admin,
 			};
 		},
 		methods: {
@@ -87,6 +104,19 @@
 					.then((res) => {
 						console.log(res.data);
 						this.comments = res.data;
+					})
+					.catch((error) => console.log(error));
+			},
+			deleteComment(e) {
+				let commentId = parseInt(e.path[3].attributes[1].value);
+				console.log(commentId);
+				axios
+					.delete(`http://localhost:3000/comment/${commentId}`, {
+						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+					})
+					.then((resp) => {
+						console.log(resp);
+						document.location.reload();
 					})
 					.catch((error) => console.log(error));
 			},
@@ -125,6 +155,7 @@
 
 <style scoped lang="scss">
 	$primary: #fd2d01;
+	$secondary: #ffd7d7;
 	.flipinX-enter-active {
 		animation: flipin 0.5s;
 	}
@@ -143,12 +174,13 @@
 	}
 	.modal_card {
 		position: fixed;
-		background: #fff;
+		//background: #fff;
+		background: $secondary;
 		width: 500px;
 		border: solid 1px;
 		border-radius: 5px;
 		height: auto;
-		padding: 20px 0;
+		padding: 20px 10px;
 		@media (max-width: 768px) {
 			width: 100vw;
 			border: solid 1px;
@@ -171,8 +203,10 @@
 			text-align: left;
 			word-break: break-all;
 			margin: 20px 0;
-			border-bottom: solid 2px #ffd7d7;
-			border-top: solid 2px #ffd7d7;
+			// border-bottom: solid 2px #fff;
+			// border-top: solid 2px #fff;
+			background: #fff;
+			border: solid 1px;
 			width: 100%;
 			height: 100px;
 		}
@@ -216,6 +250,26 @@
 			.comment_name {
 				text-transform: capitalize;
 				color: $primary;
+			}
+		}
+		.comment_flex {
+			@media (min-width: 768px) {
+				display: flex;
+				justify-content: space-between;
+			}
+			.comment_delete {
+				text-align: center;
+			}
+			button {
+				all: unset;
+				cursor: pointer;
+				border: solid 1px;
+				background: $primary;
+				margin: 0 15px;
+				padding: 5px;
+				@media (min-width: 768px) {
+					padding: 10px;
+				}
 			}
 		}
 		.commentContent {

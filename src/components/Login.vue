@@ -59,7 +59,7 @@
 								localStorage.setItem("userInfo", JSON.stringify(resp.data));
 								window.location = "http://localhost:8080/home";
 							} else if (resp.status === 404) {
-								alert("email ou mot de passe incorrect");
+								console.log(resp);
 							}
 						})
 						.catch((error) => {
