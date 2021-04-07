@@ -134,6 +134,7 @@
 
 <style scoped lang="scss">
 	$primary: #fd2d01;
+	$secondary: #ffd7d7;
 	.data_container {
 		display: flex;
 		flex-direction: column;
@@ -177,7 +178,7 @@
 		justify-content: center;
 		.modal_card {
 			position: fixed;
-			background: #fff;
+			background: $secondary;
 			width: 500px;
 			border: solid 1px;
 			border-radius: 5px;
@@ -199,6 +200,7 @@
 			}
 			.yes {
 				border: solid 1px $primary;
+				background: #fff;
 			}
 			.no {
 				border: solid 1px $primary;

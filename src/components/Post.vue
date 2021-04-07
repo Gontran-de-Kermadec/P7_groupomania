@@ -185,6 +185,7 @@
 
 <style scoped lang="scss">
 	$primary: #fd2d01;
+	$secondary: #ffd7d7;
 	.flex_container {
 		display: flex;
 		justify-content: center;
@@ -196,7 +197,7 @@
 		padding: 5px;
 		box-shadow: 1px 0px 10px 4px lightgray;
 		.post_header {
-			border-bottom: solid 2px #ffd7d7;
+			border-bottom: solid 2px $secondary;
 			.post_name {
 				text-transform: capitalize;
 				color: $primary;
@@ -227,7 +228,7 @@
 	.modal_update,
 	.modal_delete {
 		position: fixed;
-		background: #fff;
+		background: $secondary;
 		width: 500px;
 		height: auto;
 		border-radius: 5px;
@@ -250,12 +251,13 @@
 			margin: 0 15px;
 			padding: 10px;
 		}
-		.yes,
-		.no {
+		.yes {
+			background-color: #fff;
 			border: solid 1px $primary;
 		}
 		.no {
 			background-color: $primary;
+			border: solid 1px $primary;
 		}
 	}
 	.modal_update {

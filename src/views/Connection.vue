@@ -27,6 +27,9 @@
 		margin-top: 50px;
 		a {
 			color: #000;
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 		p {
 			margin-bottom: 10px;

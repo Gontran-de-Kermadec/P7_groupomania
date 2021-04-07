@@ -118,6 +118,9 @@
 	.loginBtn {
 		a {
 			color: #000;
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 		p {
 			margin-bottom: 10px;
