@@ -171,16 +171,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		z-index: 10;
 	}
 	.modal_card {
 		position: fixed;
-		//background: #fff;
 		background: $secondary;
 		width: 500px;
 		border: solid 1px;
 		border-radius: 5px;
 		height: auto;
 		padding: 20px 10px;
+
 		@media (max-width: 768px) {
 			width: 100vw;
 			border: solid 1px;

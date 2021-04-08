@@ -267,7 +267,8 @@
 			right: 5px;
 			top: 5px;
 			background: $primary;
-			padding: 5px;
+			padding: 7px;
+			border-radius: 5px;
 			cursor: pointer;
 		}
 		textarea,
@@ -276,7 +277,8 @@
 			text-align: left;
 			word-break: break-all;
 			margin: 20px 0;
-			border: solid 2px #ffd7d7;
+			border: solid 1px;
+			background: #fff;
 			width: 100%;
 			height: 100px;
 		}
