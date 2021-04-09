@@ -120,11 +120,11 @@
 						if (res.data.length === 0) {
 							this.islike = "false";
 							this.isdislike = "false";
-							this.disab = false;
+							this.disabDislike = false;
 							this.disabLike = false;
 						} else if (res.data[0].votes === 1) {
 							this.islike = "true";
-							this.disab = true;
+							this.disabDislike = true;
 						} else if (res.data[0].votes === -1) {
 							this.isdislike = "true";
 							this.disabLike = true;

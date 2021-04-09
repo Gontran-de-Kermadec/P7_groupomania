@@ -21,6 +21,7 @@
 						</div>
 						<div class="post_body">
 							<p class="postContent">{{ post.postContent }}</p>
+							<p class="postUrl">{{ post.postUrl }}</p>
 						</div>
 						<div class="post_like">
 							<i class="far fa-thumbs-up"></i><span>{{ post.likes }}</span>
@@ -34,7 +35,6 @@
 </template>
 
 <script>
-	//import Fuse from "fuse.js";
 	import Header from "../components/Header.vue";
 	import SendPost from "../components/SendPost.vue";
 	import SearchBar from "../components/SearchBar.vue";
@@ -75,9 +75,7 @@
 			},
 			timePast(date) {
 				const pastDate = new Date(date);
-				//let pastDateForm = Date.parse(pastDate.toLocaleDateString('fr-FR'));
 				const currentDate = new Date();
-				//let currentDateForm = Date.parse(currentDate.toLocaleDateString('fr-FR'));
 				let diff = currentDate - pastDate;
 				let daysDiff = diff / (1000 * 3600 * 24);
 				let hoursDiff = diff / (1000 * 3600);
@@ -156,6 +154,17 @@
 			.postContent {
 				font-size: 1.2rem;
 				word-break: break-word;
+			}
+			.postUrl {
+				//word-break: break-word;
+				color: #00458b;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				margin: 2px 10px;
+				@media (min-width: 768px) {
+					margin: 2px 60px;
+				}
 			}
 			&:hover {
 				transform: scale(1.1);
