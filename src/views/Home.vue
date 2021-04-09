@@ -156,7 +156,6 @@
 				word-break: break-word;
 			}
 			.postUrl {
-				//word-break: break-word;
 				color: #00458b;
 				white-space: nowrap;
 				overflow: hidden;
