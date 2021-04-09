@@ -1,24 +1,24 @@
-# groupomania
+Groupomania 
 
-## Project setup
-```
-npm install
-```
+Cloner le repo depuis Github.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- Pour faire tourner le front.
 
-### Lints and fixes files
-```
-npm run lint
-```
+  Une fois dans le dossier P7_groupomania, exécutez npm install via le terminal. Puis npm run serve.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+- Pour faire touner le backend.
+
+  Une fois dans le dossier backend, exécutez npm install via le terminal. Ensuite, npm start ou node server.js.
+
+
+
+- Setup de la base de données.
+
+  Créer un fichier .env dans le dossier backend dans lequel vous rentrerez les infos nécessaires pour se connecter à la base de données.
+
+Pour se connecter à l'application.
+Ouvrez http://localhost:8080 dans le navigateur.
+
