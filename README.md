@@ -17,7 +17,8 @@ Cloner le repo depuis Github.
 
 - Setup de la base de données.
 
-  Créer un fichier .env dans le dossier backend dans lequel vous rentrerez les infos nécessaires pour se connecter à la base de données.
+  Créez un fichier .env dans le dossier backend dans lequel vous rentrerez les infos nécessaires pour se connecter à la base de données.
+  Dans le dossier database, vous trouverez le fichier contenant la structure de la base de données.
 
 Pour se connecter à l'application.
 Ouvrez http://localhost:8080 dans le navigateur.
