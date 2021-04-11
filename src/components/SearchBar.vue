@@ -4,7 +4,7 @@
 		<div class="relative">
 			<div class="search_container">
 				<input
-					placeholder="Cherchez une publication"
+					placeholder="Chercher une publication"
 					type="search"
 					name="searchbar"
 					id="searchbar"
