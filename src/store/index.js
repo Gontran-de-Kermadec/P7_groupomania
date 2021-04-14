@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+//import apiUrl from '../../axios_config'
 const axios = require('axios');
 
 let userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -10,7 +11,7 @@ export default new Vuex.Store({
   state: {
     loggedIn: false,
     allPosts: [],
-    //liked: 'false'
+    //uri: apiUrl
   },
   mutations: {
     CHANGE_LOG(state) {

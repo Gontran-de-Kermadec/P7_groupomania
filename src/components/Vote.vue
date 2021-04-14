@@ -50,7 +50,8 @@
 		methods: {
 			getVoteValue() {
 				axios
-					.get(`http://localhost:3000/post/${this.id}/like`, {
+					//.get(`http://localhost:3000/post/${this.id}/like`, {
+					.get(`${this.$baseUrl}/post/${this.id}/like`, {
 						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
 					})
 					.then((res) => {
@@ -64,7 +65,8 @@
 			sendVoteDb(value, data) {
 				axios
 					.post(
-						`http://localhost:3000/post/${this.id}/${value}`,
+						//`http://localhost:3000/post/${this.id}/${value}`,
+						`${this.$baseUrl}/post/${this.id}/${value}`,
 						{
 							userId: this.userId,
 							like_dislike: data,
@@ -109,10 +111,11 @@
 					this.sendVoteDb("dislike", this.isdislike);
 				}
 			},
-			//fonction pour maintenir classe au rafraichissement
+			//fonction pour maintenir classe sur l'élement au rafraichissement
 			getVote() {
 				axios
-					.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`, {
+					//.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`, {
+					.get(`${this.$baseUrl}/post/${this.id}/like/${this.userId}`, {
 						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
 					})
 					.then((res) => {

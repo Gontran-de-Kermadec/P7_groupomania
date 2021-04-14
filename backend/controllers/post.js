@@ -7,17 +7,19 @@ exports.post = (req, res, next) => {
     let postName = sanitize(req.body.postName);
     let postUrl = sanitize(req.body.postUrl);
     let content = sanitize(req.body.postContent);
-    let data = [postId, content, postUrl]
-    console.log(data);
+    let data = [postId, `"${postName}"`, `"${content}"`];
+    let dataUrl = [postId, `"${postName}"`, `"${content}"`, `"${postUrl}"`];
     if(postUrl === '') {
-        dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${postId}, "${postName}", "${content}")`, function(err, result) {
+        //dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${postId}, "${postName}", "${content}")`, function(err, result) {
+        dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${data})`, function(err, result) {
             if(err) throw err;
             if(result) {
                 res.status(201).json({message: 'post ajouté'});
             }
         });
     } else {
-        dbConnect.query(`INSERT INTO post (userId, name, postContent, postUrl) VALUES (${postId}, "${postName}", "${content}", "${postUrl}")`, function(err, result) {
+        //dbConnect.query(`INSERT INTO post (userId, name, postContent, postUrl) VALUES (${postId}, "${postName}", "${content}", "${postUrl}")`, function(err, result) {
+        dbConnect.query(`INSERT INTO post (userId, name, postContent, postUrl) VALUES (${dataUrl})`, function(err, result) {
             if(err) throw err;
             if(result) {
                 //console.log(result);

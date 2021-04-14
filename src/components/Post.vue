@@ -109,7 +109,8 @@
 				let stringy = JSON.stringify({ like: this.liked, user: this.userId });
 				console.log(stringy);
 				axios
-					.get(`http://localhost:3000/post/${this.id}`, {
+					//.get(`http://localhost:3000/post/${this.id}`, {
+					.get(`${this.$baseUrl}/post/${this.id}`, {
 						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
 					})
 					.then((res) => {
@@ -120,9 +121,13 @@
 			},
 			deletePost() {
 				axios
-					.delete(`http://localhost:3000/post/${this.id}`, {
-						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					})
+					.delete(
+						//`http://localhost:3000/post/${this.id}`,
+						`${this.$baseUrl}/post/${this.id}`,
+						{
+							headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+						}
+					)
 					.then((resp) => {
 						console.log(resp);
 						this.$router.push("/home");
@@ -132,7 +137,8 @@
 			sendUpdatePost() {
 				axios
 					.put(
-						`http://localhost:3000/post/${this.id}`,
+						//`http://localhost:3000/post/${this.id}`,
+						`${this.$baseUrl}/post/${this.id}`,
 						{
 							postContent: this.updatePost,
 							postUrl: this.updateUrl,

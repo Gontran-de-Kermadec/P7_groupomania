@@ -46,7 +46,8 @@
 				if (regexEmail.test(this.email)) {
 					axios({
 						method: "post",
-						url: "http://localhost:3000/login/",
+						//url: "http://localhost:3000/login/",
+						url: `${this.$baseUrl}/login/`,
 						data: {
 							email: this.email,
 							password: this.password,

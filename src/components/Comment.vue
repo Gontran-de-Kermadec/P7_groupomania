@@ -79,7 +79,8 @@
 			sendComment() {
 				axios({
 					method: "post",
-					url: "http://localhost:3000/comment",
+					//url: "http://localhost:3000/comment",
+					url: `${this.$baseUrl}/comment`,
 					data: {
 						userId: this.$userInfo.userId,
 						commentName: this.$userInfo.name,
@@ -98,7 +99,8 @@
 			},
 			getComment() {
 				axios
-					.get(`http://localhost:3000/comment/${this.postId}`, {
+					//.get(`http://localhost:3000/comment/${this.postId}`, {
+					.get(`${this.$baseUrl}/comment/${this.postId}`, {
 						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
 					})
 					.then((res) => {
@@ -111,7 +113,8 @@
 				let commentId = parseInt(e.path[3].attributes[1].value);
 				console.log(commentId);
 				axios
-					.delete(`http://localhost:3000/comment/${commentId}`, {
+					//.delete(`http://localhost:3000/comment/${commentId}`, {
+					.delete(`${this.$baseUrl}/comment/${commentId}`, {
 						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
 					})
 					.then((resp) => {

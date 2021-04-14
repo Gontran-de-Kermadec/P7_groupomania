@@ -47,6 +47,7 @@
 	import Header from "./Header";
 	import SendPost from "./SendPost.vue";
 	const axios = require("axios");
+	import axiosUrl from "../../axios_config";
 	export default {
 		name: "Profil",
 		components: {
@@ -87,8 +88,11 @@
 				window.location = "http://localhost:8080/";
 			},
 			getMyPosts() {
-				axios
-					.get(`http://localhost:3000/${this.$userInfo.userId}`, {
+				console.log(this.$getBaseUrl);
+				//axios
+				axiosUrl
+					//.get(`http://localhost:3000/${this.$userInfo.userId}`, {
+					.get(`${this.$userInfo.userId}`, {
 						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
 					})
 					.then((res) => {

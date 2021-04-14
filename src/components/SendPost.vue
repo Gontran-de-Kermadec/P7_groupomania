@@ -5,7 +5,6 @@
 		</button>
 		<transition name="flipinX">
 			<div class="modal_container" v-if="isModalOn">
-				<!-- <div class="overlay" @click="toggleModal"></div> -->
 				<div class="modal_card">
 					<span @click="toggleModal">X</span>
 					<p>Publiez quelque chose</p>
@@ -35,6 +34,7 @@
 </template>
 
 <script>
+	//import axiosUrl from "../../vue.config";
 	const axios = require("axios");
 	export default {
 		name: "SendPost",
@@ -47,19 +47,34 @@
 		},
 		methods: {
 			postData() {
-				axios({
-					method: "post",
-					url: "http://localhost:3000/",
-					data: {
-						getId: this.$userInfo.userId,
-						postName: this.$userInfo.name,
-						postContent: this.post,
-						postUrl: this.postUrl,
-					},
-					headers: {
-						Authorization: `Bearer ${this.$userInfo.token}`,
-					},
-				})
+				// axios({
+				// 	method: "post",
+				// 	url: "http://localhost:3000/",
+				// 	//url: axiosUrl,
+				// 	data: {
+				// 		getId: this.$userInfo.userId,
+				// 		postName: this.$userInfo.name,
+				// 		postContent: this.post,
+				// 		postUrl: this.postUrl,
+				// 	},
+				// 	headers: {
+				// 		Authorization: `Bearer ${this.$userInfo.token}`,
+				// 	},
+				// })
+				axios
+					.post(
+						//"http://localhost:3000/",
+						`${this.$baseUrl}`,
+						{
+							getId: this.$userInfo.userId,
+							postName: this.$userInfo.name,
+							postContent: this.post,
+							postUrl: this.postUrl,
+						},
+						{
+							headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+						}
+					)
 					.then((resp) => {
 						console.log(resp);
 						document.location.reload();

@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-//const mysql = require('mysql');
 const helmet = require('helmet');
 
 const app = express();
