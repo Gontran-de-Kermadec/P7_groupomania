@@ -33,8 +33,7 @@ exports.signup = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
-    //let RANDOM_TOKEN_SECRET = 'zGTNYHbegATm0k$wYprfQqmZifuDfLIv4m_CAMj3eBN6o6Zd7g9u';
-    console.log(process.env.RANDOM_TOKEN_SECRET);
+    //console.log(process.env.RANDOM_TOKEN_SECRET);
     let email = sanitize(req.body.email);
     let password = sanitize(req.body.password);
     dbConnect.query(`SELECT * FROM users WHERE email=?`,email, function(err, result) {
@@ -54,7 +53,6 @@ exports.login = (req, res, next) => {
                     admin: result[0].admin,
                     token: jwt.sign(
                         {userId: result[0].id}, 
-                        //RANDOM_TOKEN_SECRET,
                         process.env.RANDOM_TOKEN_SECRET,
                         { expiresIn: '12h'}
                     )
