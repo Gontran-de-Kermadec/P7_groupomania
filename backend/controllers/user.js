@@ -65,6 +65,22 @@ exports.login = (req, res, next) => {
         }
     })
 }
+//middleware pour recuperer l'id du user
+exports.getUserId = (req, res, next) => {
+    //console.log('ID:', req.params.jwt_token);
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
+    //console.log(decodedToken);
+    const userId = decodedToken.userId;
+    dbConnect.query(`SELECT id,admin FROM users WHERE id=?`, userId, function(err, result) {
+        if(err) throw err;
+        if(result) {
+            console.log(result);
+            //res.status(200).json(result[0].id);
+            res.status(200).json({userId: result[0].id, admin: result[0].admin});
+        }
+    });
+}
 
 //middleware qui supprime un compte mais avant annule les likes de l'utilisateur
 exports.deleteUser = (req, res, next) => {

@@ -88,6 +88,9 @@
 				}
 			},
 		},
+		beforeMount() {
+			this.$store.dispatch("getUserId");
+		},
 		mounted() {
 			this.getAllPosts();
 		},

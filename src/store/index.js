@@ -12,6 +12,8 @@ export default new Vuex.Store({
     loggedIn: false,
     allPosts: [],
     //uri: apiUrl
+    userId: '',
+    admin: 0,
   },
   mutations: {
     CHANGE_LOG(state) {
@@ -21,11 +23,25 @@ export default new Vuex.Store({
         state.loggedIn = false;
       }
     },
+    GET_USER_ID(state, data) {
+      state.userId = data.userId;
+      state.admin = data.admin;
+      console.log(state.userId);
+    },
     GET_ALL_POSTS(state, data) {
       state.allPosts = data;
     }
   },
   actions: {
+    getUserId({commit}) {
+      axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      .then((res) => {
+        //console.log(res.data);
+        commit('GET_USER_ID', res.data);
+        //return res.data;
+      })
+      .catch((error) => console.log(error));
+    },
     getAllPosts(context) {
       axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       .then((res) => {
@@ -34,6 +50,4 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
   },
-  modules: {
-  }
 })
