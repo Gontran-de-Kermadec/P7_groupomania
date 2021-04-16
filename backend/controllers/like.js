@@ -9,7 +9,6 @@ exports.likePost = (req, res, next) => {
             if(err) throw err;
             console.log(result);
             if(result) {
-                //dbConnect.query(`UPDATE post SET likes= likes + 1 WHERE id=${req.params.id}`, function(err, result) {
                 dbConnect.query(`UPDATE post SET likes= likes + 1 WHERE id=?`, req.params.id, (err, result) => {
                     if(err) throw err;
                     if(result) {

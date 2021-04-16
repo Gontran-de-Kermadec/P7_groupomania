@@ -7,12 +7,11 @@ exports.comment = (req, res, next) => {
     let postId = parseInt(sanitize(req.body.postId));
     let commentName = sanitize(req.body.commentName);
     let content = sanitize(req.body.commentContent);
-    console.log(content);
-    //let data = [postId, content]
-    dbConnect.query(`INSERT INTO comments (userId, name, postId, comment) VALUES (${userId}, "${commentName}", "${postId}", "${content}")`, function(err, result) {
+    let data = [userId, `"${commentName}"`, postId, `"${content}"`]
+    //dbConnect.query(`INSERT INTO comments (userId, name, postId, comment) VALUES (${userId}, "${commentName}", "${postId}", "${content}")`, function(err, result) {
+    dbConnect.query(`INSERT INTO comments (userId, name, postId, comment) VALUES (${data})`, function(err, result) {
         if(err) throw err;
         if(result) {
-            //console.log(result);
             res.status(201).json({message: 'commentaire ajouté'});
         }
     });
