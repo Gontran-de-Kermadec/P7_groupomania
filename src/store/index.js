@@ -22,6 +22,9 @@ export default new Vuex.Store({
     postUrl: "",
     updatePost: "",
 		updateUrl: "",
+    //section commentaire
+    allComments: [],
+    commentContent: "",
   },
   mutations: {
     CHANGE_LOG(state) {
@@ -51,7 +54,15 @@ export default new Vuex.Store({
       state.updatePost = payload.updatePost;
       state.updateUrl = payload.updateUrl;
       console.log(state.updatePost);
-    }
+    },
+    //section commentaire
+    GET_ALL_COMMENTS(state, data) {
+      state.allComments = data;
+    },
+    SEND_COMMENT(state, payload) {
+      state.commentContent = payload;
+      console.log(state.commentContent);
+    },
   },
   actions: {
     getUserId({commit}) {
@@ -111,6 +122,51 @@ export default new Vuex.Store({
           document.location.reload();
         })
         .catch((error) => console.log(error));
+    },
+    //section commentaire
+    getAllComments(context) {
+      axios
+        .get(`http://localhost:3000/comment/${context.state.postId}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        })
+      //apiCallToken.get(`/comment/${context.state.postId}`)
+        .then((res) => {
+          console.log(res.data);
+          context.commit('GET_ALL_COMMENTS', res.data)
+        })
+        .catch((error) => console.log(error));
+    },
+    sendComment(context) {
+      console.log(context.state.userId);
+      console.log(context.state.postId);
+      console.log(context.state.commentContent);
+      axios.post("http://localhost:3000/comment", {
+              userId: context.state.userId,
+           commentName: userInfo.name,
+           postId: context.state.postId,
+           commentContent: context.state.commentContent
+      },
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}`}
+          }
+      )
+      .then((resp) => {
+        console.log(resp);
+        document.location.reload();
+      })
+      .catch((error) => console.log(error)); 
+    },
+    deleteComment(context, commentId) {
+      console.log(commentId);
+          axios
+            .delete(`http://localhost:3000/comment/${commentId}`, {
+              headers: { Authorization: `Bearer ${userInfo.token}` },
+            })
+            .then((resp) => {
+              console.log(resp);
+              document.location.reload();
+            })
+            .catch((error) => console.log(error));
     },
   },
 })

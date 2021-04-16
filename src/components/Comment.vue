@@ -26,7 +26,7 @@
 			<div class="comment_subcontainer">
 				<p>Commentaires</p>
 				<div
-					v-for="comment in comments"
+					v-for="comment in allComments"
 					:key="comment.id"
 					class="eachComment"
 					:itemid="comment.id"
@@ -59,69 +59,77 @@
 </template>
 
 <script>
-	const axios = require("axios");
+	//const axios = require("axios");
+	import { mapState } from "vuex";
 	export default {
 		name: "Comment",
-		props: {
-			postId: Number,
-		},
+		// props: {
+		// 	postId: Number,
+		// },
 		data() {
 			return {
 				post: "",
-				comments: [],
-				id: this.postId,
+				//comments: [],
+				//id: this.postId,
 				isModalOn: false,
-				userId: this.$userInfo.userId,
-				admin: this.$userInfo.admin,
+				//userId: this.$userInfo.userId,
+				//admin: this.$userInfo.admin,
 			};
+		},
+		computed: {
+			//...mapState(["isModalOn", "userId", "admin", "postId", "allComments"]),
+			...mapState(["userId", "admin", "postId", "allComments"]),
 		},
 		methods: {
 			sendComment() {
-				axios({
-					method: "post",
-					//url: "http://localhost:3000/comment",
-					url: `${this.$baseUrl}/comment`,
-					data: {
-						userId: this.$userInfo.userId,
-						commentName: this.$userInfo.name,
-						postId: this.id,
-						commentContent: this.post,
-					},
-					headers: {
-						Authorization: `Bearer ${this.$userInfo.token}`,
-					},
-				})
-					.then((resp) => {
-						console.log(resp);
-						document.location.reload();
-					})
-					.catch((error) => console.log(error));
+				this.$store.commit("SEND_COMMENT", this.post);
+				this.$store.dispatch("sendComment");
+				// axios({
+				// 	method: "post",
+				// 	//url: "http://localhost:3000/comment",
+				// 	url: `${this.$baseUrl}/comment`,
+				// 	data: {
+				// 		userId: this.$userInfo.userId,
+				// 		commentName: this.$userInfo.name,
+				// 		postId: this.id,
+				// 		commentContent: this.post,
+				// 	},
+				// 	headers: {
+				// 		Authorization: `Bearer ${this.$userInfo.token}`,
+				// 	},
+				// })
+				// 	.then((resp) => {
+				// 		console.log(resp);
+				// 		document.location.reload();
+				// 	})
+				// 	.catch((error) => console.log(error));
 			},
-			getComment() {
-				axios
-					//.get(`http://localhost:3000/comment/${this.postId}`, {
-					.get(`${this.$baseUrl}/comment/${this.postId}`, {
-						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					})
-					.then((res) => {
-						console.log(res.data);
-						this.comments = res.data;
-					})
-					.catch((error) => console.log(error));
-			},
+			// getComment() {
+			// 	axios
+			// 		//.get(`http://localhost:3000/comment/${this.postId}`, {
+			// 		.get(`${this.$baseUrl}/comment/${this.postId}`, {
+			// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+			// 		})
+			// 		.then((res) => {
+			// 			console.log(res.data);
+			// 			this.comments = res.data;
+			// 		})
+			// 		.catch((error) => console.log(error));
+			// },
 			deleteComment(e) {
 				let commentId = parseInt(e.path[3].attributes[1].value);
-				console.log(commentId);
-				axios
-					//.delete(`http://localhost:3000/comment/${commentId}`, {
-					.delete(`${this.$baseUrl}/comment/${commentId}`, {
-						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					})
-					.then((resp) => {
-						console.log(resp);
-						document.location.reload();
-					})
-					.catch((error) => console.log(error));
+				this.$store.dispatch("deleteComment", commentId);
+				// console.log(commentId);
+				// axios
+				// 	//.delete(`http://localhost:3000/comment/${commentId}`, {
+				// 	.delete(`${this.$baseUrl}/comment/${commentId}`, {
+				// 		headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+				// 	})
+				// 	.then((resp) => {
+				// 		console.log(resp);
+				// 		document.location.reload();
+				// 	})
+				// 	.catch((error) => console.log(error));
 			},
 			toggleModal() {
 				this.isModalOn = !this.isModalOn;
@@ -151,7 +159,8 @@
 			},
 		},
 		mounted() {
-			this.getComment();
+			this.$store.dispatch("getAllComments");
+			//this.getComment();
 		},
 	};
 </script>
