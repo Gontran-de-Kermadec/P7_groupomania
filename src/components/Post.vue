@@ -2,7 +2,7 @@
 	<div>
 		<Header />
 		<div class="flex_container">
-			<div v-for="post in posts" :key="post.id" class="eachPost">
+			<div v-for="post in singlePost" :key="post.id" class="eachPost">
 				<div class="post_header">
 					<p>
 						Publié par <span class="post_name">{{ post.name }}</span
@@ -29,7 +29,7 @@
 						<span>Supprimer</span>
 					</button>
 				</div>
-				<Vote :postId="id" />
+				<Vote :postId="postId" />
 			</div>
 		</div>
 		<!-- modal delete post -->
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 		</transition>
-		<Comment :post-id="id" class="leaveComment" />
+		<Comment :post-id="postId" class="leaveComment" />
 	</div>
 </template>
 
@@ -79,7 +79,7 @@
 	import Comment from "./Comment.vue";
 	import Vote from "./Vote.vue";
 	import { mapState } from "vuex";
-	const axios = require("axios");
+	//const axios = require("axios");
 	export default {
 		name: "Post",
 		components: {
@@ -90,10 +90,10 @@
 		data() {
 			return {
 				name: this.$userInfo.name,
-				userId: this.$userInfo.userId,
-				admin: this.$userInfo.admin,
-				posts: [],
-				id: parseInt(this.$route.params.id),
+				//userId: this.$userInfo.userId,
+				//admin: this.$userInfo.admin,
+				//posts: [],
+				postId: parseInt(this.$route.params.id),
 				isModalOn: false,
 				isUpdateModalOn: false,
 				isliked: "false",
@@ -102,56 +102,67 @@
 			};
 		},
 		computed: {
-			...mapState(["liked"]),
+			//...mapState(["liked", "isModalOn", "userId", "admin", "singlePost"]),
+			...mapState(["liked", "userId", "admin", "singlePost"]),
 		},
 		methods: {
-			getMyPost() {
-				let stringy = JSON.stringify({ like: this.liked, user: this.userId });
-				console.log(stringy);
-				axios
-					//.get(`http://localhost:3000/post/${this.id}`, {
-					.get(`${this.$baseUrl}/post/${this.id}`, {
-						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					})
-					.then((res) => {
-						console.log(res.data);
-						this.posts = res.data;
-					})
-					.catch((error) => console.log(error));
+			getOnePost() {
+				//let payload = this.postId;
+				this.$store.commit("GET_ONE_POST", this.postId);
+				this.$store.dispatch("getOnePost");
+				// let stringy = JSON.stringify({ like: this.liked, user: this.userId });
+				// console.log(stringy);
+				// axios
+				// 	//.get(`http://localhost:3000/post/${this.id}`, {
+				// 	.get(`${this.$baseUrl}/post/${this.id}`, {
+				// 		headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+				// 	})
+				// 	.then((res) => {
+				// 		console.log(res.data);
+				// 		this.posts = res.data;
+				// 	})
+				// 	.catch((error) => console.log(error));
 			},
 			deletePost() {
-				axios
-					.delete(
-						//`http://localhost:3000/post/${this.id}`,
-						`${this.$baseUrl}/post/${this.id}`,
-						{
-							headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-						}
-					)
-					.then((resp) => {
-						console.log(resp);
-						this.$router.push("/home");
-					})
-					.catch((error) => console.log(error));
+				this.$store.dispatch("deletePost");
+				// axios
+				// 	.delete(
+				// 		//`http://localhost:3000/post/${this.id}`,
+				// 		`${this.$baseUrl}/post/${this.id}`,
+				// 		{
+				// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+				// 		}
+				// 	)
+				// 	.then((resp) => {
+				// 		console.log(resp);
+				// 		this.$router.push("/home");
+				// 	})
+				// 	.catch((error) => console.log(error));
 			},
 			sendUpdatePost() {
-				axios
-					.put(
-						//`http://localhost:3000/post/${this.id}`,
-						`${this.$baseUrl}/post/${this.id}`,
-						{
-							postContent: this.updatePost,
-							postUrl: this.updateUrl,
-						},
-						{
-							headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-						}
-					)
-					.then((resp) => {
-						console.log(resp);
-						document.location.reload();
-					})
-					.catch((error) => console.log(error));
+				let payload = {
+					updatePost: this.updatePost,
+					updateUrl: this.updateUrl,
+				};
+				this.$store.commit("UPDATE_POST", payload);
+				this.$store.dispatch("sendUpdatePost");
+				// axios
+				// 	.put(
+				// 		//`http://localhost:3000/post/${this.id}`,
+				// 		`${this.$baseUrl}/post/${this.id}`,
+				// 		{
+				// 			postContent: this.updatePost,
+				// 			postUrl: this.updateUrl,
+				// 		},
+				// 		{
+				// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+				// 		}
+				// 	)
+				// 	.then((resp) => {
+				// 		console.log(resp);
+				// 		document.location.reload();
+				// 	})
+				// 	.catch((error) => console.log(error));
 			},
 			dateFormat(date) {
 				const event = new Date(date);
@@ -183,8 +194,9 @@
 				this.isUpdateModalOn = !this.isUpdateModalOn;
 			},
 		},
-		mounted() {
-			this.getMyPost();
+		beforeMount() {
+			this.$store.dispatch("getUserId");
+			this.getOnePost();
 		},
 	};
 </script>
