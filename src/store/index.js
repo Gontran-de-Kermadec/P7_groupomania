@@ -42,6 +42,11 @@ export default new Vuex.Store({
     GET_ALL_POSTS(state, data) {
       state.allPosts = data;
     },
+    SEND_POST(state, payload) {
+      state.postContent = payload.post;
+      state.postUrl = payload.postUrl;
+      console.log(state.postContent);
+    },
     GET_ONE_POST(state, data) {
       state.postId = data;
 			console.log(state.postId);
@@ -81,6 +86,25 @@ export default new Vuex.Store({
         context.commit('GET_ALL_POSTS', res.data)
       })
       .catch((error) => console.log(error));
+    },
+    sendPost(context) {
+      console.log(context.state.postUrl);
+      console.log(userInfo.name);
+      axios.post("http://localhost:3000/", {
+        userId: context.state.userId,
+        postName: userInfo.name,
+        postContent: context.state.postContent,
+        postUrl: context.state.postUrl,
+      }, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      })
+        .then((resp) => {
+          console.log(resp);
+          document.location.reload();
+        })
+        .catch((error) => console.log(error));
     },
     getOnePost({commit, state}) {
       console.log(state.postId);

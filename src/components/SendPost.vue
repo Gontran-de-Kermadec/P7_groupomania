@@ -8,7 +8,7 @@
 				<div class="modal_card">
 					<span @click="toggleModal">X</span>
 					<p>Publiez quelque chose</p>
-					<form action="" method="post" @submit.prevent="postData()">
+					<form action="" method="post" @submit.prevent="sendPost()">
 						<textarea
 							type="text"
 							name="post"
@@ -35,7 +35,8 @@
 
 <script>
 	//import axiosUrl from "../../vue.config";
-	const axios = require("axios");
+	//const axios = require("axios");
+	import { mapState } from "vuex";
 	export default {
 		name: "SendPost",
 		data() {
@@ -45,8 +46,11 @@
 				isModalOn: false,
 			};
 		},
+		computed: {
+			...mapState(["userId"]),
+		},
 		methods: {
-			postData() {
+			sendPost() {
 				// axios({
 				// 	method: "post",
 				// 	url: "http://localhost:3000/",
@@ -61,25 +65,29 @@
 				// 		Authorization: `Bearer ${this.$userInfo.token}`,
 				// 	},
 				// })
-				axios
-					.post(
-						//"http://localhost:3000/",
-						`${this.$baseUrl}`,
-						{
-							getId: this.$userInfo.userId,
-							postName: this.$userInfo.name,
-							postContent: this.post,
-							postUrl: this.postUrl,
-						},
-						{
-							headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-						}
-					)
-					.then((resp) => {
-						console.log(resp);
-						document.location.reload();
-					})
-					.catch((error) => console.log(error));
+				let payload = { post: this.post, url: this.postUrl };
+				this.$store.commit("SEND_POST", payload);
+				this.$store.dispatch("sendPost");
+				// axios
+
+				// 	.post(
+				// 		//"http://localhost:3000/",
+				// 		`${this.$baseUrl}`,
+				// 		{
+				// 			getId: this.$userInfo.userId,
+				// 			postName: this.$userInfo.name,
+				// 			postContent: this.post,
+				// 			postUrl: this.postUrl,
+				// 		},
+				// 		{
+				// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+				// 		}
+				// 	)
+				// 	.then((resp) => {
+				// 		console.log(resp);
+				// 		document.location.reload();
+				// 	})
+				// 	.catch((error) => console.log(error));
 			},
 			toggleModal() {
 				this.isModalOn = !this.isModalOn;

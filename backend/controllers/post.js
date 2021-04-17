@@ -3,13 +3,14 @@ const sanitize = require('sanitize-html');
 
 //Créer une publication
 exports.post = (req, res, next) => {
-    let postId = parseInt(sanitize(req.body.getId));
+    let userId = parseInt(sanitize(req.body.userId));
     let postName = sanitize(req.body.postName);
     let postUrl = sanitize(req.body.postUrl);
     let content = sanitize(req.body.postContent);
-    let data = [postId, `"${postName}"`, `"${content}"`];
-    let dataUrl = [postId, `"${postName}"`, `"${content}"`, `"${postUrl}"`];
-    if(postUrl === '') {
+    let data = [userId, `"${postName}"`, `"${content}"`];
+    let dataUrl = [userId, `"${postName}"`, `"${content}"`, `"${postUrl}"`];
+    //if(postUrl === '') {
+    if(postUrl === 'undefined') {
         //dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${postId}, "${postName}", "${content}")`, function(err, result) {
         dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${data})`, function(err, result) {
             if(err) throw err;
