@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '../router'
+import {apiCallToken} from '../axios'
 //import apiUrl from '../../axios_config'
-const axios = require('axios');
+//const axios = require('axios');
 
 let userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
@@ -58,7 +59,6 @@ export default new Vuex.Store({
     },
     GET_MY_POSTS(state, data) {
       state.myPosts = data;
-      //localStorage.setItem("postInfo", JSON.stringify(data));
 			console.log(state.myPosts);
     },
     GET_ONE_POST(state, data) {
@@ -127,7 +127,8 @@ export default new Vuex.Store({
   actions: {
     //section user
     getUserId({commit}) {
-      axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      //axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      apiCallToken.get(`/${userInfo.token}`)
       .then((res) => {
         //console.log(res.data);
         commit('GET_USER_ID', res.data);
@@ -135,21 +136,19 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
     deleteUser() {
-      axios
-        //.delete(`http://localhost:3000/${context.state.userId}`, {
-        .delete(`http://localhost:3000/${userInfo.token}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
-        .then((resp) => {
-          console.log(resp);
-        })
-        .catch((error) => console.log(error));
+      //axios.delete(`http://localhost:3000/${userInfo.token}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      apiCallToken.delete(`/${userInfo.token}`)
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((error) => console.log(error));
       localStorage.removeItem("userInfo");
       window.location = "http://localhost:8080/";
     },
     //section post
     getAllPosts(context) {
-      axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      //axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      apiCallToken.get('/')
       .then((res) => {
         context.commit('GET_ALL_POSTS', res.data)
       })
@@ -157,16 +156,21 @@ export default new Vuex.Store({
     },
     sendPost(context) {
       console.log(context.state.postUrl);
-      console.log(userInfo.name);
-      axios.post("http://localhost:3000/", {
+      // axios.post("http://localhost:3000/", {
+      //   userId: context.state.userId,
+      //   postName: userInfo.name,
+      //   postContent: context.state.postContent,
+      //   postUrl: context.state.postUrl,
+      // }, {
+      //   headers: {
+      //     Authorization: `Bearer ${userInfo.token}`
+      //   }
+      // })
+      apiCallToken.post("/", {
         userId: context.state.userId,
         postName: userInfo.name,
         postContent: context.state.postContent,
         postUrl: context.state.postUrl,
-      }, {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`
-        }
       })
         .then((resp) => {
           console.log(resp);
@@ -176,16 +180,13 @@ export default new Vuex.Store({
     },
     getMyPosts(context) {
       console.log(context);
-      axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      //axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      apiCallToken.get(`/${userInfo.token}`)
       .then((res) => {
         console.log(res.data.userId);
         let userId = res.data.userId;
-     	  axios // eslint-disable-line no-mixed-spaces-and-tabs
-				// 	//.get(`http://localhost:3000/${this.userId}/post`, {
-				// 	//.get(`http://localhost:3000/${context.state.userId}/post`, {
-					.get(`http://localhost:3000/${userId}/post`, {
-						headers: { Authorization: `Bearer ${userInfo.token}` },
-					})
+        //axios.get(`http://localhost:3000/${userId}/post`, 
+        apiCallToken.get(`/${userId}/post`)
           .then((res) => {
             console.log(res.data);
             context.commit('GET_MY_POSTS', res.data)
@@ -195,40 +196,38 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
     getOnePost({commit, state}) {
-      console.log(state.postId);
-      axios
-      .get(`http://localhost:3000/post/${state.postId}`, {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      })
+      //axios.get(`http://localhost:3000/post/${state.postId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      apiCallToken.get(`/post/${state.postId}`)
       .then((res) => {
-        console.log(res.data);
         commit('SINGLE_POST', res.data);
       })
       .catch((error) => console.log(error));
     },
     deletePost(context) {
-      axios
-        .delete(`http://localhost:3000/post/${context.state.postId}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
-        .then((resp) => {
-          console.log(resp);
-          router.push("/home");
-        })
-        .catch((error) => console.log(error));
+      //axios.delete(`http://localhost:3000/post/${context.state.postId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      apiCallToken.delete(`/post/${context.state.postId}`)
+      .then((resp) => {
+        console.log(resp);
+        router.push("/home");
+      })
+      .catch((error) => console.log(error));
     },
     sendUpdatePost(context) {
-      axios
-        .put(
-          `http://localhost:3000/post/${context.state.postId}`,
-          {
-            postContent: context.state.updatePost,
-            postUrl: context.state.updateUrl
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
+      // axios
+      //   .put(
+      //     `http://localhost:3000/post/${context.state.postId}`,
+      //     {
+      //       postContent: context.state.updatePost,
+      //       postUrl: context.state.updateUrl
+      //     },
+      //     {
+      //       headers: { Authorization: `Bearer ${userInfo.token}` },
+      //     }
+      //   )
+        apiCallToken.put(`/${context.state.postId}`, {
+          postContent: context.state.updatePost,
+          postUrl: context.state.updateUrl
+        })
         .then((resp) => {
           console.log(resp);
           document.location.reload();
@@ -237,11 +236,8 @@ export default new Vuex.Store({
     },
     //section commentaire
     getAllComments(context) {
-      axios
-        .get(`http://localhost:3000/comment/${context.state.postId}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
-      //apiCallToken.get(`/comment/${context.state.postId}`)
+      //axios.get(`http://localhost:3000/comment/${context.state.postId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      apiCallToken.get(`/comment/${context.state.postId}`)
         .then((res) => {
           console.log(res.data);
           context.commit('GET_ALL_COMMENTS', res.data)
@@ -252,16 +248,22 @@ export default new Vuex.Store({
       console.log(context.state.userId);
       console.log(context.state.postId);
       console.log(context.state.commentContent);
-      axios.post("http://localhost:3000/comment", {
-              userId: context.state.userId,
-           commentName: userInfo.name,
-           postId: context.state.postId,
-           commentContent: context.state.commentContent
-      },
-      {
-        headers: { Authorization: `Bearer ${userInfo.token}`}
-          }
-      )
+      // axios.post("http://localhost:3000/comment", {
+      //   userId: context.state.userId,
+      //   commentName: userInfo.name,
+      //   postId: context.state.postId,
+      //   commentContent: context.state.commentContent
+      // },
+      // {
+      //   headers: { Authorization: `Bearer ${userInfo.token}`}
+      //     }
+      // )
+      apiCallToken.post("/comment", {
+        userId: context.state.userId,
+        commentName: userInfo.name,
+        postId: context.state.postId,
+        commentContent: context.state.commentContent
+      })
       .then((resp) => {
         console.log(resp);
         document.location.reload();
@@ -270,23 +272,18 @@ export default new Vuex.Store({
     },
     deleteComment(context, commentId) {
       console.log(commentId);
-          axios
-            .delete(`http://localhost:3000/comment/${commentId}`, {
-              headers: { Authorization: `Bearer ${userInfo.token}` },
-            })
-            .then((resp) => {
-              console.log(resp);
-              document.location.reload();
-            })
-            .catch((error) => console.log(error));
+          //axios.delete(`http://localhost:3000/comment/${commentId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      apiCallToken.delete(`/comment/${commentId}`)
+        .then((resp) => {
+          console.log(resp);
+          document.location.reload();
+        })
+        .catch((error) => console.log(error));
     },
     //section vote
     getVoteCount(context) {
-      console.log(context.state.postId);
-      axios
-        .get(`http://localhost:3000/post/${context.state.postId}/like`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
+      //axios.get(`http://localhost:3000/post/${context.state.postId}/like`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      apiCallToken.get(`/post/${context.state.postId}/like`)
         .then((res) => {
           console.log(res.data.likes);
           context.commit('GET_VOTE_COUNT', res.data)
@@ -296,56 +293,53 @@ export default new Vuex.Store({
     sendVoteDb(context, payload) {
       console.log(typeof payload);
       if(payload === 'like') {
-       axios
-       .post(
-         `http://localhost:3000/post/${context.state.postId}/${payload}`,
-         {
-           userId: context.state.userId,
-           like_dislike: context.state.islike,
-         },
-         {
-           headers: { Authorization: `Bearer ${userInfo.token}` },
-         }
-       )
-       .then((resp) => {
+      //  axios.post(`http://localhost:3000/post/${context.state.postId}/${payload}`,
+      //    {
+      //      userId: context.state.userId,
+      //      like_dislike: context.state.islike,
+      //    },
+      //    {
+      //      headers: { Authorization: `Bearer ${userInfo.token}` },
+      //    }
+      //  )
+        apiCallToken.post(`/post/${context.state.postId}/${payload}`, {
+          userId: context.state.userId,
+          like_dislike: context.state.islike,
+        })
+        .then((resp) => {
          console.log(resp);
-       })
-       .catch((error) => console.log(error));
-      } else if (payload === 'dislike') {
-       axios
-         .post(
-           `http://localhost:3000/post/${context.state.postId}/${payload}`,
-           {
-             userId: context.state.userId,
-             like_dislike: context.state.isdislike,
-           },
-           {
-             headers: { Authorization: `Bearer ${userInfo.token}` },
-           }
-         )
-         .then((resp) => {
-           console.log(resp);
          })
-         .catch((error) => console.log(error));
+        .catch((error) => console.log(error));
+      } else if (payload === 'dislike') {
+      //  axios
+      //    .post(
+      //      `http://localhost:3000/post/${context.state.postId}/${payload}`,
+      //      {
+      //        userId: context.state.userId,
+      //        like_dislike: context.state.isdislike,
+      //      },
+      //      {
+      //        headers: { Authorization: `Bearer ${userInfo.token}` },
+      //      }
+      //    )
+        apiCallToken.post(`/post/${context.state.postId}/${payload}`, {
+          userId: context.state.userId,
+          like_dislike: context.state.isdislike,
+        })
+        .then((resp) => {
+          console.log(resp);
+        })
+        .catch((error) => console.log(error));
       }
      },
      getVoteValue(context) {
-      //let id = await context.dispatch('getUserId');
-      //console.log(id);
-      console.log(context.state.userId);
-      //context.commit('GET_VOTE', data)
-      axios
-        .get(`http://localhost:3000/post/${context.state.postId}/like/${context.state.userId}`, {
-        //.get(`${this.$baseUrl}/post/${this.id}/like/${this.userId}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
+      //axios.get(`http://localhost:3000/post/${context.state.postId}/like/${context.state.userId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      apiCallToken.get(`/post/${context.state.postId}/like/${context.state.userId}`)
         .then((res) => {
           console.log(res.data);
           context.commit('GET_VOTE', res.data)
         })
+    },
   },
-  },
-  
-  
- 
+
 })

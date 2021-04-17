@@ -57,7 +57,7 @@ exports.dislikePost = (req, res, next) => {
             }  
         });
     } else if (req.body.like_dislike == 'false') {
-        console.log(req.body.like_dislike);
+        console.log(req.body.like_dislike + 'appui sur false');
         //dbConnect.query(`DELETE FROM opinion WHERE opinion_userId=${req.body.userId} AND opinion_postId=${req.params.id}`, (err, result) => {
         dbConnect.query(`DELETE FROM opinion WHERE opinion_userId=? AND opinion_postId=?`, data, (err, result) => {
             if(err) throw err;

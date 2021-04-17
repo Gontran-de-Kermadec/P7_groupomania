@@ -2,7 +2,6 @@
 	<div>
 		<img src="../assets/logos/icon-above-font.svg" alt="Logo entreprise" />
 		<div v-if="loggedIn" class="home">
-			<!-- <router-link to="/home">Page d'accueil</router-link> -->
 			<router-link to="/home" aria-label="page d'accueil"
 				><i class="fas fa-home"></i
 			></router-link>
@@ -11,7 +10,6 @@
 			></router-link>
 		</div>
 		<div v-if="loggedIn" class="logout">
-			<!-- <button @click="disconnect">Deconnexion</button> -->
 			<p @click="logOut">Déconnexion</p>
 		</div>
 		<h1 v-if="loggedIn">
@@ -21,15 +19,9 @@
 </template>
 
 <script>
-	console.log(localStorage.getItem("userInfo"));
 	import { mapState } from "vuex";
 	export default {
 		name: "Header",
-		// data() {
-		//     return {
-		//         loggedIn: true
-		//     }
-		// },
 		computed: {
 			...mapState(["loggedIn"]),
 		},
