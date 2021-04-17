@@ -11,11 +11,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loggedIn: false,
-    allPosts: [],
     //uri: apiUrl
     userId: '',
     admin: 0,
     //section post
+    allPosts: [],
+    myPosts: [],
     postId: '',
     singlePost: [],
     postContent: "",
@@ -47,6 +48,11 @@ export default new Vuex.Store({
       state.postUrl = payload.postUrl;
       console.log(state.postContent);
     },
+    GET_MY_POSTS(state, data) {
+      state.myPosts = data;
+      //localStorage.setItem("postInfo", JSON.stringify(data));
+			console.log(state.myPosts);
+    },
     GET_ONE_POST(state, data) {
       state.postId = data;
 			console.log(state.postId);
@@ -70,6 +76,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    //section user
     getUserId({commit}) {
       axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       .then((res) => {
@@ -78,6 +85,19 @@ export default new Vuex.Store({
         //return res.data;
       })
       .catch((error) => console.log(error));
+    },
+    deleteUser() {
+      axios
+        //.delete(`http://localhost:3000/${context.state.userId}`, {
+        .delete(`http://localhost:3000/${userInfo.token}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        })
+        .then((resp) => {
+          console.log(resp);
+        })
+        .catch((error) => console.log(error));
+      localStorage.removeItem("userInfo");
+      window.location = "http://localhost:8080/";
     },
     //section post
     getAllPosts(context) {
@@ -105,6 +125,26 @@ export default new Vuex.Store({
           document.location.reload();
         })
         .catch((error) => console.log(error));
+    },
+    getMyPosts(context) {
+      console.log(context);
+      axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
+      .then((res) => {
+        console.log(res.data.userId);
+        let userId = res.data.userId;
+     	  axios // eslint-disable-line no-mixed-spaces-and-tabs
+				// 	//.get(`http://localhost:3000/${this.userId}/post`, {
+				// 	//.get(`http://localhost:3000/${context.state.userId}/post`, {
+					.get(`http://localhost:3000/${userId}/post`, {
+						headers: { Authorization: `Bearer ${userInfo.token}` },
+					})
+          .then((res) => {
+            console.log(res.data);
+            context.commit('GET_MY_POSTS', res.data)
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
     },
     getOnePost({commit, state}) {
       console.log(state.postId);

@@ -6,7 +6,7 @@ const auth = require('../middlewares/auth');
 router.get('/:jwt_token', auth, userCtrl.getUserId);
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.delete('/:id', userCtrl.deleteUser);
+router.delete('/:token', auth, userCtrl.deleteUser);
 
 
 module.exports = router;

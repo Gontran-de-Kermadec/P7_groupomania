@@ -43,6 +43,7 @@ exports.getAllPosts = (req, res, next) => {
 
 //Obtenir les posts d'un seul utilisateur
 exports.getMyPosts = (req, res, next) => {
+    console.log(req.params.id);
     dbConnect.query(`SELECT * FROM post WHERE userId=? ORDER BY postDate DESC`, req.params.id, function(err, result) {
         if(err) throw err;
         if(result) {
