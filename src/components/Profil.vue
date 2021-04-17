@@ -46,8 +46,6 @@
 <script>
 	import Header from "./Header";
 	import SendPost from "./SendPost.vue";
-	//const axios = require("axios");
-	//import axiosUrl from "../../axios_config";
 	import { mapState } from "vuex";
 	export default {
 		name: "Profil",
@@ -58,56 +56,17 @@
 		data() {
 			return {
 				name: this.$userInfo.name,
-				//posts: [],
 				isModalOn: false,
 			};
 		},
 		computed: {
 			//...mapState(["isModalOn", "userId", "myPosts"]),
-			...mapState(["userId", "myPosts"]),
+			...mapState(["myPosts"]),
 		},
 		methods: {
-			// deletePost() {
-			// 	for (const { id: n } of this.posts) {
-			// 		console.log(n);
-			// 		axios
-			// 			.delete(`http://localhost:3000/post/${n}`, {
-			// 				headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-			// 			})
-			// 			.then((resp) => {
-			// 				console.log(resp);
-			// 			})
-			// 			.catch((error) => console.log(error));
-			// 	}
-			// },
 			deleteUser() {
 				this.$store.dispatch("deleteUser");
-				// axios
-				// 	.delete(`http://localhost:3000/${this.$userInfo.userId}`, {
-				// 		headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-				// 	})
-				// 	.then((resp) => {
-				// 		console.log(resp);
-				// 	})
-				// 	.catch((error) => console.log(error));
-				// localStorage.removeItem("userInfo");
-				// window.location = "http://localhost:8080/";
 			},
-			// getMyPosts() {
-			// 	console.log(this.$getBaseUrl);
-			// 	//axios
-			// 	axiosUrl
-			// 		//.get(`http://localhost:3000/${this.$userInfo.userId}`, {
-			// 		.get(`${this.$userInfo.userId}`, {
-			// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-			// 		})
-			// 		.then((res) => {
-			// 			console.log(res.data[0]);
-			// 			this.posts = res.data;
-			// 			localStorage.setItem("postInfo", JSON.stringify(res.data));
-			// 		})
-			// 		.catch((error) => console.log(error));
-			// },
 			dateFormat(date) {
 				const event = new Date(date);
 				const options = {
@@ -137,7 +96,6 @@
 			},
 		},
 		mounted() {
-			//this.getMyPosts();
 			this.$store.dispatch("getMyPosts");
 		},
 	};

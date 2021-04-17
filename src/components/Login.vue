@@ -25,7 +25,6 @@
 </template>
 
 <script>
-	//const axios = require("axios");
 	import { apiCall } from "../axios";
 	export default {
 		name: "Login",
@@ -45,15 +44,6 @@
 			postLogin() {
 				let regexEmail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
 				if (regexEmail.test(this.email)) {
-					// axios({
-					// 	method: "post",
-					// 	//url: "http://localhost:3000/login/",
-					// 	url: `${this.$baseUrl}/login/`,
-					// 	data: {
-					// 		email: this.email,
-					// 		password: this.password,
-					// 	},
-					// })
 					apiCall
 						.post("/login/", {
 							email: this.email,

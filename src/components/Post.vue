@@ -90,54 +90,24 @@
 		data() {
 			return {
 				name: this.$userInfo.name,
-				//userId: this.$userInfo.userId,
-				//admin: this.$userInfo.admin,
-				//posts: [],
 				postId: parseInt(this.$route.params.id),
 				isModalOn: false,
 				isUpdateModalOn: false,
-				isliked: "false",
 				updatePost: "",
 				updateUrl: "",
 			};
 		},
 		computed: {
-			//...mapState(["liked", "isModalOn", "userId", "admin", "singlePost"]),
-			...mapState(["liked", "userId", "admin", "singlePost"]),
+			//...mapState(["isModalOn", "userId", "admin", "singlePost"]),
+			...mapState(["userId", "admin", "singlePost"]),
 		},
 		methods: {
 			getOnePost() {
-				//let payload = this.postId;
 				this.$store.commit("GET_ONE_POST", this.postId);
 				this.$store.dispatch("getOnePost");
-				// let stringy = JSON.stringify({ like: this.liked, user: this.userId });
-				// console.log(stringy);
-				// axios
-				// 	//.get(`http://localhost:3000/post/${this.id}`, {
-				// 	.get(`${this.$baseUrl}/post/${this.id}`, {
-				// 		headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-				// 	})
-				// 	.then((res) => {
-				// 		console.log(res.data);
-				// 		this.posts = res.data;
-				// 	})
-				// 	.catch((error) => console.log(error));
 			},
 			deletePost() {
 				this.$store.dispatch("deletePost");
-				// axios
-				// 	.delete(
-				// 		//`http://localhost:3000/post/${this.id}`,
-				// 		`${this.$baseUrl}/post/${this.id}`,
-				// 		{
-				// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-				// 		}
-				// 	)
-				// 	.then((resp) => {
-				// 		console.log(resp);
-				// 		this.$router.push("/home");
-				// 	})
-				// 	.catch((error) => console.log(error));
 			},
 			sendUpdatePost() {
 				let payload = {
@@ -146,23 +116,6 @@
 				};
 				this.$store.commit("UPDATE_POST", payload);
 				this.$store.dispatch("sendUpdatePost");
-				// axios
-				// 	.put(
-				// 		//`http://localhost:3000/post/${this.id}`,
-				// 		`${this.$baseUrl}/post/${this.id}`,
-				// 		{
-				// 			postContent: this.updatePost,
-				// 			postUrl: this.updateUrl,
-				// 		},
-				// 		{
-				// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-				// 		}
-				// 	)
-				// 	.then((resp) => {
-				// 		console.log(resp);
-				// 		document.location.reload();
-				// 	})
-				// 	.catch((error) => console.log(error));
 			},
 			dateFormat(date) {
 				const event = new Date(date);

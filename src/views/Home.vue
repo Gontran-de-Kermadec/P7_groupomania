@@ -46,11 +46,6 @@
 			SendPost,
 			SearchBar,
 		},
-		data() {
-			return {
-				isModalOn: false,
-			};
-		},
 		computed: {
 			...mapState(["allPosts"]),
 		},
@@ -58,9 +53,6 @@
 			getStorage() {
 				let getId = JSON.parse(localStorage.getItem("userInfo"));
 				return getId.name;
-			},
-			getAllPosts() {
-				this.$store.dispatch("getAllPosts");
 			},
 			dateFormat(date) {
 				const event = new Date(date);
@@ -92,7 +84,7 @@
 			this.$store.dispatch("getUserId");
 		},
 		mounted() {
-			this.getAllPosts();
+			this.$store.dispatch("getAllPosts");
 		},
 	};
 </script>

@@ -80,13 +80,11 @@ export default new Vuex.Store({
     },
     SEND_COMMENT(state, payload) {
       state.commentContent = payload;
-      console.log(state.commentContent);
     },
     //section vote
     GET_VOTE_COUNT(state, data) {
       state.likeCounter = data.likes;
       state.dislikeCounter = data.dislikes;
-      console.log(state.likeCounter);
     },
     ADD_LIKE_POST(state) {
       state.islike = "true";
@@ -127,16 +125,13 @@ export default new Vuex.Store({
   actions: {
     //section user
     getUserId({commit}) {
-      //axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       apiCallToken.get(`/${userInfo.token}`)
       .then((res) => {
-        //console.log(res.data);
         commit('GET_USER_ID', res.data);
       })
       .catch((error) => console.log(error));
     },
     deleteUser() {
-      //axios.delete(`http://localhost:3000/${userInfo.token}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
       apiCallToken.delete(`/${userInfo.token}`)
       .then((resp) => {
         console.log(resp);
@@ -147,7 +142,6 @@ export default new Vuex.Store({
     },
     //section post
     getAllPosts(context) {
-      //axios.get('http://localhost:3000/', { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       apiCallToken.get('/')
       .then((res) => {
         context.commit('GET_ALL_POSTS', res.data)
@@ -155,17 +149,6 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
     sendPost(context) {
-      console.log(context.state.postUrl);
-      // axios.post("http://localhost:3000/", {
-      //   userId: context.state.userId,
-      //   postName: userInfo.name,
-      //   postContent: context.state.postContent,
-      //   postUrl: context.state.postUrl,
-      // }, {
-      //   headers: {
-      //     Authorization: `Bearer ${userInfo.token}`
-      //   }
-      // })
       apiCallToken.post("/", {
         userId: context.state.userId,
         postName: userInfo.name,
@@ -179,16 +162,11 @@ export default new Vuex.Store({
         .catch((error) => console.log(error));
     },
     getMyPosts(context) {
-      console.log(context);
-      //axios.get(`http://localhost:3000/${userInfo.token}`, { headers: {'Authorization': `Bearer ${userInfo.token}`}})
       apiCallToken.get(`/${userInfo.token}`)
       .then((res) => {
-        console.log(res.data.userId);
         let userId = res.data.userId;
-        //axios.get(`http://localhost:3000/${userId}/post`, 
         apiCallToken.get(`/${userId}/post`)
           .then((res) => {
-            console.log(res.data);
             context.commit('GET_MY_POSTS', res.data)
           })
           .catch((error) => console.log(error));
@@ -196,7 +174,6 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
     getOnePost({commit, state}) {
-      //axios.get(`http://localhost:3000/post/${state.postId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
       apiCallToken.get(`/post/${state.postId}`)
       .then((res) => {
         commit('SINGLE_POST', res.data);
@@ -204,7 +181,6 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
     deletePost(context) {
-      //axios.delete(`http://localhost:3000/post/${context.state.postId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
       apiCallToken.delete(`/post/${context.state.postId}`)
       .then((resp) => {
         console.log(resp);
@@ -213,18 +189,8 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
     sendUpdatePost(context) {
-      // axios
-      //   .put(
-      //     `http://localhost:3000/post/${context.state.postId}`,
-      //     {
-      //       postContent: context.state.updatePost,
-      //       postUrl: context.state.updateUrl
-      //     },
-      //     {
-      //       headers: { Authorization: `Bearer ${userInfo.token}` },
-      //     }
-      //   )
-        apiCallToken.put(`/${context.state.postId}`, {
+      console.log(context.state.updateUrl);
+        apiCallToken.put(`/post/${context.state.postId}`, {
           postContent: context.state.updatePost,
           postUrl: context.state.updateUrl
         })
@@ -236,28 +202,13 @@ export default new Vuex.Store({
     },
     //section commentaire
     getAllComments(context) {
-      //axios.get(`http://localhost:3000/comment/${context.state.postId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
       apiCallToken.get(`/comment/${context.state.postId}`)
         .then((res) => {
-          console.log(res.data);
           context.commit('GET_ALL_COMMENTS', res.data)
         })
         .catch((error) => console.log(error));
     },
     sendComment(context) {
-      console.log(context.state.userId);
-      console.log(context.state.postId);
-      console.log(context.state.commentContent);
-      // axios.post("http://localhost:3000/comment", {
-      //   userId: context.state.userId,
-      //   commentName: userInfo.name,
-      //   postId: context.state.postId,
-      //   commentContent: context.state.commentContent
-      // },
-      // {
-      //   headers: { Authorization: `Bearer ${userInfo.token}`}
-      //     }
-      // )
       apiCallToken.post("/comment", {
         userId: context.state.userId,
         commentName: userInfo.name,
@@ -271,8 +222,7 @@ export default new Vuex.Store({
       .catch((error) => console.log(error)); 
     },
     deleteComment(context, commentId) {
-      console.log(commentId);
-          //axios.delete(`http://localhost:3000/comment/${commentId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
+      console.log(context);
       apiCallToken.delete(`/comment/${commentId}`)
         .then((resp) => {
           console.log(resp);
@@ -282,26 +232,14 @@ export default new Vuex.Store({
     },
     //section vote
     getVoteCount(context) {
-      //axios.get(`http://localhost:3000/post/${context.state.postId}/like`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
       apiCallToken.get(`/post/${context.state.postId}/like`)
         .then((res) => {
-          console.log(res.data.likes);
           context.commit('GET_VOTE_COUNT', res.data)
         })
         .catch((error) => console.log(error));
     },
     sendVoteDb(context, payload) {
-      console.log(typeof payload);
       if(payload === 'like') {
-      //  axios.post(`http://localhost:3000/post/${context.state.postId}/${payload}`,
-      //    {
-      //      userId: context.state.userId,
-      //      like_dislike: context.state.islike,
-      //    },
-      //    {
-      //      headers: { Authorization: `Bearer ${userInfo.token}` },
-      //    }
-      //  )
         apiCallToken.post(`/post/${context.state.postId}/${payload}`, {
           userId: context.state.userId,
           like_dislike: context.state.islike,
@@ -311,17 +249,6 @@ export default new Vuex.Store({
          })
         .catch((error) => console.log(error));
       } else if (payload === 'dislike') {
-      //  axios
-      //    .post(
-      //      `http://localhost:3000/post/${context.state.postId}/${payload}`,
-      //      {
-      //        userId: context.state.userId,
-      //        like_dislike: context.state.isdislike,
-      //      },
-      //      {
-      //        headers: { Authorization: `Bearer ${userInfo.token}` },
-      //      }
-      //    )
         apiCallToken.post(`/post/${context.state.postId}/${payload}`, {
           userId: context.state.userId,
           like_dislike: context.state.isdislike,
@@ -333,10 +260,8 @@ export default new Vuex.Store({
       }
      },
      getVoteValue(context) {
-      //axios.get(`http://localhost:3000/post/${context.state.postId}/like/${context.state.userId}`, {headers: { Authorization: `Bearer ${userInfo.token}` }})
       apiCallToken.get(`/post/${context.state.postId}/like/${context.state.userId}`)
         .then((res) => {
-          console.log(res.data);
           context.commit('GET_VOTE', res.data)
         })
     },

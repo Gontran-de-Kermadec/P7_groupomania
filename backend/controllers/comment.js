@@ -8,7 +8,6 @@ exports.comment = (req, res, next) => {
     let commentName = sanitize(req.body.commentName);
     let content = sanitize(req.body.commentContent);
     let data = [userId, `"${commentName}"`, postId, `"${content}"`]
-    //dbConnect.query(`INSERT INTO comments (userId, name, postId, comment) VALUES (${userId}, "${commentName}", "${postId}", "${content}")`, function(err, result) {
     dbConnect.query(`INSERT INTO comments (userId, name, postId, comment) VALUES (${data})`, function(err, result) {
         if(err) throw err;
         if(result) {
@@ -24,7 +23,6 @@ exports.getComments = (req, res, next) => {
     dbConnect.query(`SELECT * FROM comments WHERE postId=? ORDER BY commentDate DESC`, req.params.postId, function(err, result) {
         if(err) throw err;
         if(result) {
-            //console.log(result);
             res.status(200).json(result);
         }
     });

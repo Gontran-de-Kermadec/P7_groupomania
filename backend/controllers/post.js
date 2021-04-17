@@ -9,9 +9,7 @@ exports.post = (req, res, next) => {
     let content = sanitize(req.body.postContent);
     let data = [userId, `"${postName}"`, `"${content}"`];
     let dataUrl = [userId, `"${postName}"`, `"${content}"`, `"${postUrl}"`];
-    //if(postUrl === '') {
     if(postUrl === 'undefined') {
-        //dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${postId}, "${postName}", "${content}")`, function(err, result) {
         dbConnect.query(`INSERT INTO post (userId, name, postContent) VALUES (${data})`, function(err, result) {
             if(err) throw err;
             if(result) {
@@ -19,11 +17,9 @@ exports.post = (req, res, next) => {
             }
         });
     } else {
-        //dbConnect.query(`INSERT INTO post (userId, name, postContent, postUrl) VALUES (${postId}, "${postName}", "${content}", "${postUrl}")`, function(err, result) {
         dbConnect.query(`INSERT INTO post (userId, name, postContent, postUrl) VALUES (${dataUrl})`, function(err, result) {
             if(err) throw err;
             if(result) {
-                //console.log(result);
                 res.status(201).json({message: 'post ajouté'});
             }
         });
@@ -35,7 +31,6 @@ exports.getAllPosts = (req, res, next) => {
     dbConnect.query(`SELECT * FROM post ORDER BY postDate DESC`, function(err, result) {
         if(err) throw err;
         if(result) {
-            //console.log(result);
             res.status(200).json(result);
         }
     });
@@ -43,7 +38,6 @@ exports.getAllPosts = (req, res, next) => {
 
 //Obtenir les posts d'un seul utilisateur
 exports.getMyPosts = (req, res, next) => {
-    console.log(req.params.id);
     dbConnect.query(`SELECT * FROM post WHERE userId=? ORDER BY postDate DESC`, req.params.id, function(err, result) {
         if(err) throw err;
         if(result) {
@@ -73,13 +67,11 @@ exports.updatePost = (req, res, next) => {
     if (postUrl === "") {
         dbConnect.query('UPDATE post SET postContent=? WHERE id=?', dataMinusUrl, (err, result) => {
             if(err) throw err;
-            console.log(result);
             res.status(200).json({message:'publication mise à jour'})
         })
     } else {
         dbConnect.query('UPDATE post SET postContent=?, postUrl=? WHERE id=?', data, (err, result) => {
             if(err) throw err;
-            console.log(result);
             res.status(200).json({message:'publication mise à jour'})
         })
     }

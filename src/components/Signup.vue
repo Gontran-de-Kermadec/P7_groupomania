@@ -33,7 +33,6 @@
 
 <script>
 	import Header from "./Header.vue";
-	//const axios = require("axios");
 	import { apiCall } from "../axios";
 	export default {
 		name: "Signup",
@@ -58,15 +57,6 @@
 						"Le mot de passe nécessite au moins 8 caractères !";
 				} else {
 					if (regexEmail.test(this.email) && regexName.test(this.name)) {
-						// axios({
-						// 	method: "post",
-						// 	url: "http://localhost:3000/signup/",
-						// 	data: {
-						// 		name: this.name,
-						// 		email: this.email,
-						// 		password: this.password,
-						// 	},
-						// })
 						apiCall
 							.post("/signup/", {
 								name: this.name,
