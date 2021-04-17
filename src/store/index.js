@@ -26,6 +26,14 @@ export default new Vuex.Store({
     //section commentaire
     allComments: [],
     commentContent: "",
+    //section vote
+    likeCounter: 0,
+		dislikeCounter: 0,
+    islike: "false",
+		isdislike: "false",
+    disabDislike: false,
+    disabLike: false,
+    getVoteValue: []
   },
   mutations: {
     CHANGE_LOG(state) {
@@ -74,6 +82,47 @@ export default new Vuex.Store({
       state.commentContent = payload;
       console.log(state.commentContent);
     },
+    //section vote
+    GET_VOTE_COUNT(state, data) {
+      state.likeCounter = data.likes;
+      state.dislikeCounter = data.dislikes;
+      console.log(state.likeCounter);
+    },
+    ADD_LIKE_POST(state) {
+      state.islike = "true";
+      state.likeCounter = state.likeCounter + 1;
+      state.disabDislike = true;
+    },
+    REMOVE_LIKE_POST(state) {
+      state.islike = "false";
+      state.likeCounter = state.likeCounter - 1;
+      state.disabDislike = false;
+    },
+    ADD_DISLIKE_POST(state) {
+      state.isdislike = "true"
+      state.dislikeCounter = state.dislikeCounter + 1;
+      state.disabLike = true;
+    },
+    REMOVE_DISLIKE_POST(state) {
+      state.isdislike = "false"
+      state.dislikeCounter = state.dislikeCounter - 1;
+      state.disabLike = false;
+    },
+    GET_VOTE(state, data) {
+      state.getVoteValue = data
+      if(state.getVoteValue.length === 0) {
+        state.islike = "false";
+        state.isdislike = "false";
+        state.disabDislike = false;
+        state.disabLike = false;
+      } else if(state.getVoteValue[0].votes === 1) {
+        state.islike = "true"; 
+        state.disabDislike = true; 
+      } else if(state.getVoteValue[0].votes === -1) {
+        state.isdislike = "true"; 
+        state.disabLike = true; 
+      }
+    },
   },
   actions: {
     //section user
@@ -82,7 +131,6 @@ export default new Vuex.Store({
       .then((res) => {
         //console.log(res.data);
         commit('GET_USER_ID', res.data);
-        //return res.data;
       })
       .catch((error) => console.log(error));
     },
@@ -232,5 +280,72 @@ export default new Vuex.Store({
             })
             .catch((error) => console.log(error));
     },
+    //section vote
+    getVoteCount(context) {
+      console.log(context.state.postId);
+      axios
+        .get(`http://localhost:3000/post/${context.state.postId}/like`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        })
+        .then((res) => {
+          console.log(res.data.likes);
+          context.commit('GET_VOTE_COUNT', res.data)
+        })
+        .catch((error) => console.log(error));
+    },
+    sendVoteDb(context, payload) {
+      console.log(typeof payload);
+      if(payload === 'like') {
+       axios
+       .post(
+         `http://localhost:3000/post/${context.state.postId}/${payload}`,
+         {
+           userId: context.state.userId,
+           like_dislike: context.state.islike,
+         },
+         {
+           headers: { Authorization: `Bearer ${userInfo.token}` },
+         }
+       )
+       .then((resp) => {
+         console.log(resp);
+       })
+       .catch((error) => console.log(error));
+      } else if (payload === 'dislike') {
+       axios
+         .post(
+           `http://localhost:3000/post/${context.state.postId}/${payload}`,
+           {
+             userId: context.state.userId,
+             like_dislike: context.state.isdislike,
+           },
+           {
+             headers: { Authorization: `Bearer ${userInfo.token}` },
+           }
+         )
+         .then((resp) => {
+           console.log(resp);
+         })
+         .catch((error) => console.log(error));
+      }
+     },
+     getVoteValue(context) {
+      //let id = await context.dispatch('getUserId');
+      //console.log(id);
+      console.log(context.state.userId);
+      //context.commit('GET_VOTE', data)
+      axios
+        .get(`http://localhost:3000/post/${context.state.postId}/like/${context.state.userId}`, {
+        //.get(`${this.$baseUrl}/post/${this.id}/like/${this.userId}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        })
+        .then((res) => {
+          console.log(res.data);
+          context.commit('GET_VOTE', res.data)
+        })
   },
+  },
+  
+  
+ 
 })

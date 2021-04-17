@@ -29,7 +29,8 @@
 </template>
 
 <script>
-	const axios = require("axios");
+	//const axios = require("axios");
+	import { mapState } from "vuex";
 	export default {
 		name: "Vote",
 		props: {
@@ -37,62 +38,80 @@
 		},
 		data() {
 			return {
-				id: this.postId,
-				userId: this.$userInfo.userId,
-				likeCounter: "",
-				dislikeCounter: "",
-				islike: "false",
-				isdislike: "false",
-				disabDislike: false,
-				disabLike: false,
+				//id: this.postId,
+				//userId: this.$userInfo.userId,
+				//likeCounter: "",
+				//dislikeCounter: "",
+				//islike: "false",
+				//isdislike: "false",
+				//disabDislike: false,
+				//disabLike: false,
 			};
 		},
+		computed: {
+			...mapState([
+				"userId",
+				"likeCounter",
+				"dislikeCounter",
+				"islike",
+				"isdislike",
+				"disabDislike",
+				"disabLike",
+			]),
+			//"getVoteValue",
+		},
 		methods: {
-			getVoteValue() {
-				axios
-					//.get(`http://localhost:3000/post/${this.id}/like`, {
-					.get(`${this.$baseUrl}/post/${this.id}/like`, {
-						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					})
-					.then((res) => {
-						console.log(res.data.likes);
-						this.likeCounter = res.data.likes;
-						this.dislikeCounter = res.data.dislikes;
-					})
-					.catch((error) => console.log(error));
-			},
+			// getVoteValue() {
+			// 	axios
+			// 		//.get(`http://localhost:3000/post/${this.id}/like`, {
+			// 		.get(`${this.$baseUrl}/post/${this.id}/like`, {
+			// 			headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+			// 		})
+			// 		.then((res) => {
+			// 			console.log(res.data.likes);
+			// 			this.likeCounter = res.data.likes;
+			// 			this.dislikeCounter = res.data.dislikes;
+			// 		})
+			// 		.catch((error) => console.log(error));
+			// },
 			//fonction qui contient les infos du chemin pour l'envoi d'un vote
-			sendVoteDb(value, data) {
-				axios
-					.post(
-						//`http://localhost:3000/post/${this.id}/${value}`,
-						`${this.$baseUrl}/post/${this.id}/${value}`,
-						{
-							userId: this.userId,
-							like_dislike: data,
-						},
-						{
-							headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-						}
-					)
-					.then((resp) => {
-						console.log(resp);
-					})
-					.catch((error) => console.log(error));
-			},
+			// sendVoteDb(value, data) {
+			// 	axios
+			// 		.post(
+			// 			//`http://localhost:3000/post/${this.id}/${value}`,
+			// 			`${this.$baseUrl}/post/${this.id}/${value}`,
+			// 			{
+			// 				userId: this.userId,
+			// 				like_dislike: data,
+			// 			},
+			// 			{
+			// 				headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+			// 			}
+			// 		)
+			// 		.then((resp) => {
+			// 			console.log(resp);
+			// 		})
+			// 		.catch((error) => console.log(error));
+			// },
 			likePost() {
 				let liked = document.querySelector("#liked");
 				document.querySelector(".fa-thumbs-up").classList.add("animation");
 				if (liked.classList.contains("false")) {
-					this.islike = "true";
-					this.likeCounter = this.likeCounter + 1;
-					this.disabDislike = true;
-					this.sendVoteDb("like", this.islike);
+					// this.islike = "true";
+					// this.likeCounter = this.likeCounter + 1;
+					// this.disabDislike = true;
+					this.$store.commit("ADD_LIKE_POST");
+					let payload = "like";
+					this.$store.dispatch("sendVoteDb", payload);
+					//this.sendVoteDb("like", this.islike);
 				} else if (liked.classList.contains("true")) {
-					this.islike = "false";
-					this.likeCounter = this.likeCounter - 1;
-					this.disabDislike = false;
-					this.sendVoteDb("like", this.islike);
+					// this.islike = "false";
+					// this.likeCounter = this.likeCounter - 1;
+					// this.disabDislike = false;
+					// this.sendVoteDb("like", this.islike);
+					this.$store.commit("REMOVE_LIKE_POST");
+					let payload = "like";
+					this.$store.dispatch("sendVoteDb", payload);
 				}
 			},
 			dislikePost() {
@@ -100,45 +119,55 @@
 				let animation = document.querySelector(".fa-thumbs-down");
 				animation.classList.add("animation");
 				if (disliked.classList.contains("false")) {
-					this.isdislike = "true";
-					this.dislikeCounter = this.dislikeCounter + 1;
-					this.disabLike = true;
-					this.sendVoteDb("dislike", this.isdislike);
+					// this.isdislike = "true";
+					// this.dislikeCounter = this.dislikeCounter + 1;
+					// this.disabLike = true;
+					// this.sendVoteDb("dislike", this.isdislike);
+					this.$store.commit("ADD_DISLIKE_POST");
+					let payload = "dislike";
+					this.$store.dispatch("sendVoteDb", payload);
 				} else if (disliked.classList.contains("true")) {
-					this.isdislike = "false";
-					this.dislikeCounter = this.dislikeCounter - 1;
-					this.disabLike = false;
-					this.sendVoteDb("dislike", this.isdislike);
+					// this.isdislike = "false";
+					// this.dislikeCounter = this.dislikeCounter - 1;
+					// this.disabLike = false;
+					// this.sendVoteDb("dislike", this.isdislike);
+					this.$store.commit("REMOVE_DISLIKE_POST");
+					let payload = "dislike";
+					this.$store.dispatch("sendVoteDb", payload);
 				}
 			},
 			//fonction pour maintenir classe sur l'élement au rafraichissement
-			getVote() {
-				axios
-					//.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`, {
-					.get(`${this.$baseUrl}/post/${this.id}/like/${this.userId}`, {
-						headers: { Authorization: `Bearer ${this.$userInfo.token}` },
-					})
-					.then((res) => {
-						console.log(res.data);
-						if (res.data.length === 0) {
-							this.islike = "false";
-							this.isdislike = "false";
-							this.disabDislike = false;
-							this.disabLike = false;
-						} else if (res.data[0].votes === 1) {
-							this.islike = "true";
-							this.disabDislike = true;
-						} else if (res.data[0].votes === -1) {
-							this.isdislike = "true";
-							this.disabLike = true;
-						}
-					})
-					.catch((error) => console.log(error));
+			getVoteValue() {
+				this.$store.dispatch("getVoteValue");
+				// axios
+				// 	//.get(`http://localhost:3000/post/${this.id}/like/${this.userId}`, {
+				// 	.get(`${this.$baseUrl}/post/${this.id}/like/${this.userId}`, {
+				// 		headers: { Authorization: `Bearer ${this.$userInfo.token}` },
+				// 	})
+				// 	.then((res) => {
+				// 		console.log(res.data);
+				// 		if (res.data.length === 0) {
+				// 			this.islike = "false";
+				// 			this.isdislike = "false";
+				// 			this.disabDislike = false;
+				// 			this.disabLike = false;
+				// 		} else if (res.data[0].votes === 1) {
+				// 			this.islike = "true";
+				// 			this.disabDislike = true;
+				// 		} else if (res.data[0].votes === -1) {
+				// 			this.isdislike = "true";
+				// 			this.disabLike = true;
+				// 		}
+				// 	})
+				// 	.catch((error) => console.log(error));
 			},
 		},
-		mounted() {
+		beforeMount() {
 			this.getVoteValue();
-			this.getVote();
+		},
+		mounted() {
+			this.$store.dispatch("getVoteCount");
+			//this.getVoteValue();
 		},
 	};
 </script>
