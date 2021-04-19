@@ -9,8 +9,6 @@ if(localStorage.getItem('userInfo') !== undefined) {
   Vue.prototype.$userInfo = JSON.parse(localStorage.getItem('userInfo'));
 }
 
-Vue.prototype.$baseUrl = 'http://localhost:3000';
-
 new Vue({
   router,
   store,

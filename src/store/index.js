@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '../router'
 import {apiCallToken} from '../axios'
-//import apiUrl from '../../axios_config'
-//const axios = require('axios');
 
 let userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
@@ -12,7 +10,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loggedIn: false,
-    //uri: apiUrl
     userId: '',
     admin: 0,
     //section post
@@ -49,6 +46,7 @@ export default new Vuex.Store({
       state.admin = data.admin;
       console.log(state.userId);
     },
+    //section post
     GET_ALL_POSTS(state, data) {
       state.allPosts = data;
     },
@@ -266,5 +264,4 @@ export default new Vuex.Store({
         })
     },
   },
-
 })
