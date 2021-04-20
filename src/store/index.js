@@ -53,7 +53,6 @@ export default new Vuex.Store({
     SEND_POST(state, payload) {
       state.postContent = payload.post;
       state.postUrl = payload.postUrl;
-      console.log(state.postContent);
     },
     GET_MY_POSTS(state, data) {
       state.myPosts = data;
@@ -61,16 +60,13 @@ export default new Vuex.Store({
     },
     GET_ONE_POST(state, data) {
       state.postId = data;
-			console.log(state.postId);
     },
     SINGLE_POST(state, data) {
       state.singlePost = data;
-      console.log(state.singlePost);
     },
     UPDATE_POST(state, payload) {
       state.updatePost = payload.updatePost;
       state.updateUrl = payload.updateUrl;
-      console.log(state.updatePost);
     },
     //section commentaire
     GET_ALL_COMMENTS(state, data) {

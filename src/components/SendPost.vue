@@ -45,7 +45,8 @@
 		},
 		methods: {
 			sendPost() {
-				let payload = { post: this.post, url: this.postUrl };
+				console.log(this.postUrl);
+				let payload = { post: this.post, postUrl: this.postUrl };
 				this.$store.commit("SEND_POST", payload);
 				this.$store.dispatch("sendPost");
 			},
