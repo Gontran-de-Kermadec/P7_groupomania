@@ -168,6 +168,7 @@ export default new Vuex.Store({
       .catch((error) => console.log(error));
     },
     getOnePost({commit, state}) {
+      state.singlePost = [];
       apiCallToken.get(`/post/${state.postId}`)
       .then((res) => {
         commit('SINGLE_POST', res.data);
@@ -196,6 +197,7 @@ export default new Vuex.Store({
     },
     //section commentaire
     getAllComments(context) {
+      context.state.allComments = [];
       apiCallToken.get(`/comment/${context.state.postId}`)
         .then((res) => {
           context.commit('GET_ALL_COMMENTS', res.data)

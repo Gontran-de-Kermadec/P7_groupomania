@@ -108,7 +108,10 @@
 				}
 			},
 		},
-		mounted() {
+		// beforeMounted() {
+		// 	this.$store.dispatch("getAllComments");
+		// },
+		beforeMount() {
 			this.$store.dispatch("getAllComments");
 		},
 	};
